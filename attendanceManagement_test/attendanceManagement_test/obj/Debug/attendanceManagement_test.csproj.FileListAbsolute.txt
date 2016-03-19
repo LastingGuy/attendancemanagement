@@ -1,0 +1,14 @@
+D:\project\project\attendanceManagement_test\attendanceManagement_test\bin\Debug\attendanceManagement_test.exe.config
+D:\project\project\attendanceManagement_test\attendanceManagement_test\obj\Debug\attendanceManagement_test.csprojResolveAssemblyReference.cache
+D:\project\project\attendanceManagement_test\attendanceManagement_test\obj\Debug\MainWindow.g.cs
+D:\project\project\attendanceManagement_test\attendanceManagement_test\obj\Debug\App.g.cs
+D:\project\project\attendanceManagement_test\attendanceManagement_test\obj\Debug\attendanceManagement_test_MarkupCompile.cache
+D:\project\project\attendanceManagement_test\attendanceManagement_test\obj\Debug\attendanceManagement_test_MarkupCompile.lref
+D:\project\project\attendanceManagement_test\attendanceManagement_test\bin\Debug\attendanceManagement_test.exe
+D:\project\project\attendanceManagement_test\attendanceManagement_test\bin\Debug\attendanceManagement_test.pdb
+D:\project\project\attendanceManagement_test\attendanceManagement_test\obj\Debug\MainWindow.baml
+D:\project\project\attendanceManagement_test\attendanceManagement_test\obj\Debug\attendanceManagement_test.g.resources
+D:\project\project\attendanceManagement_test\attendanceManagement_test\obj\Debug\attendanceManagement_test.Properties.Resources.resources
+D:\project\project\attendanceManagement_test\attendanceManagement_test\obj\Debug\attendanceManagement_test.csproj.GenerateResource.Cache
+D:\project\project\attendanceManagement_test\attendanceManagement_test\obj\Debug\attendanceManagement_test.exe
+D:\project\project\attendanceManagement_test\attendanceManagement_test\obj\Debug\attendanceManagement_test.pdb
