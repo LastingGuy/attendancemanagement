@@ -12,3 +12,6 @@ D:\project\project\attendanceManagement_test\attendanceManagement_test\obj\Debug
 D:\project\project\attendanceManagement_test\attendanceManagement_test\obj\Debug\attendanceManagement_test.csproj.GenerateResource.Cache
 D:\project\project\attendanceManagement_test\attendanceManagement_test\obj\Debug\attendanceManagement_test.exe
 D:\project\project\attendanceManagement_test\attendanceManagement_test\obj\Debug\attendanceManagement_test.pdb
+E:\github\AttendanceManagement\attendanceManagement_test\attendanceManagement_test\bin\Debug\attendanceManagement_test.exe.config
+E:\github\AttendanceManagement\attendanceManagement_test\attendanceManagement_test\obj\Debug\attendanceManagement_test.exe
+E:\github\AttendanceManagement\attendanceManagement_test\attendanceManagement_test\obj\Debug\attendanceManagement_test.pdb
