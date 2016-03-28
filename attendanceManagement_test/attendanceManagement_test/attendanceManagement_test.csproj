@@ -69,6 +69,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="NET\DownLoad.cs" />
+    <Compile Include="NET\NET.cs" />
+    <Compile Include="NET\UpLoad.cs" />
+    <Compile Include="NET\URL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -97,7 +101,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ATTNDANCE\" />
-    <Folder Include="NET\" />
     <Folder Include="XML\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

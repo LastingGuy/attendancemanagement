@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using attendanceManagement.NET;
 
 namespace attendanceManagement
 {
@@ -22,6 +23,14 @@ namespace attendanceManagement
     {
         public MainWindow()
         {
+
+            //DownLoad download = new DownLoad();
+            //download.getclasslist("12344321");
+            //download.getstulist("1234", "123456");
+            UpLoad upload = new UpLoad();
+            upload.checkin_file("1234","20160328","123456");
+
+
             InitializeComponent();
         }
 
