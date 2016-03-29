@@ -29,7 +29,7 @@ namespace attendanceManagement
             //download.getstulist("1234", "123456");
             UpLoad upload = new UpLoad();
             upload.checkin_file("1234","20160328","123456");
-
+            upload.checkin_one_stu("1234", "20160330", "123456", "1", "08:00:00", "10:00:00","123456");
 
             InitializeComponent();
         }
