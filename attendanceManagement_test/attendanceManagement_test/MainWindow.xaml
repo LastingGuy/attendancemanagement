@@ -13,21 +13,20 @@
         </Grid.ColumnDefinitions>
         <Grid x:Name="basis_grid" Margin="0,10,103.2,0.4">
 
-            <Label x:Name="info" Content="" HorizontalAlignment="Left" Height="141" VerticalAlignment="Top" Width="197" Margin="1,1,0,0"/>
+            <Label x:Name="info" Content="" HorizontalAlignment="Left" Height="141" VerticalAlignment="Top" Width="205" Margin="2,-2,0,0"/>
             <Label x:Name="teacher" Content="教师" HorizontalAlignment="Left" Height="25" Margin="12,10,0,0" VerticalAlignment="Top" Width="45"/>
             <Label x:Name="course" Content="课程" HorizontalAlignment="Left" Height="25" Margin="12,40,0,0" VerticalAlignment="Top" Width="45"/>
-            <Label x:Name="time" Content="时间" HorizontalAlignment="Right" Height="25" Margin="0,70,146,0" VerticalAlignment="Top" Width="45"/>
+            <Label x:Name="time" Content="时间" HorizontalAlignment="Left" Height="25" Margin="12,70,0,0" VerticalAlignment="Top" Width="45"/>
             <Label x:Name="number" Content="人数" HorizontalAlignment="Left" Height="25" Margin="12,100,0,0" VerticalAlignment="Top" Width="45"/>
             <Label x:Name="teacher_info" Content="" HorizontalAlignment="Left" Height="25" Margin="55,10,0,0" VerticalAlignment="Top" Width="72"/>
             <Label x:Name="course_info" Content="" HorizontalAlignment="Left" Height="25" Margin="55,40,0,0" VerticalAlignment="Top" Width="72"/>
             <Label x:Name="time_info" Content="" HorizontalAlignment="Left" Height="25" Margin="55,70,0,0" VerticalAlignment="Top" Width="72"/>
             <Label x:Name="number_info" Content="" HorizontalAlignment="Left" Height="24" Margin="55,100,0,0" VerticalAlignment="Top" Width="72" RenderTransformOrigin="0.083,4.208"/>
-            <ScrollViewer Height="315" Margin="1,145,5,0" VerticalAlignment="Top">
-                <Grid x:Name="grid_scroll" Height="352" Width="180">
-                    <Button x:Name="button" Content="Button" HorizontalAlignment="Left" Height="53" Margin="23,17,0,0" VerticalAlignment="Top" Width="123"/>
-                    <Button x:Name="button1" Content="Button" HorizontalAlignment="Left" Height="50" Margin="20,95,0,0" VerticalAlignment="Top" Width="126"/>
-                </Grid>
-            </ScrollViewer>
+            <TreeView x:Name="treeView" HorizontalAlignment="Left" Height="328" Margin="1,142,0,-2" VerticalAlignment="Top" Width="174" RenderTransformOrigin="0.5,0.5">
+                <TreeView.Resources>
+
+                </TreeView.Resources>
+            </TreeView>
         </Grid>
 
         <DataGrid x:Name="dataGrid" HorizontalAlignment="Left" VerticalAlignment="Top" Height="460" Width="476"
