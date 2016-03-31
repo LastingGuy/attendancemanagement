@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>  
+<lesson>
+	<teacher_id>2001	</teacher_id>
+	<teacher_name>郑晨阳	</teacher_name>
+	<lesson_id>3011		</lesson_id>
+	<lesson_name>数据库	</lesson_name>
+	<date>
+		<start>10:00</start>
+		<end>11:00</end>
+		<week>周一</week>
+			
+	</date>
+	<date>
+		<start>10:00</start>
+		<end>11:00</end>
+		<week>周三</week>
+			
+	</date>
+	<stu_nr>4		</stu_nr>
+	
+	<students>
+
+		<stu>
+			<stu_id>123456</stu_id>
+			<stu_name></stu_name>
+			<mac_adr>62380544632782</mac_adr>
+		</stu>	
+		<stu>
+			<stu_id>23456</stu_id>
+			<stu_name></stu_name>
+			<mac_adr>77889988</mac_adr>
+		</stu>
+		<stu>
+			<stu_id>21312323456</stu_id>
+			<stu_name></stu_name>
+			<mac_adr>212132650481596</mac_adr>
+		</stu>
+<stu>
+			<stu_id>253242356</stu_id>
+			<stu_name></stu_name>
+			<mac_adr>27334627431612</mac_adr>
+		</stu>
+		
+	</students>
+</lesson>
