@@ -21,5 +21,20 @@ namespace attendanceManagement.XML
         {
             return week + " " + start;
         }
+
+        public String get_start()
+        {
+            return start;
+        } 
+        
+        public String get_end()
+        {
+            return end;
+        }
+
+        public String get_week()
+        {
+            return week;
+        }
     }
 }

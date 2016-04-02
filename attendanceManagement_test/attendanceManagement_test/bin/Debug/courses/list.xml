@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>  
-<lesson>
+<course>
 	<teacher_id>2001	</teacher_id>
 	<teacher_name>郑晨阳	</teacher_name>
-	<lesson_id>3011		</lesson_id>
-	<lesson_name>数据库	</lesson_name>
+	<course_id>3011		</course_id>
+	<course_name>数据库	</course_name>
 	<date>
 		<start>10:00</start>
 		<end>11:00</end>
@@ -35,11 +35,11 @@
 			<stu_name></stu_name>
 			<mac_adr>212132650481596</mac_adr>
 		</stu>
-<stu>
+		<stu>
 			<stu_id>253242356</stu_id>
 			<stu_name></stu_name>
 			<mac_adr>27334627431612</mac_adr>
 		</stu>
 		
 	</students>
-</lesson>
+</course>
