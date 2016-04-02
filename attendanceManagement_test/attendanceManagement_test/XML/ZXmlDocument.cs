@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Xml;
 
 
+
 namespace attendanceManagement.XML
 {
     class ZXmlDocument
@@ -28,15 +29,17 @@ namespace attendanceManagement.XML
 
             course = new Course();
             XmlNodeList listNodes = null;
-            listNodes = root.SelectNodes("/lesson/lesson_id");
-            course.set_lesson_id(listNodes[0].InnerText);
-            listNodes = root.SelectNodes("/lesson/lesson_name");
-            course.set_lesson_name(listNodes[0].InnerText);
-            listNodes = root.SelectNodes("/lesson/teacher_name");
+            listNodes = root.SelectNodes("/course/course_id");
+            course.set_course_id(listNodes[0].InnerText);
+            listNodes = root.SelectNodes("/course/course_name");
+            course.set_course_name(listNodes[0].InnerText);
+            listNodes = root.SelectNodes("/course/teacher_name");
             course.set_teacher_name(listNodes[0].InnerText);
-            listNodes = root.SelectNodes("/lesson/stu_nr");
+            listNodes = root.SelectNodes("/course/teacher_id");
+            course.set_teacher_id(listNodes[0].InnerText);
+            listNodes = root.SelectNodes("/course/stu_nr");
             course.set_number(Convert.ToInt32(listNodes[0].InnerText));
-            listNodes = root.SelectNodes("/lesson/date");
+            listNodes = root.SelectNodes("/course/date");
             foreach (XmlNode node in listNodes)
             {
                 string start = ((XmlElement)(((XmlElement)node).GetElementsByTagName("start"))[0]).InnerText;
@@ -49,5 +52,82 @@ namespace attendanceManagement.XML
 
         }
 
+        //得到某教师所有的课程号  用于下载课程表
+        public String[] getClassIds()
+        {
+            String[] classids = null;
+            XmlNodeList listNodes = null;
+            listNodes = root.SelectNodes("/classes/classid");
+            int number = 0;
+            foreach (XmlNode node in listNodes)
+            {
+                number++;
+            }
+            classids = new String[number];
+            int i = 0;
+            foreach (XmlNode node in listNodes)
+            {
+
+                classids[i] = node.InnerText;
+                i++;
+            }
+            return classids;
+        }
+
+        //设置当前的考勤课程，需要生成ZXmlDocumnt的实例，然后调用。
+        public void setCurrentCourse(Course course, CourseDate date)
+        {
+            //设置课程有关信息
+            String courseId;
+            String courseName;
+            String teacherId;
+            String teacherName;
+            int studentNr;
+            CurrentCourse currentCourse = CurrentCourse.getInstance();
+            courseId = course.get_course_id();
+            courseName = course.get_course_name();
+            teacherId = course.get_teacher_id();
+            teacherName = course.get_teacher_name();
+            studentNr = course.get_number();
+            currentCourse.setCourse(courseId, courseName, teacherId, teacherName, studentNr);
+
+            //设置时间信息
+            String start = "";
+            String end = "";
+            String week = "";
+            start = date.get_start();
+            end = date.get_end();
+            week = date.get_week();
+            currentCourse.setTime(week,start,end);
+
+            //从xml文件中读取学生的信息
+            XmlNodeList listNodes = root.SelectNodes("/course/students/stu");
+            int i = 0;
+            foreach(XmlNode node in listNodes)
+            {
+                XmlNodeList stuNodes = node.SelectNodes("stu_name");
+                String name = stuNodes[0].InnerText;
+                stuNodes = node.SelectNodes("stu_id");
+                String id = stuNodes[0].InnerText;
+               
+                String college = null, major = null, sex = null;
+                //xml中还未设置这些属性
+                //stuNodes = node.SelectNodes("stu_college");
+                //college = stuNodes[0].InnerText;
+
+                //stuNodes = node.SelectNodes("stu_major");
+                //major = stuNodes[0].InnerText;
+
+                //stuNodes = node.SelectNodes("stu_sex");
+                //sex = stuNodes[0].InnerText;
+
+                stuNodes = node.SelectNodes("mac_adr");
+                String macAdr = stuNodes[0].InnerText;
+
+                currentCourse.students[i] = new StudentInfo(name,id,college,major,sex,macAdr);
+                i++;
+            }         
+        }
     }
+            
 }
