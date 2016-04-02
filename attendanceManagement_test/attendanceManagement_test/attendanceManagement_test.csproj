@@ -57,6 +57,7 @@
     </ApplicationDefinition>
     <Compile Include="XML\Course.cs" />
     <Compile Include="XML\CourseDate.cs" />
+    <Compile Include="XML\CurrentCourse.cs" />
     <Compile Include="XML\ZXmlDocument.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
