@@ -15,6 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using attendanceManagement.NET;
 using attendanceManagement.XML;
+using attendanceManagement.ATTENDANCE;
 
 
 namespace attendanceManagement
@@ -66,6 +67,8 @@ namespace attendanceManagement
                 }
                 treeView.Items.Add(item);
             }
+
+           
         }
 
         void treeViewItem_getCurrentCourse(object sender, RoutedEventArgs e)
@@ -82,6 +85,10 @@ namespace attendanceManagement
             //生成当前考勤课程
             ZXmlDocument doc = new ZXmlDocument(item.course.get_filepath());
             doc.setCurrentCourse(item.course,item.date);
+
+            //test 
+            BTHOPERATE b = new BTHOPERATE();
+            b.start(ref this.dataGrid);
         }
 
         void openCourses()  //打开courses的文件夹 读取文件信息
@@ -101,6 +108,7 @@ namespace attendanceManagement
                         coursesInfo.AddFirst(course);
                     }
                 }
+               
             }
             catch(Exception e)
             {
@@ -114,5 +122,6 @@ namespace attendanceManagement
         {
 
         }
+       
     }
 }
