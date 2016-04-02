@@ -51,7 +51,7 @@
                                     />
                 <DataGridTextColumn Header="是否到课"
                                    Width="100"
-                                    Binding="{Binding check}"
+                                    Binding="{Binding checkattendace}"
                                     />
 
             </DataGrid.Columns>
