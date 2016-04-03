@@ -22,22 +22,22 @@
 
 		<stu>
 			<stu_id>123456</stu_id>
-			<stu_name></stu_name>
-			<mac_adr>62380544632782</mac_adr>
+			<stu_name>啦啦啦</stu_name>
+			<mac_adr>303a64bdef1a</mac_adr>
 		</stu>	
 		<stu>
 			<stu_id>23456</stu_id>
-			<stu_name></stu_name>
-			<mac_adr>77889988</mac_adr>
+			<stu_name>噜噜噜</stu_name>
+			<mac_adr>c0eefb46f7bc</mac_adr>
 		</stu>
 		<stu>
 			<stu_id>21312323456</stu_id>
-			<stu_name></stu_name>
+			<stu_name>夜夜夜夜</stu_name>
 			<mac_adr>212132650481596</mac_adr>
 		</stu>
 		<stu>
 			<stu_id>253242356</stu_id>
-			<stu_name></stu_name>
+			<stu_name>哈哈哈</stu_name>
 			<mac_adr>27334627431612</mac_adr>
 		</stu>
 		
