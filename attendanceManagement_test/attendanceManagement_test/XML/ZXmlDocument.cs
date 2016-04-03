@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
+using attendanceManagement.ATTENDANCE;
 
 
 
@@ -129,32 +130,43 @@ namespace attendanceManagement.XML
             }         
         }
 
-        public static void generateResultXml()
+        public static void generateResultXml(List<StudentInfo> list)
         {
             //建立考勤结果XML        
             XmlDocument newDoc = new XmlDocument();
             XmlNode node = newDoc.CreateXmlDeclaration("1.0", "UTF-8", "");
             newDoc.AppendChild(node);
 
-            XmlNode root = newDoc.CreateElement("students");
+            XmlElement root = newDoc.CreateElement("course");
             newDoc.AppendChild(root);
 
-            foreach (XmlNode anode in listNodes)
+            XmlElement course_id = newDoc.CreateElement("course_id");
+            XmlElement students = newDoc.CreateElement("students");
+            root.AppendChild(course_id);
+            root.AppendChild(students);
+
+            CurrentCourse currentCourse = CurrentCourse.getInstance();
+            course_id.InnerText = currentCourse.getCourseId();
+
+            foreach (StudentInfo student in list)
             {
                 XmlElement stu = newDoc.CreateElement("stu");
-                XmlElement stu_id = newDoc.CreateElement("stuid");
-                XmlElement stu_ck = newDoc.CreateElement("ck");
+                XmlElement stu_id = newDoc.CreateElement("stu_id");
+                XmlElement stu_check = newDoc.CreateElement("check");
                 XmlElement stu_ts = newDoc.CreateElement("ts");
                 XmlElement stu_te = newDoc.CreateElement("te");
 
-                stu_id.InnerText = anode.InnerText;
+                stu_id.InnerText = student.macAdr;
+                stu_check.InnerText = student.check.ToString();
+                stu_ts.InnerText = student.ts;
+                stu_te.InnerText = student.te;
 
                 stu.AppendChild(stu_id);
-                stu.AppendChild(stu_ck);
+                stu.AppendChild(stu_check);
                 stu.AppendChild(stu_ts);
                 stu.AppendChild(stu_te);
 
-                root.AppendChild(stu);
+                students.AppendChild(stu);
             }
             newDoc.Save("result.xml");
         }
