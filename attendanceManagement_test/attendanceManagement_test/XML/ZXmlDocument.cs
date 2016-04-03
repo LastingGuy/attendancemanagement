@@ -128,6 +128,37 @@ namespace attendanceManagement.XML
                 i++;
             }         
         }
+
+        public static void generateResultXml()
+        {
+            //建立考勤结果XML        
+            XmlDocument newDoc = new XmlDocument();
+            XmlNode node = newDoc.CreateXmlDeclaration("1.0", "UTF-8", "");
+            newDoc.AppendChild(node);
+
+            XmlNode root = newDoc.CreateElement("students");
+            newDoc.AppendChild(root);
+
+            foreach (XmlNode anode in listNodes)
+            {
+                XmlElement stu = newDoc.CreateElement("stu");
+                XmlElement stu_id = newDoc.CreateElement("stuid");
+                XmlElement stu_ck = newDoc.CreateElement("ck");
+                XmlElement stu_ts = newDoc.CreateElement("ts");
+                XmlElement stu_te = newDoc.CreateElement("te");
+
+                stu_id.InnerText = anode.InnerText;
+
+                stu.AppendChild(stu_id);
+                stu.AppendChild(stu_ck);
+                stu.AppendChild(stu_ts);
+                stu.AppendChild(stu_te);
+
+                root.AppendChild(stu);
+            }
+            newDoc.Save("result.xml");
+        }
+
     }
             
 }

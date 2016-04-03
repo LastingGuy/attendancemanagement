@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<course>
+	<class_id></class_id>
+	<start_time></start_time>
+	<end_time></end_time>
+	<stuednts>
+		<stu>
+		<stu_id></stu_id>
+		<result></result>
+		</stu>
+
+		<stu>
+		<stu_id></stu_id>
+		<result></result>
+		</stu>
+	</students>
+</course>

@@ -30,26 +30,22 @@ namespace attendanceManagement.XML
         }
 
         //第一次考勤到达，result+1
-        public void firstArrival(int increment)
+        public void firstArrival()
         {
             result += 1;
         }
 
         //第二次考勤到达，result+2
-        public void secondArrival(int increment)
+        public void secondArrival()
         {
             result += 2;
         }
 
         //第三次考勤到达，result+4
-        public void thirdArrival(int increment)
+        public void thirdArrival()
         {
             result += 4;
         }
-
-
-
-
     }
     
     //CurrentCourse类为单例,当前要考勤的课程
@@ -92,8 +88,6 @@ namespace attendanceManagement.XML
             
             //直接设置students数组内学生的数据
             students = new StudentInfo[studentNr];
-            
-            
         }
 
         //设置实例的时间信息 该方法由ZXmlDocument调用
