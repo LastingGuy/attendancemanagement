@@ -17,11 +17,12 @@ namespace attendanceManagement.XML
         public String macAdr { get; set; }
         public String ts { get; set; }
         public String te { get; set; }
+        public String sclass { get; set; }
 
         // 0未到 1-3早退 4-6迟到 7到课 8请假
         //第一次考勤到课+1 第二次考勤到课+2 第三次考勤到课+4
         public int check { get; set; } = -1;
-        public StudentInfo(String name, String id, String college, String major, String sex, String macAdr)
+        public StudentInfo(String name, String id, String college, String major, String sex, String macAdr, String sclass)
         {
             this.name = name;
             this.id = id;
@@ -29,6 +30,7 @@ namespace attendanceManagement.XML
             this.major = major;
             this.sex = sex;
             this.macAdr = macAdr;
+            this.sclass = sclass;
         }
 
         //第一次考勤到达，result+1
@@ -87,7 +89,6 @@ namespace attendanceManagement.XML
             this.teacherId = teacherId;
             this.teacherName = teacherName;   
             this.studentNr = number;
-            
             //直接设置students数组内学生的数据
             students = new StudentInfo[studentNr];
         }

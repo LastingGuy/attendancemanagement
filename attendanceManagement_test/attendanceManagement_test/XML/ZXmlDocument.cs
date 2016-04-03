@@ -111,21 +111,24 @@ namespace attendanceManagement.XML
                 stuNodes = node.SelectNodes("stu_id");
                 String id = stuNodes[0].InnerText;
                
-                String college = null, major = null, sex = null;
-                //xml中还未设置这些属性
-                //stuNodes = node.SelectNodes("stu_college");
-                //college = stuNodes[0].InnerText;
+                String college = null, major = null, sex = null, sclass = null;
+                
+                stuNodes = node.SelectNodes("college");
+                college = stuNodes[0].InnerText;
 
-                //stuNodes = node.SelectNodes("stu_major");
-                //major = stuNodes[0].InnerText;
+                stuNodes = node.SelectNodes("major");
+                major = stuNodes[0].InnerText;
 
-                //stuNodes = node.SelectNodes("stu_sex");
-                //sex = stuNodes[0].InnerText;
+                stuNodes = node.SelectNodes("sex");
+                sex = stuNodes[0].InnerText;
 
                 stuNodes = node.SelectNodes("mac_adr");
                 String macAdr = stuNodes[0].InnerText;
 
-                currentCourse.students[i] = new StudentInfo(name,id,college,major,sex,macAdr);
+                stuNodes = node.SelectNodes("sclass");
+                sclass = stuNodes[0].InnerText;
+
+                currentCourse.students[i] = new StudentInfo(name,id,college,major,sex,macAdr,sclass);
                 i++;
             }         
         }
