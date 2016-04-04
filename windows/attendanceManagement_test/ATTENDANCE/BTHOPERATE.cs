@@ -7,9 +7,7 @@ using System.Diagnostics;
 using System.Threading;
 using System.Text.RegularExpressions;
 using attendanceManagement.XML;
-/// <summary>
-/// test
-/// </summary>
+
 
 namespace attendanceManagement.ATTENDANCE
 {
@@ -94,7 +92,7 @@ namespace attendanceManagement.ATTENDANCE
                         if(list[i].check==0)
                         {
                             list[i].check = 1;
-                            //list[i].checkattendance = "到课";
+                            list[i].arrive = "到课";
                             list[i].ts = DateTime.Now.ToLongTimeString().ToString();
                         }
                         else
@@ -107,7 +105,7 @@ namespace attendanceManagement.ATTENDANCE
                     if(j==macs.Length-1)
                     {
                         list[i].check = 0;
-                        //list[i].checkattendance = "未到";
+                        list[i].arrive = "未到";
                         list[i].te = DateTime.Now.ToLongTimeString().ToString();
                     }
                 }
@@ -170,7 +168,7 @@ namespace attendanceManagement.ATTENDANCE
             for (int n = 0; n < list.Count; n++)
             {
                 list[n].check = 0;
-                // list[n].checkattendance = "未到";
+                list[n].arrive = "未到";
             }
             
             dataGird.ItemsSource = list;
