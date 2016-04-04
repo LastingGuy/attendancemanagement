@@ -18,6 +18,7 @@ namespace attendanceManagement.XML
         public String ts { get; set; }
         public String te { get; set; }
         public String sclass { get; set; }
+        public String arrive { get; set; } = "未到课";
 
         // 0未到 1-3早退 4-6迟到 7到课 8请假
         //第一次考勤到课+1 第二次考勤到课+2 第三次考勤到课+4
