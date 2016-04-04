@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
+using attendanceManagement.ATTENDANCE;
 
 
 
@@ -110,24 +111,69 @@ namespace attendanceManagement.XML
                 stuNodes = node.SelectNodes("stu_id");
                 String id = stuNodes[0].InnerText;
                
-                String college = null, major = null, sex = null;
-                //xml中还未设置这些属性
-                //stuNodes = node.SelectNodes("stu_college");
-                //college = stuNodes[0].InnerText;
+                String college = null, major = null, sex = null, sclass = null;
+                
+                stuNodes = node.SelectNodes("college");
+                college = stuNodes[0].InnerText;
 
-                //stuNodes = node.SelectNodes("stu_major");
-                //major = stuNodes[0].InnerText;
+                stuNodes = node.SelectNodes("major");
+                major = stuNodes[0].InnerText;
 
-                //stuNodes = node.SelectNodes("stu_sex");
-                //sex = stuNodes[0].InnerText;
+                stuNodes = node.SelectNodes("sex");
+                sex = stuNodes[0].InnerText;
 
                 stuNodes = node.SelectNodes("mac_adr");
                 String macAdr = stuNodes[0].InnerText;
 
-                currentCourse.students[i] = new StudentInfo(name,id,college,major,sex,macAdr);
+                stuNodes = node.SelectNodes("sclass");
+                sclass = stuNodes[0].InnerText;
+
+                currentCourse.students[i] = new StudentInfo(name,id,college,major,sex,macAdr,sclass);
                 i++;
             }         
         }
+
+        public static void generateResultXml(List<StudentInfo> list)
+        {
+            //建立考勤结果XML        
+            XmlDocument newDoc = new XmlDocument();
+            XmlNode node = newDoc.CreateXmlDeclaration("1.0", "UTF-8", "");
+            newDoc.AppendChild(node);
+
+            XmlElement root = newDoc.CreateElement("course");
+            newDoc.AppendChild(root);
+
+            XmlElement course_id = newDoc.CreateElement("course_id");
+            XmlElement students = newDoc.CreateElement("students");
+            root.AppendChild(course_id);
+            root.AppendChild(students);
+
+            CurrentCourse currentCourse = CurrentCourse.getInstance();
+            course_id.InnerText = currentCourse.getCourseId();
+
+            foreach (StudentInfo student in list)
+            {
+                XmlElement stu = newDoc.CreateElement("stu");
+                XmlElement stu_id = newDoc.CreateElement("stu_id");
+                XmlElement stu_check = newDoc.CreateElement("check");
+                XmlElement stu_ts = newDoc.CreateElement("ts");
+                XmlElement stu_te = newDoc.CreateElement("te");
+
+                stu_id.InnerText = student.macAdr;
+                stu_check.InnerText = student.check.ToString();
+                stu_ts.InnerText = student.ts;
+                stu_te.InnerText = student.te;
+
+                stu.AppendChild(stu_id);
+                stu.AppendChild(stu_check);
+                stu.AppendChild(stu_ts);
+                stu.AppendChild(stu_te);
+
+                students.AppendChild(stu);
+            }
+            newDoc.Save("result.xml");
+        }
+
     }
             
 }

@@ -9,17 +9,20 @@ namespace attendanceManagement.XML
 {
     class StudentInfo
     {
-        public String name;
-        public String id;
-        public String college;
-        public String major;
-        public String sex;
-        public String macAdr;
+        public String name { get; set; }
+        public String id { get; set; }
+        public String college { get; set; }
+        public String major { get; set; }
+        public String sex { get; set; }
+        public String macAdr { get; set; }
+        public String ts { get; set; }
+        public String te { get; set; }
+        public String sclass { get; set; }
 
         // 0未到 1-3早退 4-6迟到 7到课 8请假
         //第一次考勤到课+1 第二次考勤到课+2 第三次考勤到课+4
-        public int result = -1;
-        public StudentInfo(String name, String id, String college, String major, String sex, String macAdr)
+        public int check { get; set; } = -1;
+        public StudentInfo(String name, String id, String college, String major, String sex, String macAdr, String sclass)
         {
             this.name = name;
             this.id = id;
@@ -27,29 +30,26 @@ namespace attendanceManagement.XML
             this.major = major;
             this.sex = sex;
             this.macAdr = macAdr;
+            this.sclass = sclass;
         }
 
         //第一次考勤到达，result+1
         public void firstArrival()
         {
-            result += 1;
+            check += 1;
         }
 
         //第二次考勤到达，result+2
         public void secondArrival()
         {
-            result += 2;
+            check += 2;
         }
 
         //第三次考勤到达，result+4
         public void thirdArrival()
         {
-            result += 4;
+            check += 4;
         }
-
-
-
-
     }
     
     //CurrentCourse类为单例,当前要考勤的课程
@@ -89,11 +89,8 @@ namespace attendanceManagement.XML
             this.teacherId = teacherId;
             this.teacherName = teacherName;   
             this.studentNr = number;
-            
             //直接设置students数组内学生的数据
             students = new StudentInfo[studentNr];
-            
-            
         }
 
         //设置实例的时间信息 该方法由ZXmlDocument调用
@@ -119,6 +116,22 @@ namespace attendanceManagement.XML
                 data[i,3] = students[0].id;
             }
             return data;
+        }
+
+        //返回
+        public List<StudentInfo> getStudentList()
+        {
+            List<StudentInfo> list = new List<StudentInfo>();
+            foreach(StudentInfo stu in students)
+            {
+                list.Add(stu);
+            }
+            return list;
+        }
+
+        public String getCourseId()
+        {
+            return courseId;
         }
     }
 }
