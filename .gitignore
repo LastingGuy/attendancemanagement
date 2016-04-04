@@ -1,0 +1,7 @@
+*.config
+windows/.vs/attendanceManagement_test/v14/.suo
+*.suo
+*.manifest
+*.cache
+windows/.vs/attendanceManagement_test/v14/.suo
+*.lref
