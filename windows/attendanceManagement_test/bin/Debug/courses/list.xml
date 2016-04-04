@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>  
+<course>
+	<teacher_id>2001	</teacher_id>
+	<teacher_name>郑晨阳	</teacher_name>
+	<course_id>3011		</course_id>
+	<course_name>数据库	</course_name>
+	<date>
+		<start>10:00</start>
+		<end>11:00</end>
+		<week>周一</week>
+			
+	</date>
+	<date>
+		<start>10:00</start>
+		<end>11:00</end>
+		<week>周三</week>
+			
+	</date>
+	<stu_nr>4		</stu_nr>
+	
+	<students>
+
+		<stu>
+			<stu_id>123456</stu_id>
+			<stu_name>啦啦啦</stu_name>
+			<mac_adr>303a64bdef1a</mac_adr>
+			<college></college>
+			<major></major>
+			<sclass></sclass>
+			<sex></sex>
+			<ts></ts>
+			<te></te>
+		</stu>	
+		<stu>
+			<stu_id>23456</stu_id>
+			<stu_name>噜噜噜</stu_name>
+			<mac_adr>c0eefb46f7bc</mac_adr>
+			<college></college>
+			<major></major>
+			<sclass></sclass>
+			<sex></sex>
+			<ts></ts>
+			<te></te>
+		</stu>
+		<stu>
+			<stu_id>21312323456</stu_id>
+			<stu_name>夜夜夜夜</stu_name>
+			<mac_adr>212132650481596</mac_adr>
+			<college></college>
+			<sclass></sclass>
+			<major></major>
+			<sex></sex>
+			<ts></ts>
+			<te></te>
+		</stu>
+		<stu>
+			<stu_id>253242356</stu_id>
+			<stu_name>哈哈哈</stu_name>
+			<mac_adr>27334627431612</mac_adr>
+			<college></college>
+			<sclass></sclass>
+			<major></major>
+			<sex></sex>
+			<ts></ts>
+			<te></te>
+		</stu>
+		
+	</students>
+</course>

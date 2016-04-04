@@ -1,0 +1,5 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<course>
+<teacher_id>12344321</teacher_id><teacher_name>测试</teacher_name><lesson_id>1234</lesson_id><lesson_name>测试</lesson_name><time_begin>08:00:00</time_begin><time_end>09:50:00</time_end><stu_nr>2</stu_nr><place>测试</place><students><stu><stu_id>123456</stu_id><stu_name>wjl</stu_name><college>1</college><mac_adr>C0EEFB46F7BC</mac_adr></stu><stu><stu_id>23456</stu_id><stu_name>zcy</stu_name><college>1</college><mac_adr>38BC1A3427CE</mac_adr></stu></students></lesson>
+</course>
+
