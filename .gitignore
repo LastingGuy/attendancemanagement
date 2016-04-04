@@ -1,0 +1,11 @@
+*.config
+windows/.vs/attendanceManagement_test/v14/.suo
+*.suo
+*.manifest
+*.cache
+windows/.vs/attendanceManagement_test/v14/.suo
+*.lref
+*.suo
+*.pdb
+*.resources
+windows/attendanceManagement_test/obj/Debug/MainWindow.baml
