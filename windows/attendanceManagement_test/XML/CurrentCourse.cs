@@ -134,5 +134,15 @@ namespace attendanceManagement.XML
         {
             return courseId;
         }
+
+        public String getEndTime()
+        {
+            return endTime;
+        }
+
+        public String getStartTime()
+        {
+            return startTime;
+        }
     }
 }
