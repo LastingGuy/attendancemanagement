@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace attendanceManagement.XML
 {
+    //课程
     class Course
     {
         //课程id,课程名，教师名，人数，上课时间
