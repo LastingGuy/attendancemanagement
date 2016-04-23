@@ -33,11 +33,12 @@ namespace attendanceManagement.ATTENDANCE
                 List<StudentInfo> list = checkAttendance();
 
                 m_SyncContext.Post(syncdatagird, list);
-                
+
                 /* 
 
                 此处写将考勤信息写入文件代码
                 */
+                ZXmlDocument.generateResultXml(list);
             }
         }
 
@@ -81,6 +82,9 @@ namespace attendanceManagement.ATTENDANCE
         {
             CurrentCourse course = CurrentCourse.getInstance();
             List<StudentInfo> list = course.getStudentList();
+            DateTime startTime = DateTime.Parse(course.getStartTime());
+            DateTime endTime = DateTime.Parse(course.getEndTime());
+
             for(int i =0;i<list.Count;i++)
             {
                 
@@ -89,7 +93,7 @@ namespace attendanceManagement.ATTENDANCE
                 {
                     if(list[i].macAdr.ToUpper()==macs[j].ToUpper())
                     {
-                        if(list[i].check==0)
+                        if(list[i].check==-1)
                         {
                             list[i].check = 1;
                             list[i].arrive = "到课";
