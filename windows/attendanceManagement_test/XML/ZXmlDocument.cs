@@ -182,7 +182,19 @@ namespace attendanceManagement.XML
                 students.AppendChild(stu);
             }
             DateTime date = DateTime.Now;
-            string s = date.Year.ToString() + '-' + date.Month.ToString() + '-' + date.Day.ToString() + ".xml";
+            string s = date.Year.ToString();
+
+            if (date.Month <= 9)
+            { s += "0" + date.Month.ToString(); }
+            else
+            { s += date.Month.ToString(); }
+
+            if (date.Day <= 9)
+            { s += "0" + date.Day.ToString(); }
+            else
+            { s += date.Day.ToString(); }
+
+            s += ".xml";
             string savePath = "results/" + currentCourse.getCourseId() + "/" + s;
             newDoc.Save(savePath);
         }

@@ -42,7 +42,7 @@ namespace attendanceManagement.ATTENDANCE
 
                 此处写将考勤信息写入文件代码
                 */
-                ZXmlDocument.generateResultXml(list);
+                ZXmlDocument.generateResultXml();
             }
         }
 
