@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>  
 <course>
-	<teacher_id>2001	</teacher_id>
-	<teacher_name>郑晨阳	</teacher_name>
-	<course_id>3011		</course_id>
-	<course_name>数据库	</course_name>
+	<teacher_id>2001</teacher_id>
+	<teacher_name>郑晨阳</teacher_name>
+	<course_id>3011</course_id>
+	<course_name>数据库</course_name>
 	<date>
 		<start>10:00</start>
 		<end>11:00</end>

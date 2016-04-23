@@ -53,12 +53,13 @@ namespace attendanceManagement.XML
         }
     }
     
+
     //CurrentCourse类为单例,当前要考勤的课程
     class CurrentCourse
     {
         private static CurrentCourse instance = new CurrentCourse();
 
-        private String courseId;
+        private String courseId = null;
         private String courseName;
         private String teacherId;
         private String teacherName;
@@ -72,7 +73,7 @@ namespace attendanceManagement.XML
         private int studentNr;
         public StudentInfo[] students;
 
-        
+        public List<StudentInfo> stuList = null;
         private CurrentCourse()
         { }  
         
@@ -105,7 +106,7 @@ namespace attendanceManagement.XML
             //....
         }
 
-        //获得表格填充的数据，一个二维string 数组
+        //获得表格填充的数据，一个二维string 数组。暂时不用！
         public String[,] getTableContent()
         {
             String[,] data = new String[studentNr,4];
@@ -119,15 +120,24 @@ namespace attendanceManagement.XML
             return data;
         }
 
-        //返回
+        //返回学生列表
         public List<StudentInfo> getStudentList()
         {
-            List<StudentInfo> list = new List<StudentInfo>();
-            foreach(StudentInfo stu in students)
+            if(stuList == null)
             {
-                list.Add(stu);
+                stuList = new List<StudentInfo>();
+                foreach (StudentInfo stu in students)
+                {
+                    stuList.Add(stu);
+                }
+                
+                return stuList;
             }
-            return list;
+            else
+            {
+                return stuList;
+            }
+           
         }
 
         public String getCourseId()

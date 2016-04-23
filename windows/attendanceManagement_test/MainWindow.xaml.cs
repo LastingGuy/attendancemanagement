@@ -49,7 +49,7 @@ namespace attendanceManagement
 
         public MainWindow()
         {
-
+      
             InitializeComponent();
             openCourses();
             foreach (Course course in coursesInfo)
@@ -67,8 +67,10 @@ namespace attendanceManagement
                 }
                 treeView.Items.Add(item);
             }
+            dataGrid.MouseDoubleClick += TableRowClick;
 
-           
+
+
         }
 
         void treeViewItem_getCurrentCourse(object sender, RoutedEventArgs e)
@@ -85,10 +87,7 @@ namespace attendanceManagement
             //生成当前考勤课程
             ZXmlDocument doc = new ZXmlDocument(item.course.get_filepath());
             doc.setCurrentCourse(item.course,item.date);
-
-            //test 
-            BTHOPERATE b = new BTHOPERATE();
-            b.start(ref this.dataGrid);
+            ZXmlDocument.generateResultXml();
         }
 
         void openCourses()  //打开courses的文件夹 读取文件信息
@@ -117,11 +116,40 @@ namespace attendanceManagement
         }
 
     
-
-    private void dataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        //表格查看学生详细信息
+        private void TableRowClick(object sender, RoutedEventArgs e)
         {
-
+            DataGrid row = (DataGrid)sender;
+            int index = row.SelectedIndex;
+            CurrentCourse course = CurrentCourse.getInstance();
+            List<StudentInfo> list = course.getStudentList();
+            String s = "姓名： " + list[index].name + "\n" + "学号： " + list[index].id + "\n" + "性别： " + list[index].sex + "\n" +
+                "学院： " + list[index].college + "\n" + "专业： " + list[index].major + "\n" + "班级： " + list[index].sclass + "\n" +
+                "蓝牙地址： " + list[index].macAdr;
+            MessageBox.Show(s, "学生详细信息");
         }
-       
+
+
+        private void Btn_Begin_Click(object sender, RoutedEventArgs e)
+        {
+            //test 
+            CurrentCourse course = CurrentCourse.getInstance();
+            if (course.getCourseId() == null)
+            {
+                MessageBox.Show("未选择考勤课程，无法开始考勤！", "警告");
+            }
+            else
+            {
+                BTHOPERATE b = new BTHOPERATE();
+                b.start(ref this.dataGrid);
+                MessageBox.Show("考勤开始！", "警告");
+                Button btn = (Button)sender;
+                btn.Content = "考勤结束";
+            }
+            
+        
+        }
+
+
     }
 }

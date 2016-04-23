@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:attendanceManagement"
         mc:Ignorable="d"
-        Title="MainWindow" Height="500" Width="800">
+        Title="MainWindow" Height="500" Width="800"
+        >
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="307*"/>
@@ -29,8 +30,8 @@
             </TreeView>
         </Grid>
 
-        <DataGrid x:Name="dataGrid" HorizontalAlignment="Left" VerticalAlignment="Top" Height="460" Width="476"
-                  AutoGenerateColumns="False" Margin="203,0,0,0" ItemsSource="{Binding}" SelectionChanged="dataGrid_SelectionChanged" Grid.ColumnSpan="2" >
+        <DataGrid x:Name="dataGrid" HorizontalAlignment="Left" VerticalAlignment="Top" Height="423" Width="476"
+                  AutoGenerateColumns="False" Margin="203,37,0,0" ItemsSource="{Binding}"  Grid.ColumnSpan="2" >
             <DataGrid.Columns>
                 <DataGridTextColumn Header="姓名"
                                     Width="100"
@@ -39,15 +40,15 @@
                                     />
                 <DataGridTextColumn Header="学院"
                                 Width="100"
-                                    Binding="{Binding college}"
+                                    Binding="{Binding college,Mode=OneWay}"
                                     />
                 <DataGridTextColumn Header="专业"
                                     Width="100"
-                                    Binding="{Binding major}"
+                                    Binding="{Binding major,Mode=OneWay}"
                                     />
                 <DataGridTextColumn Header="班级"
                                     Width="100"
-                                    Binding="{Binding sclass}"
+                                    Binding="{Binding sclass,Mode=OneWay}"
                                     />
                 <DataGridTextColumn Header="是否到课"
                                    Width="100"
@@ -59,12 +60,12 @@
 
         <Grid HorizontalAlignment="Left" Height="459" Margin="368.8,1,-1.4,0" VerticalAlignment="Top" Width="119" Grid.Column="1">
             <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="459" Margin="10,0,0,0" Stroke="Black" VerticalAlignment="Top" Width="104"/>
-            <Button x:Name="button123" HorizontalAlignment="Left" Height="25" Margin="22,33,0,0" VerticalAlignment="Top" Width="78" Content="全部学生"/>
-            <Button x:Name="button_Copy1" Content="迟到学生" HorizontalAlignment="Left" Height="25" VerticalAlignment="Top" Width="78" Margin="22,138,0,0"/>
-            <Button x:Name="button_Copy2" Content="修改" HorizontalAlignment="Left" Height="25" VerticalAlignment="Top" Width="78" Margin="22,194,0,0"/>
-            <Button x:Name="button_Copy" HorizontalAlignment="Left" Height="25" VerticalAlignment="Top" Width="78" Margin="22,83,0,0" Content="未到学生"/>
-            <Button x:Name="button_Copy3" HorizontalAlignment="Left" Height="25" VerticalAlignment="Top" Width="78" Margin="22,250,0,0" Content="历史"/>
-            <Button x:Name="button_Copy4" Content="设置" HorizontalAlignment="Left" Height="25" VerticalAlignment="Top" Width="78" Margin="22,411,0,0"/>
+            <Button x:Name="btn_begin" Content="开始考勤" HorizontalAlignment="Left" Height="25" Margin="22,33,0,0" VerticalAlignment="Top" Width="78" Click="Btn_Begin_Click"/>
+            <Button x:Name="btn_all"  Content="全部学生" HorizontalAlignment="Left" Height="25" VerticalAlignment="Top" Width="78" Margin="22,83,0,0"/>
+            <Button x:Name="btn_late" Content="未到学生" HorizontalAlignment="Left" Height="25" VerticalAlignment="Top" Width="78" Margin="22,138,0,0"/>
+            <Button x:Name="btn_absent" Content="迟到学生" HorizontalAlignment="Left" Height="25" VerticalAlignment="Top" Width="78" Margin="22,194,0,0"/>
+            <Button x:Name="btn_history" Content="历史" HorizontalAlignment="Left" Height="25" VerticalAlignment="Top" Width="78" Margin="22,250,0,0"/>
+            <Button x:Name="btn_setting" Content="设置" HorizontalAlignment="Left" Height="25" VerticalAlignment="Top" Width="78" Margin="22,411,0,0"/>
         </Grid>
 
     </Grid>

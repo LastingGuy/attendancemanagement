@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<course>
+  <course_id>3011</course_id>
+  <students>
+    <stu>
+      <stu_id>123456</stu_id>
+      <check>-1</check>
+      <ts>
+      </ts>
+      <te>
+      </te>
+    </stu>
+    <stu>
+      <stu_id>23456</stu_id>
+      <check>-1</check>
+      <ts>
+      </ts>
+      <te>
+      </te>
+    </stu>
+    <stu>
+      <stu_id>21312323456</stu_id>
+      <check>-1</check>
+      <ts>
+      </ts>
+      <te>
+      </te>
+    </stu>
+    <stu>
+      <stu_id>253242356</stu_id>
+      <check>-1</check>
+      <ts>
+      </ts>
+      <te>
+      </te>
+    </stu>
+  </students>
+</course>

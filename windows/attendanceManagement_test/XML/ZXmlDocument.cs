@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -133,9 +134,18 @@ namespace attendanceManagement.XML
             }         
         }
 
-        public static void generateResultXml(List<StudentInfo> list)
+        public static void generateResultXml()
         {
-            //建立考勤结果XML        
+            //建立考勤结果XML 
+            CurrentCourse currentCourse = CurrentCourse.getInstance();
+            List<StudentInfo> list = currentCourse.getStudentList();
+            //
+            DirectoryInfo dir = new DirectoryInfo(@"results/" + currentCourse.getCourseId());
+            if(dir.Exists == false)
+            {
+                dir.Create();
+            }
+
             XmlDocument newDoc = new XmlDocument();
             XmlNode node = newDoc.CreateXmlDeclaration("1.0", "UTF-8", "");
             newDoc.AppendChild(node);
@@ -148,7 +158,7 @@ namespace attendanceManagement.XML
             root.AppendChild(course_id);
             root.AppendChild(students);
 
-            CurrentCourse currentCourse = CurrentCourse.getInstance();
+           
             course_id.InnerText = currentCourse.getCourseId();
 
             foreach (StudentInfo student in list)
@@ -159,7 +169,7 @@ namespace attendanceManagement.XML
                 XmlElement stu_ts = newDoc.CreateElement("ts");
                 XmlElement stu_te = newDoc.CreateElement("te");
 
-                stu_id.InnerText = student.macAdr;
+                stu_id.InnerText = student.id;
                 stu_check.InnerText = student.check.ToString();
                 stu_ts.InnerText = student.ts;
                 stu_te.InnerText = student.te;
@@ -171,7 +181,10 @@ namespace attendanceManagement.XML
 
                 students.AppendChild(stu);
             }
-            newDoc.Save("result.xml");
+            DateTime date = DateTime.Now;
+            string s = date.Year.ToString() + '-' + date.Month.ToString() + '-' + date.Day.ToString() + ".xml";
+            string savePath = "results/" + currentCourse.getCourseId() + "/" + s;
+            newDoc.Save(savePath);
         }
 
     }
