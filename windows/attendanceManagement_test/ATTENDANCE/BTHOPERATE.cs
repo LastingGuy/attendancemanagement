@@ -7,9 +7,7 @@ using System.Diagnostics;
 using System.Threading;
 using System.Text.RegularExpressions;
 using attendanceManagement.XML;
-/// <summary>
-/// test
-/// </summary>
+
 
 namespace attendanceManagement.ATTENDANCE
 {
@@ -23,6 +21,10 @@ namespace attendanceManagement.ATTENDANCE
         private static Thread thread=null;
         SynchronizationContext m_SyncContext = null;
 
+        private DateTime dt_start;
+        private DateTime dt_end;
+
+        private CurrentCourse course;
 
         //线程函数
         private void threadProc()
@@ -35,11 +37,12 @@ namespace attendanceManagement.ATTENDANCE
                 List<StudentInfo> list = checkAttendance();
 
                 m_SyncContext.Post(syncdatagird, list);
-                
+
                 /* 
 
                 此处写将考勤信息写入文件代码
                 */
+                ZXmlDocument.generateResultXml(list);
             }
         }
 
@@ -81,35 +84,32 @@ namespace attendanceManagement.ATTENDANCE
 
         private List<StudentInfo> checkAttendance()
         {
-            CurrentCourse course = CurrentCourse.getInstance();
+           
             List<StudentInfo> list = course.getStudentList();
-            for(int i =0;i<list.Count;i++)
-            {
-                
+            
 
+            for (int i =0;i<list.Count;i++)
+            {
+                bool arrived = false;        
                 for(int j =0; j<macs.Length;j++)
                 {
-                    if(list[i].macAdr.ToUpper()==macs[j].ToUpper())
+                    if (list[i].macAdr.ToUpper() == macs[j].ToUpper())
                     {
-                        if(list[i].check==0)
-                        {
-                            list[i].check = 1;
-                            //list[i].checkattendance = "到课";
-                            list[i].ts = DateTime.Now.ToLongTimeString().ToString();
-                        }
-                        else
-                        {
-                            list[i].te = DateTime.Now.ToLongTimeString().ToString();
-                        }
+                        arrived = true;
                         break;
                     }
-                    
-                    if(j==macs.Length-1)
-                    {
-                        list[i].check = 0;
-                        //list[i].checkattendance = "未到";
+                }
+
+                int last = list[i].check;
+                list[i].check = judgeState(list[i].check, arrived);
+                list[i].arrive = getState(list[i].check);
+
+                if(last!=list[i].check)
+                {
+                    if (list[i].check == 1 || list[i].check == 2)
+                        list[i].ts = DateTime.Now.ToLongTimeString().ToString();
+                    else if (list[i].check == 3)
                         list[i].te = DateTime.Now.ToLongTimeString().ToString();
-                    }
                 }
                 
             }
@@ -165,12 +165,12 @@ namespace attendanceManagement.ATTENDANCE
 
         private void show()
         {
-            CurrentCourse course = CurrentCourse.getInstance();
+            
             List<StudentInfo> list = course.getStudentList();
             for (int n = 0; n < list.Count; n++)
             {
                 list[n].check = 0;
-                // list[n].checkattendance = "未到";
+                list[n].arrive = "未到";
             }
             
             dataGird.ItemsSource = list;
@@ -181,11 +181,61 @@ namespace attendanceManagement.ATTENDANCE
         {
             dataGird.ItemsSource = (List<StudentInfo>)data;
         }
-     
+
+        //判断未到0、出勤1、迟到2、早退3
+        private int judgeState(int stateNow,bool arrived)
+        {
+
+            DateTime presentTime = DateTime.Now;
+            int state =0;
+            if(stateNow == -1||stateNow==0)
+            {
+                if (arrived == true)
+                {
+                    state = DateTime.Compare(presentTime, dt_start) > 0 ? 2 : 1;
+                    state = DateTime.Compare(presentTime, dt_end) > 0 ? 0 : state;
+                }
+                else
+                    state = 0;
+            }
+            else
+            {
+                if (!arrived)
+                {
+                    state = DateTime.Compare(presentTime, dt_end) < 0 ? 3 : 1;
+                    state = DateTime.Compare(presentTime, dt_start) < 0 ? 1 : state;
+                }
+                else
+                    state = stateNow;
+            }
+            return state;
+        }
+
+        //得到UI中显示状态文字
+        private string getState(int state)
+        {
+            switch(state)
+            {
+                case 0:
+                    return "未课";
+                case 1:
+                    return "到课";
+                case 2:
+                    return "迟到";
+                case 3:
+                    return "早退";
+                default:
+                    return "";
+            }
+        }
 
         public void start( ref System.Windows.Controls.DataGrid datagird)
         {
             dataGird = datagird;
+
+            course = CurrentCourse.getInstance();
+            dt_start = DateTime.Parse(course.getStartTime());
+            dt_end = DateTime.Parse(course.getEndTime());
 
             m_SyncContext = SynchronizationContext.Current;
             show();
