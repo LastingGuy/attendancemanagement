@@ -42,7 +42,7 @@ namespace attendanceManagement.ATTENDANCE
 
                 此处写将考勤信息写入文件代码
                 */
-                ZXmlDocument.generateResultXml(list);
+                ZXmlDocument.generateResultXml();
             }
         }
 
@@ -217,7 +217,7 @@ namespace attendanceManagement.ATTENDANCE
             switch(state)
             {
                 case 0:
-                    return "未课";
+                    return "未到";
                 case 1:
                     return "到课";
                 case 2:
