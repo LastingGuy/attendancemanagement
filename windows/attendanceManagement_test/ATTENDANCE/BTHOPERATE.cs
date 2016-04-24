@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Threading;
 using System.Text.RegularExpressions;
 using attendanceManagement.XML;
+using attendanceManagement.NET;
 
 
 namespace attendanceManagement.ATTENDANCE
@@ -23,8 +24,11 @@ namespace attendanceManagement.ATTENDANCE
 
         private DateTime dt_start;
         private DateTime dt_end;
+        private DateTime uploadtime;
 
         private CurrentCourse course;
+        private bool started;
+       
 
         //线程函数
         private void threadProc()
@@ -38,10 +42,7 @@ namespace attendanceManagement.ATTENDANCE
 
                 m_SyncContext.Post(syncdatagird, list);
 
-                /* 
-
-                此处写将考勤信息写入文件代码
-                */
+               
                 ZXmlDocument.generateResultXml();
             }
         }
@@ -114,51 +115,6 @@ namespace attendanceManagement.ATTENDANCE
                 
             }
 
-
-            //List<ATTENDANCEINFO> list = new List<ATTENDANCEINFO>();
-            //for(int i =0;i<course.students.Length;i++)
-            //{
-            //    bool check = false;
-              
-                    
-            //        for (int j = 0;j<macs.Length;j++)
-            //        {
-                       
-            //            if(course.students[i].macAdr.ToUpper() == macs[j].ToUpper())
-            //            {
-            //                check = true;
-            //                break;
-            //            }
-                      
-            //        }
-            //        if (check)
-            //        {
-            //        list.Add(new ATTENDANCEINFO
-            //        {
-            //            name = course.students[i].name,
-            //            major = course.students[i].major,
-            //            college = course.students[i].college,
-            //            sclass = "",
-            //            stuid = course.students[i].id,
-            //            checkattendace = "到课"
-            //            });
-            //        }
-            //        else
-            //        {
-            //            list.Add(new ATTENDANCEINFO
-            //            {
-            //                name = course.students[i].name,
-            //                major = course.students[i].major,
-            //                college = course.students[i].college,
-            //                sclass = "",
-            //                stuid = course.students[i].id,
-            //                checkattendace = "未到"
-            //            });
-            //        }
-               
-            //}
-           
-    
             
             return list;
         }
@@ -180,6 +136,7 @@ namespace attendanceManagement.ATTENDANCE
         private void syncdatagird(object data)
         {
             dataGird.ItemsSource = (List<StudentInfo>)data;
+            dataGird.Items.Refresh();
         }
 
         //判断未到0、出勤1、迟到2、早退3
@@ -211,13 +168,22 @@ namespace attendanceManagement.ATTENDANCE
             return state;
         }
 
+        private void upload()
+        {
+            if(DateTime.Compare(DateTime.Now,uploadtime)>0)
+            {
+                new UpLoad().checkin_file(course.getCourseId(), string.Format("{0:yyyyMMdd}",DateTime.Today),"123456");
+                uploadtime.AddMinutes(50);
+            }
+        }
+
         //得到UI中显示状态文字
         private string getState(int state)
         {
             switch(state)
             {
                 case 0:
-                    return "未到";
+                    return "未";
                 case 1:
                     return "到课";
                 case 2:
@@ -236,15 +202,28 @@ namespace attendanceManagement.ATTENDANCE
             course = CurrentCourse.getInstance();
             dt_start = DateTime.Parse(course.getStartTime());
             dt_end = DateTime.Parse(course.getEndTime());
+            started = true;
 
             m_SyncContext = SynchronizationContext.Current;
-            show();
+           // show();
+            uploadtime = dt_start;
+            uploadtime.AddMinutes(5);
             if (thread == null)
             {
                 thread = new Thread(threadProc);
                 thread.Start();
+                
             }
 
+        }
+
+        public void end()
+        {
+            if(started)
+            {
+                thread.Abort();
+            }
+            new UpLoad().checkin_file(course.getCourseId(), string.Format("{0:yyyyMMdd}", DateTime.Today), "123456");
         }
     }
 }
