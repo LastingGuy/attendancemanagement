@@ -115,51 +115,6 @@ namespace attendanceManagement.ATTENDANCE
                 
             }
 
-
-            //List<ATTENDANCEINFO> list = new List<ATTENDANCEINFO>();
-            //for(int i =0;i<course.students.Length;i++)
-            //{
-            //    bool check = false;
-              
-                    
-            //        for (int j = 0;j<macs.Length;j++)
-            //        {
-                       
-            //            if(course.students[i].macAdr.ToUpper() == macs[j].ToUpper())
-            //            {
-            //                check = true;
-            //                break;
-            //            }
-                      
-            //        }
-            //        if (check)
-            //        {
-            //        list.Add(new ATTENDANCEINFO
-            //        {
-            //            name = course.students[i].name,
-            //            major = course.students[i].major,
-            //            college = course.students[i].college,
-            //            sclass = "",
-            //            stuid = course.students[i].id,
-            //            checkattendace = "到课"
-            //            });
-            //        }
-            //        else
-            //        {
-            //            list.Add(new ATTENDANCEINFO
-            //            {
-            //                name = course.students[i].name,
-            //                major = course.students[i].major,
-            //                college = course.students[i].college,
-            //                sclass = "",
-            //                stuid = course.students[i].id,
-            //                checkattendace = "未到"
-            //            });
-            //        }
-               
-            //}
-           
-    
             
             return list;
         }
@@ -181,6 +136,7 @@ namespace attendanceManagement.ATTENDANCE
         private void syncdatagird(object data)
         {
             dataGird.ItemsSource = (List<StudentInfo>)data;
+            dataGird.Items.Refresh();
         }
 
         //判断未到0、出勤1、迟到2、早退3
