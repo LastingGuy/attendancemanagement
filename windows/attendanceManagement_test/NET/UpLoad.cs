@@ -13,7 +13,7 @@ namespace attendanceManagement.NET
         public bool checkin_file(string classid,string date,string key)
         {
            
-            string path = "db\\"+date+".xml";
+            string path = "results\\"+classid+"\\"+date+".xml";
             // 设置参数
             HttpWebRequest request = WebRequest.Create(URL.checkin_file_dir) as HttpWebRequest;
             CookieContainer cookieContainer = new CookieContainer();
