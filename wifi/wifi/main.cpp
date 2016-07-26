@@ -143,20 +143,20 @@ int main()
 {
 
 
-	CoInitialize(NULL);
-	CoInitializeSecurity(NULL, -1, NULL, NULL, RPC_C_AUTHN_LEVEL_PKT,
-		RPC_C_IMP_LEVEL_IMPERSONATE, NULL, EOAC_NONE, NULL);
+	//CoInitialize(NULL);
+	//CoInitializeSecurity(NULL, -1, NULL, NULL, RPC_C_AUTHN_LEVEL_PKT,
+	//	RPC_C_IMP_LEVEL_IMPERSONATE, NULL, EOAC_NONE, NULL);
 
 
-	INetSharingManager * pNSM = NULL;
-	HRESULT hr = ::CoCreateInstance(__uuidof(NetSharingManager), NULL, CLSCTX_ALL,
-		__uuidof(INetSharingManager), (void**)&pNSM);
+	//INetSharingManager * pNSM = NULL;
+	//HRESULT hr = ::CoCreateInstance(__uuidof(NetSharingManager), NULL, CLSCTX_ALL,
+	//	__uuidof(INetSharingManager), (void**)&pNSM);
 
 
-	if (!pNSM)
-	{
-		wprintf(L"failed to create NetSharingManager object\r\n");
-	}
+	//if (!pNSM)
+	//{
+	//	wprintf(L"failed to create NetSharingManager object\r\n");
+	//}
 	// 添加共享功能
 //	AddSharingNet(pNSM);
 
@@ -210,16 +210,10 @@ int main()
 	memset(&wlanConnectionSetting, 0, sizeof(WLAN_HOSTED_NETWORK_CONNECTION_SETTINGS));
 
 
-
-
-
-
 	string strSSIDInsert;
 	cout << "设置热点名称：";
 	cin >> strSSIDInsert;
 	CString strSSID(strSSIDInsert.c_str());
-
-
 
 
 	// WLAN_HOSTED_NETWORK_CONNECTION_SETTINGS中的SSID字段必须为ANSI类型，因此如果程序使用的是Unicode，则需要做转换。
