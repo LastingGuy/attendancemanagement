@@ -183,7 +183,7 @@ namespace attendanceManagement.ATTENDANCE
             switch(state)
             {
                 case 0:
-                    return "未";
+                    return "未到";
                 case 1:
                     return "到课";
                 case 2:
