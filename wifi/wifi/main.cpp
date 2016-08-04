@@ -185,9 +185,10 @@ void getClient(HANDLE handle)
 		{
 			if(i>0)
 				cout << endl;
+			cout << "<";
 			for (int n = 0; n < 6; n++)
 				cout << hex << (int)status->PeerList[0].PeerMacAddress[n];
-			
+			cout << ">";
 		}
 	}
 }
