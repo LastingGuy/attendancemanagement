@@ -1,0 +1,102 @@
+﻿<UserControl x:Class="attendanceManagement.widget.CourseSettingView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:attendanceManagement.widget"
+             xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resources/Icons.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid Margin="-233,0,0,0">
+        <Grid>
+            <Grid HorizontalAlignment="Center" Margin="10,0" Width="513">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="199*"/>
+                    <ColumnDefinition Width="314*"/>
+                </Grid.ColumnDefinitions>
+                <ListBox Margin="10"
+            		DisplayMemberPath="Name"
+            		SelectedIndex="0"
+            		Style="{StaticResource VirtualisedMetroListBox}" BorderThickness="1" >
+                    <ListBoxItem Content="ListBoxItem" HorizontalContentAlignment="Center"/>
+                    <ListBoxItem Content="ListBoxItem" HorizontalContentAlignment="Center"/>
+                    <ListBoxItem Content="ListBoxItem" HorizontalContentAlignment="Center"/>
+                    <ListBoxItem Content="ListBoxItem" HorizontalContentAlignment="Center"/>
+                    <ListBoxItem Content="新建" HorizontalContentAlignment="Center"/>
+                </ListBox>
+
+
+                <Label x:Name="label" Content="设置" Grid.Column="1" Margin="10,9.933,10,0" VerticalAlignment="Top" Height="25.24" d:LayoutOverrides="LeftMargin, RightMargin, TopMargin, BottomMargin"/>
+                <ComboBox
+                          Name="day_selection"
+                          Margin="18.001,52.1,95.998,0"
+                          Controls:TextBoxHelper.ClearTextButton="True"
+                          Controls:TextBoxHelper.Watermark="星期"
+                          Controls:TextBoxHelper.UseFloatingWatermark="True"
+                          SelectionChanged="day_selection_changed"
+                          IsEditable="True"
+                          VerticalAlignment="Top" Grid.Column="1" Width="200" HorizontalContentAlignment="Center">
+                    <ComboBoxItem Content="周一" />
+                    <ComboBoxItem Content="周二" />
+                    <ComboBoxItem Content="周三" />
+                    <ComboBoxItem Content="周四" />
+                    <ComboBoxItem Content="周五" />
+                    <ComboBoxItem Content="周六" />
+                    <ComboBoxItem Content="周日" />
+                </ComboBox>
+                <ComboBox
+                    Name="time_selection"
+                	Margin="18.001,99.24,95.998,0"
+                	Controls:TextBoxHelper.ClearTextButton="True"
+                	Controls:TextBoxHelper.Watermark="上课时间"
+                	Controls:TextBoxHelper.UseFloatingWatermark="True"
+                    SelectionChanged="time_selection_changed"
+                	IsEditable="True"
+                	VerticalAlignment="Top" Grid.Column="1" Width="200" HorizontalContentAlignment="Center">
+                    <ComboBoxItem Content="第1节" />
+                    <ComboBoxItem Content="第2节" />
+                    <ComboBoxItem Content="第3节" />
+                    <ComboBoxItem Content="第4节" />
+                    <ComboBoxItem Content="第5节" />
+                    <ComboBoxItem Content="第6节" />
+                    <ComboBoxItem Content="第7节" />
+                    <ComboBoxItem Content="第8节" />
+                    <ComboBoxItem Content="第9节" />
+                    <ComboBoxItem Content="第10节" />
+                    <ComboBoxItem Content="第11节" />
+                    <ComboBoxItem Content="第12节" />
+                </ComboBox>
+                <Button x:Name="btn_check" Width="50"
+                        Height="50"
+                        Style="{DynamicResource MetroCircleButtonStyle}" Grid.Column="1" Margin="0,67.686,30.5,0" HorizontalAlignment="Right" d:LayoutOverrides="Width, Height" VerticalAlignment="Top" Visibility="Hidden">
+                    <Rectangle Width="20"
+                               Height="20"
+                               Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
+                        <Rectangle.OpacityMask>
+                            <VisualBrush Stretch="Uniform" Visual="{DynamicResource appbar_check}" />
+                        </Rectangle.OpacityMask>
+                    </Rectangle>
+                </Button>
+                <Button x:Name="btn_cancel" Width="50"
+                        Height="50"
+                        Style="{DynamicResource MetroCircleButtonStyle}" Grid.Column="1" Margin="87.5,0,0,55.524" VerticalAlignment="Bottom" d:LayoutOverrides="Width, Height" HorizontalAlignment="Left">
+                    <Rectangle Width="20"
+                               Height="20"
+                               Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
+                        <Rectangle.OpacityMask>
+                            <VisualBrush Stretch="Uniform" Visual="{DynamicResource appbar_close}" />
+                        </Rectangle.OpacityMask>
+                    </Rectangle>
+                </Button>
+            </Grid>
+        </Grid>
+
+    </Grid>
+</UserControl>

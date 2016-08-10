@@ -1,0 +1,566 @@
+﻿<Controls:MetroWindow
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:attendanceManagement"
+        xmlns:ed="http://schemas.microsoft.com/expression/2010/drawing"
+        xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:globalization="clr-namespace:System.Globalization;assembly=mscorlib"
+        xmlns:widget="clr-namespace:attendanceManagement.widget"
+        xmlns:Custom="http://metro.mahapps.com/winfx/xaml/shared" x:Class="attendanceManagement.MainWindow_v2"
+        xmlns:behaviors="clr-namespace:attendanceManagement.Behaviors"
+        xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
+        mc:Ignorable="d"
+        Title="签到" ResizeMode="CanMinimize" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
+        >
+    <Controls:MetroWindow.Resources>
+        <Style x:Key="TabControlStyle1" TargetType="{x:Type TabControl}">
+            <Setter Property="Background" Value="{x:Null}"/>
+            <Setter Property="BorderBrush" Value="{x:Null}"/>
+            <Setter Property="Controls:TabControlHelper.Transition" Value="Left"/>
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TabControl}">
+                        <Grid KeyboardNavigation.TabNavigation="Local">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition x:Name="ColumnDefinition0"/>
+                                <ColumnDefinition x:Name="ColumnDefinition1" Width="0"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition x:Name="RowDefinition0" Height="Auto"/>
+                                <RowDefinition x:Name="RowDefinition1" Height="*"/>
+                            </Grid.RowDefinitions>
+                            <ScrollViewer x:Name="HeaderPanelScroll" Grid.Column="0" HorizontalScrollBarVisibility="Auto" Grid.Row="0" VerticalScrollBarVisibility="Disabled" HorizontalAlignment="Center">
+                                <ScrollViewer.Template>
+                                    <ControlTemplate TargetType="{x:Type ScrollViewer}">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="*"/>
+                                                <RowDefinition Height="Auto"/>
+                                            </Grid.RowDefinitions>
+                                            <ScrollBar x:Name="PART_HorizontalScrollBar" AutomationProperties.AutomationId="HorizontalScrollBar" Cursor="Arrow" Grid.Column="0" Height="14" Maximum="{TemplateBinding ScrollableWidth}" Minimum="0" Orientation="Horizontal" Grid.Row="0" Template="{DynamicResource HorizontalScrollBarTemplate}" Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}" Value="{Binding HorizontalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" ViewportSize="{TemplateBinding ViewportWidth}"/>
+                                            <ScrollContentPresenter x:Name="PART_ScrollContentPresenter" CanContentScroll="{TemplateBinding CanContentScroll}" CanHorizontallyScroll="False" CanVerticallyScroll="False" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" Grid.Column="0" Margin="15,2" Grid.Row="0" VerticalAlignment="Center"/>
+                                        </Grid>
+                                    </ControlTemplate>
+                                </ScrollViewer.Template>
+                                <TabPanel x:Name="HeaderPanel" IsItemsHost="True" KeyboardNavigation.TabIndex="1" Panel.ZIndex="1"/>
+                            </ScrollViewer>
+                            <Controls:TransitioningContentControl x:Name="ContentPanel" Grid.Column="0" Custom:ReloadBehavior.OnSelectedTabChanged="True" RestartTransitionOnContentChange="True" Grid.Row="1" Transition="{TemplateBinding Controls:TabControlHelper.Transition}" UseLayoutRounding="True">
+                                <ContentPresenter x:Name="PART_SelectedContentHost" ContentTemplate="{TemplateBinding SelectedContentTemplate}" Content="{TemplateBinding SelectedContent}" ContentStringFormat="{TemplateBinding SelectedContentStringFormat}" ContentSource="SelectedContent" Margin="{TemplateBinding Padding}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" UseLayoutRounding="False"/>
+                            </Controls:TransitioningContentControl>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="TabStripPlacement" Value="Bottom">
+                                <Setter Property="Grid.Row" TargetName="ContentPanel" Value="0"/>
+                                <Setter Property="Grid.Row" TargetName="HeaderPanelScroll" Value="1"/>
+                                <Setter Property="Margin" TargetName="HeaderPanelScroll" Value="2,0,2,2"/>
+                                <Setter Property="Height" TargetName="RowDefinition0" Value="*"/>
+                                <Setter Property="Height" TargetName="RowDefinition1" Value="Auto"/>
+                            </Trigger>
+                            <Trigger Property="TabStripPlacement" Value="Left">
+                                <Setter Property="Controls:TabControlHelper.Transition" Value="Right"/>
+                                <Setter Property="Width" TargetName="ColumnDefinition0" Value="Auto"/>
+                                <Setter Property="Width" TargetName="ColumnDefinition1" Value="*"/>
+                                <Setter Property="Grid.Column" TargetName="ContentPanel" Value="1"/>
+                                <Setter Property="Grid.Row" TargetName="ContentPanel" Value="0"/>
+                                <Setter Property="Grid.Column" TargetName="HeaderPanelScroll" Value="0"/>
+                                <Setter Property="Grid.Row" TargetName="HeaderPanelScroll" Value="0"/>
+                                <Setter Property="HorizontalScrollBarVisibility" TargetName="HeaderPanelScroll" Value="Disabled"/>
+                                <Setter Property="Margin" TargetName="HeaderPanelScroll" Value="2,2,0,2"/>
+                                <Setter Property="Template" TargetName="HeaderPanelScroll" Value="{DynamicResource VerticalScrollViewerTemplate}"/>
+                                <Setter Property="VerticalScrollBarVisibility" TargetName="HeaderPanelScroll" Value="Auto"/>
+                                <Setter Property="Height" TargetName="RowDefinition0" Value="*"/>
+                                <Setter Property="Height" TargetName="RowDefinition1" Value="0"/>
+                            </Trigger>
+                            <Trigger Property="TabStripPlacement" Value="Right">
+                                <Setter Property="Width" TargetName="ColumnDefinition0" Value="*"/>
+                                <Setter Property="Width" TargetName="ColumnDefinition1" Value="Auto"/>
+                                <Setter Property="Grid.Column" TargetName="ContentPanel" Value="0"/>
+                                <Setter Property="Grid.Row" TargetName="ContentPanel" Value="0"/>
+                                <Setter Property="Grid.Column" TargetName="HeaderPanelScroll" Value="1"/>
+                                <Setter Property="Grid.Row" TargetName="HeaderPanelScroll" Value="0"/>
+                                <Setter Property="HorizontalScrollBarVisibility" TargetName="HeaderPanelScroll" Value="Disabled"/>
+                                <Setter Property="Margin" TargetName="HeaderPanelScroll" Value="0,2,2,2"/>
+                                <Setter Property="Template" TargetName="HeaderPanelScroll" Value="{DynamicResource VerticalScrollViewerTemplate}"/>
+                                <Setter Property="VerticalScrollBarVisibility" TargetName="HeaderPanelScroll" Value="Auto"/>
+                                <Setter Property="Height" TargetName="RowDefinition0" Value="*"/>
+                                <Setter Property="Height" TargetName="RowDefinition1" Value="0"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+        </Style>
+
+        <widget:Dialog x:Key="dia"/>
+        <Style x:Key="CourseBoxStyle" TargetType="{x:Type ListBox}">
+            <Setter Property="Background" Value="{DynamicResource WhiteBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource BlackBrush}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="ScrollViewer.CanContentScroll" Value="True"/>
+            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
+            <Setter Property="ScrollViewer.PanningMode" Value="Both"/>
+            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
+            <Setter Property="FontSize" Value="25"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ListBox}">
+                        <Border x:Name="Border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}">
+                            <ScrollViewer CanContentScroll="{TemplateBinding ScrollViewer.CanContentScroll}" Focusable="False" HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}">
+                                <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                            </ScrollViewer>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsGrouping" Value="False">
+                                <Setter Property="ScrollViewer.CanContentScroll" Value="False"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="ItemContainerStyle">
+                <Setter.Value>
+                    <Style TargetType="ListBoxItem">
+                        <!-- 设置控件模板 -->
+                        <Setter Property="BorderThickness" Value="0"/>
+                        <Setter Property="Foreground" Value="{DynamicResource BlackBrush}"/>
+                        <Setter Property="HorizontalContentAlignment" Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type ItemsControl}}}"/>
+                        <Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type ItemsControl}}}"/>
+                        <Setter Property="Margin" Value="0"/>
+                        <Setter Property="MinHeight" Value="25"/>
+                        <Setter Property="Padding" Value="5,0,0,0"/>
+                        <Setter Property="SnapsToDevicePixels" Value="True"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                    <Border x:Name="Border" Height="50" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+                                        <ContentPresenter ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsSelected" Value="True">
+                                            <Setter Property="Foreground" Value="{DynamicResource AccentSelectedColorBrush}"/>
+                                            <Setter Property="Background" TargetName="Border" Value="{DynamicResource AccentColorBrush}"/>
+                                        </Trigger>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" TargetName="Border" Value="{DynamicResource AccentColorBrush3}"/>
+                                        </Trigger>
+                                        <Trigger Property="IsEnabled" Value="False">
+                                            <Setter Property="Foreground" Value="{DynamicResource GrayBrush7}"/>
+                                        </Trigger>
+                                        <MultiTrigger>
+                                            <MultiTrigger.Conditions>
+                                                <Condition Property="IsEnabled" Value="False"/>
+                                                <Condition Property="IsSelected" Value="True"/>
+                                            </MultiTrigger.Conditions>
+                                            <Setter Property="Foreground" Value="{DynamicResource AccentSelectedColorBrush}"/>
+                                            <Setter Property="Background" TargetName="Border" Value="{DynamicResource GrayBrush7}"/>
+                                        </MultiTrigger>
+                                        <MultiTrigger>
+                                            <MultiTrigger.Conditions>
+                                                <Condition Property="IsSelected" Value="True"/>
+                                                <Condition Property="Selector.IsSelectionActive" Value="True"/>
+                                            </MultiTrigger.Conditions>
+                                            <Setter Property="Background" TargetName="Border" Value="{DynamicResource AccentColorBrush2}"/>
+                                        </MultiTrigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Setter.Value>
+            </Setter>
+
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="BorderBrush" Value="{DynamicResource GrayBrush9}"/>
+                </Trigger>
+                <Trigger Property="VirtualizingPanel.IsVirtualizing" Value="True">
+                    <Setter Property="ItemsPanel">
+                        <Setter.Value>
+                            <ItemsPanelTemplate>
+                                <VirtualizingStackPanel IsItemsHost="True"/>
+                            </ItemsPanelTemplate>
+                        </Setter.Value>
+                    </Setter>
+                    <Setter Property="ScrollViewer.CanContentScroll" Value="True"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="DateBoxStyle" TargetType="{x:Type ListBox}">
+            <Setter Property="Background" Value="{DynamicResource WhiteBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource BlackBrush}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="ScrollViewer.CanContentScroll" Value="True"/>
+            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
+            <Setter Property="ScrollViewer.PanningMode" Value="Both"/>
+            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ListBox}">
+                        <Border x:Name="Border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}">
+                            <ScrollViewer CanContentScroll="{TemplateBinding ScrollViewer.CanContentScroll}" Focusable="False" HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}">
+                                <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                            </ScrollViewer>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsGrouping" Value="False">
+                                <Setter Property="ScrollViewer.CanContentScroll" Value="False"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="ItemContainerStyle">
+                <Setter.Value>
+                    <Style TargetType="ListBoxItem">
+                        <!-- 设置控件模板 -->
+                        <Setter Property="BorderThickness" Value="0"/>
+                        <Setter Property="Foreground" Value="{DynamicResource BlackBrush}"/>
+                        <Setter Property="HorizontalContentAlignment" Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type ItemsControl}}}"/>
+                        <Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type ItemsControl}}}"/>
+                        <Setter Property="Margin" Value="0"/>
+                        <Setter Property="MinHeight" Value="25"/>
+                        <Setter Property="Padding" Value="5,0,0,0"/>
+                        <Setter Property="SnapsToDevicePixels" Value="True"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                    <Border x:Name="Border" Height="40" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+                                        <ContentPresenter ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsSelected" Value="True">
+                                            <Setter Property="Foreground" Value="{DynamicResource AccentSelectedColorBrush}"/>
+                                            <Setter Property="Background" TargetName="Border" Value="{DynamicResource AccentColorBrush}"/>
+                                        </Trigger>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" TargetName="Border" Value="{DynamicResource AccentColorBrush3}"/>
+                                        </Trigger>
+                                        <Trigger Property="IsEnabled" Value="False">
+                                            <Setter Property="Foreground" Value="{DynamicResource GrayBrush7}"/>
+                                        </Trigger>
+                                        <MultiTrigger>
+                                            <MultiTrigger.Conditions>
+                                                <Condition Property="IsEnabled" Value="False"/>
+                                                <Condition Property="IsSelected" Value="True"/>
+                                            </MultiTrigger.Conditions>
+                                            <Setter Property="Foreground" Value="{DynamicResource AccentSelectedColorBrush}"/>
+                                            <Setter Property="Background" TargetName="Border" Value="{DynamicResource GrayBrush7}"/>
+                                        </MultiTrigger>
+                                        <MultiTrigger>
+                                            <MultiTrigger.Conditions>
+                                                <Condition Property="IsSelected" Value="True"/>
+                                                <Condition Property="Selector.IsSelectionActive" Value="True"/>
+                                            </MultiTrigger.Conditions>
+                                            <Setter Property="Background" TargetName="Border" Value="{DynamicResource AccentColorBrush2}"/>
+                                        </MultiTrigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Setter.Value>
+            </Setter>
+
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="BorderBrush" Value="{DynamicResource GrayBrush9}"/>
+                </Trigger>
+                <Trigger Property="VirtualizingPanel.IsVirtualizing" Value="True">
+                    <Setter Property="ItemsPanel">
+                        <Setter.Value>
+                            <ItemsPanelTemplate>
+                                <VirtualizingStackPanel IsItemsHost="True"/>
+                            </ItemsPanelTemplate>
+                        </Setter.Value>
+                    </Setter>
+                    <Setter Property="ScrollViewer.CanContentScroll" Value="True"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Controls:MetroWindow.Resources>
+
+    <Controls:MetroWindow.Flyouts>
+        <Controls:FlyoutsControl>
+            <Controls:Flyout Height="110"
+                             CloseButtonVisibility="Hidden"
+                             IsPinned="False"
+                             Position="Bottom"
+                             TitleVisibility="Collapsed">
+                <widget:Appbar/>
+            </Controls:Flyout>
+            <Controls:Flyout Width="250"
+                             IsPinned="False"
+                             Header="Setting"
+                             Position="Right">
+                <widget:SettingView/>
+            </Controls:Flyout>
+        </Controls:FlyoutsControl>
+    </Controls:MetroWindow.Flyouts>
+    <Grid Margin="0,0,0,1">
+        <Grid MouseRightButtonDown="Grid_MouseRightButtonDown" Margin="0,0,0,23.167">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="4*"/>
+                <ColumnDefinition Width="15*"/>
+            </Grid.ColumnDefinitions>
+            <Grid Margin="0,0,10,0" Background="White">
+
+                <ListBox x:Name="CourseSelection" Margin="10,52.093,10,10"
+                         DisplayMemberPath="Name"    
+                          Background="White" BorderBrush="Black" BorderThickness="0.5" HorizontalContentAlignment="Center" Style="{DynamicResource CourseBoxStyle}" SelectionChanged="CourseSelection_SelectionChanged" >
+
+
+                    <ListBoxItem Content="ListBoxItem"  />
+                    <ListBoxItem Content="item1"/>
+                    <ListBoxItem Content="ListBoxItem" />
+                    <ListBoxItem Content="item1"/>
+                    <ListBoxItem Content="ListBoxItem" />
+                    <ListBoxItem Content="item1"/>
+                    <ListBoxItem Content="ListBoxItem" />
+                    <ListBoxItem Content="item1"/>
+                    <ListBoxItem Content="ListBoxItem" />
+                    <ListBoxItem Content="ListBoxItem" />
+                    <ListBoxItem Content="ListBoxItem" />
+                    <ListBoxItem Content="ListBoxItem" />
+                    <ListBoxItem Content="ListBoxItem" />
+                    <ListBoxItem Content="ListBoxItem" />
+                    <ListBoxItem Content="ListBoxItem" />
+                    <ListBoxItem Content="ListBoxItem" />
+                    <ListBoxItem Content="ListBoxItem" />
+                    <ListBoxItem Content="item1"/>
+                    <ListBoxItem Content="ListBoxItem" />
+                    <ListBoxItem Content="item1"/>
+                    <ListBoxItem Content="ListBoxItem" />
+                    <ListBoxItem Content="ListBoxItem" />
+                    <ListBoxItem Content="item1"/>
+                    <ListBoxItem Content="ListBoxItem" />
+                    <ListBoxItem Content="item1"/>
+                    <ListBoxItem Content="item1"/>
+                    <ListBoxItem Content="item1"/>
+                    <ListBoxItem Content="item1"/>
+                    <ListBoxItem Content="item1"/>
+                    <ListBoxItem Content="item1"/>
+                    <ListBoxItem Content="item1"/>
+                    <ListBoxItem Content="item1"/>
+                    <ListBoxItem Content="item1"/>
+                    <ListBoxItem Content="item1"/>
+                </ListBox>
+                <Label x:Name="label" Content="请选择课程" Margin="13,10,10,0" VerticalAlignment="Top" FontSize="21.333" HorizontalContentAlignment="Center"/>
+            </Grid>
+            <Grid Grid.Column="1">
+                <Label  Content="请选择课程" Margin="25,0,17,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="26.667"/>
+
+            </Grid>
+            <Grid Name="courseINFO" Grid.Column="1" OpacityMask="#FFACACAC" Background="White">
+                <Grid.Resources>
+                    <ResourceDictionary>
+                        <ResourceDictionary.MergedDictionaries>
+                            <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.AnimatedTabControl.xaml" />
+                            <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Blue.xaml" />
+                        </ResourceDictionary.MergedDictionaries>
+                    </ResourceDictionary>
+                </Grid.Resources>
+                <TabControl Controls:TabControlHelper.IsUnderlined="True" Style="{DynamicResource TabControlStyle1}" BorderBrush="#FF382626" Background="White">
+                    <TabItem Controls:ControlsHelper.HeaderFontSize="18" Header="历史" BorderBrush="{x:Null}" Background="{x:Null}">
+                        <Grid Margin="0,0,0,-2.667">
+                            <Grid HorizontalAlignment="Left" Width="199.5">
+                                <Grid Height="175.167" VerticalAlignment="Top">
+
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="14*"/>
+                                        <ColumnDefinition Width="61*"/>
+                                        <ColumnDefinition Width="109*"/>
+                                        <ColumnDefinition Width="16*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid Margin="0,10,0.001,10" Grid.Column="1" d:LayoutOverrides="LeftMargin, RightMargin, TopMargin, BottomMargin">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="1*"/>
+                                            <RowDefinition Height="1*"/>
+                                            <RowDefinition Height="1*"/>
+                                            <RowDefinition Height="1*"/>
+                                            <RowDefinition Height="1*"/>
+                                        </Grid.RowDefinitions>
+                                        <Label x:Name="label_123" Content="教师：" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="0,-0.44,0,0" d:LayoutOverrides="Height"/>
+                                        <Label x:Name="label_Copy" Content="课程：" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="0,0,0,-0.44" Grid.Row="1" d:LayoutOverrides="Height"/>
+                                        <Label x:Name="label_Copy1" Content="时间：" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="0,-0.44,0,0" Grid.Row="2"/>
+                                        <Label x:Name="label_Copy2" Content="人数：" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" RenderTransformOrigin="0.804,0.605" Grid.Row="3" Height="24.8"/>
+                                        <Label x:Name="label_Copy3" Content="已到：" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" RenderTransformOrigin="1.711,-0.169" Grid.Row="4" Background="{x:Null}"/>
+                                    </Grid>
+                                    <Grid Margin="-0.001,10,0,10" Grid.Column="2" d:LayoutOverrides="LeftMargin, RightMargin, TopMargin, BottomMargin">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="1*"/>
+                                            <RowDefinition Height="1*"/>
+                                            <RowDefinition Height="1*"/>
+                                            <RowDefinition Height="1*"/>
+                                            <RowDefinition Height="1*"/>
+                                        </Grid.RowDefinitions>
+                                        <Label x:Name="teacher" Content="{Binding teachername, Mode=TwoWay}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                                        <Label x:Name="coursename" Content="{Binding coursename}" HorizontalContentAlignment="Center" Grid.Row="1" VerticalContentAlignment="Center"/>
+                                        <Label x:Name="coursetime" Content="{Binding coursetime}" HorizontalContentAlignment="Center" Grid.Row="2" VerticalContentAlignment="Center"/>
+                                        <Label x:Name="nrofstu" Content="{Binding nrofstu}" HorizontalContentAlignment="Center" Grid.Row="3" VerticalContentAlignment="Center"/>
+                                        <Label x:Name="arrived" Content="{Binding arrived}" HorizontalContentAlignment="Center" Grid.Row="4" VerticalContentAlignment="Center"/>
+                                    </Grid>
+                                </Grid>
+
+                                <Grid Background="White" HorizontalAlignment="Left" Width="189.5" Margin="0,175.167,0,0">
+
+                                    <ListBox x:Name="DateSelection" Margin="10,52.093,10,10"
+                        			DisplayMemberPath="Name"
+                                    Style="{DynamicResource DateBoxStyle}"
+                        			BorderThickness="0.5" BorderBrush="#FF918181" SelectionChanged="DateSelection_SelectionChanged" >
+
+
+                                        <ListBoxItem Content="ListBoxItem"/>
+                                        <ListBoxItem Content="ListBoxItem"/>
+                                        <ListBoxItem Content="ListBoxItem"/>
+
+                                    </ListBox>
+                                    <Label x:Name="label1" Content="请选择日期" Margin="13,10,10,0" VerticalAlignment="Top" FontSize="14.667" HorizontalContentAlignment="Center"/>
+                                </Grid>
+                                <Path Data="M167.66667,29.666667 L168.16634,431.833" HorizontalAlignment="Right" Margin="0,29.667,1.833,10" Stretch="Fill" Stroke="#FFBBBBBB" Width="1"/>
+                            </Grid>
+                            <DataGrid ItemsSource="{Binding StudentInfo}" Name="HistoryDATA"
+                            	AutoGenerateColumns="False" Foreground="#FFE64141" Background="#FFFDFDFD" Margin="199.5,0,0,0">
+                                <DataGrid.Columns>
+                                    <DataGridCheckBoxColumn Binding="{Binding RelativeSource={RelativeSource AncestorType=DataGridRow}, Path=IsSelected, Mode=OneWay}"
+                                        EditingElementStyle="{DynamicResource MetroDataGridCheckBox}"
+                                        ElementStyle="{DynamicResource MetroDataGridCheckBox}"
+                                        Width="0.2*" />
+                                    <DataGridTextColumn Header="Name" Width="1*"  Binding="{Binding name,Mode=OneWay}"/>
+                                    <DataGridTextColumn Header="ID" Width="1*"  Binding="{Binding id,Mode=OneWay}"/>
+                                    <DataGridTextColumn Header="College" Width="1*"  Binding="{Binding college,Mode=OneWay}"/>
+                                    <DataGridTextColumn Header="Class" Width="1*"  Binding="{Binding sclass,Mode=OneWay}"/>
+                                    <DataGridTextColumn Header="Check" Width="1*" Foreground="{x:Null}"  Binding="{Binding arrive,Mode=OneWay}"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Grid>
+                    </TabItem>
+                    <TabItem Controls:ControlsHelper.HeaderFontSize="18" Header="新建">
+                        <Grid>
+                            <Grid Margin="0,-0.333,0,0" HorizontalAlignment="Left" Width="195.5">
+                                <Grid Height="151.167" VerticalAlignment="Top">
+
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="14*"/>
+                                        <ColumnDefinition Width="61*"/>
+                                        <ColumnDefinition Width="109*"/>
+                                        <ColumnDefinition Width="16*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid Margin="0,10,0.001,10" Grid.Column="1" d:LayoutOverrides="LeftMargin, RightMargin, TopMargin, BottomMargin">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+                                        <Label x:Name="label_1" Content="教师：" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="0,-0.44,0,0" d:LayoutOverrides="Height"/>
+                                        <Label x:Name="label_Copy4" Content="课程：" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="0,0,0,-0.44" Grid.Row="1" d:LayoutOverrides="Height"/>
+                                        <Label x:Name="label_Copy6" Content="人数：" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" RenderTransformOrigin="0.804,0.605" Grid.Row="2" Height="24.8" Margin="0,5.439,0,0.793"/>
+                                        <Label x:Name="label_Copy7" Content="已到：" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" RenderTransformOrigin="1.711,-0.169" Grid.Row="3" Background="{x:Null}"/>
+                                    </Grid>
+                                    <Grid Margin="-0.001,10,0,10" Grid.Column="2" d:LayoutOverrides="LeftMargin, RightMargin, TopMargin, BottomMargin">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+                                        <Label x:Name="teacher1" Content="汪大大" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                                        <Label x:Name="coursename1" Content="啊四道口附近啊圣诞快乐房价靠拢四大佛教" HorizontalContentAlignment="Center" Grid.Row="1" VerticalContentAlignment="Center"/>
+                                        <Label x:Name="nrofstu1" Content="50" HorizontalContentAlignment="Center" Grid.Row="2" VerticalContentAlignment="Center" Margin="0,5,0,-5"/>
+                                        <Label x:Name="arrived1" Content="0" HorizontalContentAlignment="Center" Grid.Row="3" VerticalContentAlignment="Center"/>
+                                    </Grid>
+                                </Grid>
+                                <Grid Margin="10,145.833,10,0" Height="74.167" VerticalAlignment="Top">
+                                    <Label x:Name="label2" Content="上课时间" Margin="0,8.667,35,40.26" d:LayoutOverrides="Height"/>
+                                    <Controls:DateTimePicker x:Name="DateTimePicker"
+                                                        
+                                    	HandVisibility="{Binding SelectedItem, ElementName=DateTimePickerHandVisibility, Mode=TwoWay}"
+                                    	IsClockVisible="{Binding IsChecked, ElementName=DateTimePickerIsClockVisible, Mode=TwoWay}"
+                                    	IsEnabled="{Binding IsChecked, ElementName=DateTimePickerIsEnabled, Mode=TwoWay}"
+                                    	IsReadOnly="{Binding IsChecked, ElementName=DateTimePickerIsReadOnly, Mode=TwoWay}"
+                                    	Orientation="{Binding SelectedItem, ElementName=DateTimePickerOrientation, Mode=TwoWay}"
+                                    	PickerVisibility="{Binding SelectedItem, ElementName=DateTimePickerPickerVisibility, Mode=TwoWay}" Height="12.667" Margin="0,40.24,0,7.927">
+
+                                    </Controls:DateTimePicker>
+                                </Grid>
+                                <Grid Margin="10,225,10,0" Height="51" VerticalAlignment="Top">
+                                    <Label x:Name="label2_Copy" Content="热点名称" Margin="0,0,35,0" VerticalAlignment="Top"/>
+                                    <TextBox  Controls:TextBoxHelper.ButtonCommand="{Binding TextBoxButtonCmd, Mode=OneWay}"
+                                         Text="Clear button" Margin="0,25.24,0,-0.24" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Height="15.427">
+                                        <TextBox.Style>
+                                            <Style BasedOn="{StaticResource MetroTextBox}" TargetType="{x:Type TextBox}">
+                                                <Setter Property="Controls:TextBoxHelper.ClearTextButton" Value="True" />
+                                                <Style.Triggers>
+                                                    <Trigger Property="Controls:TextBoxHelper.HasText" Value="False">
+                                                        <Setter Property="Controls:TextBoxHelper.ClearTextButton" Value="False" />
+                                                        <Setter Property="Controls:TextBoxHelper.Watermark" Value="Now enter some text..." />
+                                                    </Trigger>
+                                                    <Trigger Property="Controls:TextBoxHelper.HasText" Value="True">
+                                                        <Setter Property="Controls:TextBoxHelper.ClearTextButton" Value="True" />
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBox.Style>
+                                    </TextBox>
+                                </Grid>
+                                <Grid Margin="10,281,10,0" Height="57.333" VerticalAlignment="Top">
+                                    <Label x:Name="label2_Copy1" Content="密码" Margin="0,0,35,0" VerticalAlignment="Top"/>
+                                    <PasswordBox Margin="0,30.24,0,0"
+                                 Style="{StaticResource MetroButtonRevealedPasswordBox}"
+                                 Controls:TextBoxHelper.ClearTextButton="{Binding RelativeSource={RelativeSource Self}, Path=(Controls:TextBoxHelper.HasText), Mode=OneWay}"
+                                 Controls:TextBoxHelper.IsWaitingForData="True"
+                                 Controls:TextBoxHelper.UseFloatingWatermark="True"
+                                 d:LayoutOverrides="LeftMargin, RightMargin" Height="17.26" VerticalAlignment="Top" Password="12345678" />
+                                </Grid>
+                                <Grid Height="40.667" Margin="10,0,10,48.333" VerticalAlignment="Bottom">
+                                    <Controls:ToggleSwitch OnLabel="开启" OffLabel="关闭"
+                                   IsChecked="{Binding checking}"
+                                  />
+                                </Grid>
+                                <Path Data="M191,23.333 L190.5,430.833" HorizontalAlignment="Right" Margin="0,23.333,3.5,10" Stretch="Fill" Width="1" Fill="#FFF4F4F5" Stroke="#FFBBBBBB"/>
+                            </Grid>
+                            <DataGrid ItemsSource="{Binding Albums}"
+                            	AutoGenerateColumns="False" Foreground="#FFE64141" Background="#FFFDFDFD" Margin="200.5,0,0,-2.667">
+                                <DataGrid.Columns>
+                                    <DataGridCheckBoxColumn Binding="{Binding IsSelected, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}}"
+                            			EditingElementStyle="{DynamicResource MetroDataGridCheckBox}"
+                            			ElementStyle="{DynamicResource MetroDataGridCheckBox}"
+                            			Width="0.2*" />
+                                    <DataGridTextColumn Header="Name" Width="1*"/>
+                                    <DataGridTextColumn Header="ID" Width="1*"/>
+                                    <DataGridTextColumn Header="College" Width="1*"/>
+                                    <DataGridTextColumn Header="Class" Width="1*"/>
+                                    <DataGridTextColumn Header="Check" Width="1*" Foreground="{x:Null}"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Grid>
+                    </TabItem>
+                </TabControl>
+            </Grid>
+            <Path Grid.Column="1" Data="M161,2 L159,479.5" HorizontalAlignment="Left" Margin="0,10" Stretch="Fill" Width="1" Stroke="#FFBBBBBB"/>
+        </Grid>
+        <StatusBar Height="23.167" VerticalAlignment="Bottom">
+
+        </StatusBar>
+    </Grid>
+
+</Controls:MetroWindow>
+
