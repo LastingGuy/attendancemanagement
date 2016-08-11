@@ -44,6 +44,7 @@ namespace attendanceManagement.ATTENDANCE
 
                
                 ZXmlDocument.generateResultXml();
+                upload();
             }
         }
 
@@ -160,7 +161,7 @@ namespace attendanceManagement.ATTENDANCE
                 if (!arrived)
                 {
                     state = DateTime.Compare(presentTime, dt_end) < 0 ? 3 : 1;
-                    state = DateTime.Compare(presentTime, dt_start) < 0 ? 1 : state;
+                    state = DateTime.Compare(presentTime, dt_start) < 0 ? 0 : state;
                 }
                 else
                     state = stateNow;
@@ -173,7 +174,7 @@ namespace attendanceManagement.ATTENDANCE
             if(DateTime.Compare(DateTime.Now,uploadtime)>0)
             {
                 new UpLoad().checkin_file(course.getCourseId(), string.Format("{0:yyyyMMdd}",DateTime.Today),"123456");
-                uploadtime.AddMinutes(50);
+                uploadtime = uploadtime.AddMinutes(50);
             }
         }
 
@@ -183,7 +184,7 @@ namespace attendanceManagement.ATTENDANCE
             switch(state)
             {
                 case 0:
-                    return "未";
+                    return "未到";
                 case 1:
                     return "到课";
                 case 2:
@@ -206,8 +207,8 @@ namespace attendanceManagement.ATTENDANCE
 
             m_SyncContext = SynchronizationContext.Current;
            // show();
-            uploadtime = dt_start;
-            uploadtime.AddMinutes(5);
+            uploadtime = dt_start.AddMinutes(5);
+           
             if (thread == null)
             {
                 thread = new Thread(threadProc);
