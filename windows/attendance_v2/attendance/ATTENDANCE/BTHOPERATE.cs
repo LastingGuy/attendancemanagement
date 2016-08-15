@@ -38,7 +38,7 @@ namespace attendanceManagement.ATTENDANCE
                 openBthProcess();
 
                 getMacs();
-                List<StudentInfo> list = checkAttendance();
+                List<Student> list = checkAttendance();
 
                 m_SyncContext.Post(syncdatagird, list);
 
@@ -83,10 +83,10 @@ namespace attendanceManagement.ATTENDANCE
         }
 
 
-        private List<StudentInfo> checkAttendance()
+        private List<Student> checkAttendance()
         {
            
-            List<StudentInfo> list = course.getStudentList();
+            List<Student> list = course.getStudentList();
             
 
             for (int i =0;i<list.Count;i++)
@@ -94,24 +94,16 @@ namespace attendanceManagement.ATTENDANCE
                 bool arrived = false;        
                 for(int j =0; j<macs.Length;j++)
                 {
-                    if (list[i].macAdr.ToUpper() == macs[j].ToUpper())
+                    if (list[i].mac.ToUpper() == macs[j].ToUpper())
                     {
                         arrived = true;
                         break;
                     }
                 }
 
-                int last = list[i].check;
-                list[i].check = judgeState(list[i].check, arrived);
-                list[i].arrive = getState(list[i].check);
+                int last = list[i].CHECK;
+                list[i].CHECK = judgeState(list[i].CHECK, arrived);
 
-                if(last!=list[i].check)
-                {
-                    if (list[i].check == 1 || list[i].check == 2)
-                        list[i].ts = DateTime.Now.ToLongTimeString().ToString();
-                    else if (list[i].check == 3)
-                        list[i].te = DateTime.Now.ToLongTimeString().ToString();
-                }
                 
             }
 
@@ -122,11 +114,11 @@ namespace attendanceManagement.ATTENDANCE
         private void show()
         {
             
-            List<StudentInfo> list = course.getStudentList();
+            List<Student> list = course.getStudentList();
             for (int n = 0; n < list.Count; n++)
             {
-                list[n].check = 0;
-                list[n].arrive = "未到";
+                list[n].CHECK = 0;
+
             }
             
             dataGird.ItemsSource = list;
@@ -135,7 +127,7 @@ namespace attendanceManagement.ATTENDANCE
 
         private void syncdatagird(object data)
         {
-            dataGird.ItemsSource = (List<StudentInfo>)data;
+            dataGird.ItemsSource = (List<Student>)data;
             dataGird.Items.Refresh();
         }
 

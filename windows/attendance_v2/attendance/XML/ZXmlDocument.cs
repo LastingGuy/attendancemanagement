@@ -1,11 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
-using attendanceManagement.ATTENDANCE;
 
 
 
@@ -29,27 +25,27 @@ namespace attendanceManagement.XML
             if (course != null)
                 return course;
 
-            course = new Course();
-            XmlNodeList listNodes = null;
-            listNodes = root.SelectNodes("/course/course_id");
-            course.set_course_id(listNodes[0].InnerText);
-            listNodes = root.SelectNodes("/course/course_name");
-            course.set_course_name(listNodes[0].InnerText);
-            listNodes = root.SelectNodes("/course/teacher_name");
-            course.set_teacher_name(listNodes[0].InnerText);
-            listNodes = root.SelectNodes("/course/teacher_id");
-            course.set_teacher_id(listNodes[0].InnerText);
-            listNodes = root.SelectNodes("/course/stu_nr");
-            course.set_number(Convert.ToInt32(listNodes[0].InnerText));
-            listNodes = root.SelectNodes("/course/date");
-            foreach (XmlNode node in listNodes)
-            {
-                string start = ((XmlElement)(((XmlElement)node).GetElementsByTagName("start"))[0]).InnerText;
-                string end = ((XmlElement)(((XmlElement)node).GetElementsByTagName("end"))[0]).InnerText;
-                string week = ((XmlElement)(((XmlElement)node).GetElementsByTagName("week"))[0]).InnerText;
-                course.add_date(start, end, week);
-                course.nrOfDatesAdd();
-            }
+            //course = new Course();
+            //XmlNodeList listNodes = null;
+            //listNodes = root.SelectNodes("/course/course_id");
+            //course.set_course_id(listNodes[0].InnerText);
+            //listNodes = root.SelectNodes("/course/course_name");
+            //course.set_course_name(listNodes[0].InnerText);
+            //listNodes = root.SelectNodes("/course/teacher_name");
+            //course.set_teacher_name(listNodes[0].InnerText);
+            //listNodes = root.SelectNodes("/course/teacher_id");
+            //course.set_teacher_id(listNodes[0].InnerText);
+            //listNodes = root.SelectNodes("/course/stu_nr");
+            //course.set_number(Convert.ToInt32(listNodes[0].InnerText));
+            //listNodes = root.SelectNodes("/course/date");
+            //foreach (XmlNode node in listNodes)
+            //{
+            //    string start = ((XmlElement)(((XmlElement)node).GetElementsByTagName("start"))[0]).InnerText;
+            //    string end = ((XmlElement)(((XmlElement)node).GetElementsByTagName("end"))[0]).InnerText;
+            //    string week = ((XmlElement)(((XmlElement)node).GetElementsByTagName("week"))[0]).InnerText;
+            //    course.add_date(start, end, week);
+            //    course.nrOfDatesAdd();
+            //}
             return course;
 
         }
@@ -79,28 +75,28 @@ namespace attendanceManagement.XML
         //设置当前的考勤课程，需要生成ZXmlDocumnt的实例，然后调用。
         public void setCurrentCourse(Course course, CourseDate date)
         {
-            //设置课程有关信息
-            String courseId;
-            String courseName;
-            String teacherId;
-            String teacherName;
-            int studentNr;
-            CurrentCourse currentCourse = CurrentCourse.getInstance();
-            courseId = course.get_course_id();
-            courseName = course.get_course_name();
-            teacherId = course.get_teacher_id();
-            teacherName = course.get_teacher_name();
-            studentNr = course.get_number();
-            currentCourse.setCourse(courseId, courseName, teacherId, teacherName, studentNr);
+            ////设置课程有关信息
+            //String courseId;
+            //String courseName;
+            //String teacherId;
+            //String teacherName;
+            //int studentNr;
+            //CurrentCourse currentCourse = CurrentCourse.getInstance();
+            //courseId = course.get_course_id();
+            //courseName = course.get_course_name();
+            //teacherId = course.get_teacher_id();
+            //teacherName = course.get_teacher_name();
+            //studentNr = course.get_number();
+            //currentCourse.setCourse(courseId, courseName, teacherId, teacherName, studentNr);
 
-            //设置时间信息
-            String start = "";
-            String end = "";
-            String week = "";
-            start = date.get_start();
-            end = date.get_end();
-            week = date.get_week();
-            currentCourse.setTime(week,start,end);
+            ////设置时间信息
+            //String start = "";
+            //String end = "";
+            //String week = "";
+            //start = date.get_start();
+            //end = date.get_end();
+            //week = date.get_week();
+            //currentCourse.setTime(week, start, end);
 
             //从xml文件中读取学生的信息
             XmlNodeList listNodes = root.SelectNodes("/course/students/stu");
@@ -129,7 +125,7 @@ namespace attendanceManagement.XML
                 stuNodes = node.SelectNodes("sclass");
                 sclass = stuNodes[0].InnerText;
 
-                currentCourse.students[i] = new StudentInfo(name,id,college,major,sex,macAdr,sclass);
+                //currentCourse.students[i] = new StudentInfo(name,id,college,major,sex,macAdr,sclass);
                 i++;
             }         
         }
@@ -138,7 +134,7 @@ namespace attendanceManagement.XML
         {
             //建立考勤结果XML 
             CurrentCourse currentCourse = CurrentCourse.getInstance();
-            List<StudentInfo> list = currentCourse.getStudentList();
+            List<Student> list = currentCourse.getStudentList();
             //
             DirectoryInfo dir = new DirectoryInfo(@"results/" + currentCourse.getCourseId());
             if(dir.Exists == false)
@@ -161,7 +157,7 @@ namespace attendanceManagement.XML
            
             course_id.InnerText = currentCourse.getCourseId();
 
-            foreach (StudentInfo student in list)
+            foreach (Student student in list)
             {
                 XmlElement stu = newDoc.CreateElement("stu");
                 XmlElement stu_id = newDoc.CreateElement("stu_id");
@@ -170,9 +166,9 @@ namespace attendanceManagement.XML
                 XmlElement stu_te = newDoc.CreateElement("te");
 
                 stu_id.InnerText = student.id;
-                stu_check.InnerText = student.check.ToString();
-                stu_ts.InnerText = student.ts;
-                stu_te.InnerText = student.te;
+                stu_check.InnerText = student.CHECK.ToString();
+                //stu_ts.InnerText = student.ts;
+                //stu_te.InnerText = student.te;
 
                 stu.AppendChild(stu_id);
                 stu.AppendChild(stu_check);

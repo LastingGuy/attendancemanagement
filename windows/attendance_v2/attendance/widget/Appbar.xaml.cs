@@ -33,7 +33,7 @@ namespace attendanceManagement.widget
 
         private async void login_dialog(object sender, RoutedEventArgs e)
         {
-            var window = Window.GetWindow(this) as MainWindow_v2;
+            var window = Window.GetWindow(this) as MainWindow;
             (window.Flyouts.Items[0] as Flyout).IsOpen = false;
             // window.teacher.Content = "hahaha";
             LoginDialogData result = await window.ShowLoginAsync("Authentication", "Enter your password", new LoginDialogSettings { ColorScheme = window.MetroDialogOptions.ColorScheme, RememberCheckBoxVisibility = Visibility.Visible });
@@ -51,13 +51,13 @@ namespace attendanceManagement.widget
         private async void btn_time_setting_Click(object sender, RoutedEventArgs e)
         {
             var dialog = new Dialog();
-            var window = Window.GetWindow(this) as MainWindow_v2;
+            var window = Window.GetWindow(this) as MainWindow;
             await DialogManager.ShowMetroDialogAsync(window, dialog);
         }
 
         private void btn_setting_Click(object sender, RoutedEventArgs e)
         {
-            var window = Window.GetWindow(this) as MainWindow_v2;
+            var window = Window.GetWindow(this) as MainWindow;
             (window.Flyouts.Items[0] as Flyout).IsOpen = false;
             (window.Flyouts.Items[1] as Flyout).IsOpen = true;
         }

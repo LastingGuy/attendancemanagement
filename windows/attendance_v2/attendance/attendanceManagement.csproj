@@ -65,7 +65,6 @@
     </ApplicationDefinition>
     <Compile Include="attendanceManagementModel.cs" />
     <Compile Include="ATTENDANCE\BTHOPERATE.cs" />
-    <Compile Include="ATTENDANCE\WIFIOPERATE.cs" />
     <Compile Include="Behaviors\DateTimeNowBehavior.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -89,8 +88,7 @@
     <Compile Include="widget\SettingView.xaml.cs">
       <DependentUpon>SettingView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="XML\Course.cs" />
-    <Compile Include="XML\CourseDate.cs" />
+    <Compile Include="XML\CourseInfo.cs" />
     <Compile Include="XML\CurrentCourse.cs" />
     <Compile Include="XML\ZXmlDocument.cs" />
     <Compile Include="App.xaml.cs">

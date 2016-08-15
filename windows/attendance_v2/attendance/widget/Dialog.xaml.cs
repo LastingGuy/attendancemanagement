@@ -29,7 +29,7 @@ namespace attendanceManagement.widget
 
         private async void button_Click(object sender, RoutedEventArgs e)
         {
-            var window = Window.GetWindow(this) as MainWindow_v2;
+            var window = Window.GetWindow(this) as MainWindow;
             var dia = window.Resources["dia"] as BaseMetroDialog;
             await DialogManager.HideMetroDialogAsync(window,this);
         }

@@ -9,11 +9,11 @@
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns:globalization="clr-namespace:System.Globalization;assembly=mscorlib"
         xmlns:widget="clr-namespace:attendanceManagement.widget"
-        xmlns:Custom="http://metro.mahapps.com/winfx/xaml/shared" x:Class="attendanceManagement.MainWindow_v2"
+        xmlns:Custom="http://metro.mahapps.com/winfx/xaml/shared" x:Class="attendanceManagement.MainWindow"
         xmlns:behaviors="clr-namespace:attendanceManagement.Behaviors"
         xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
         mc:Ignorable="d"
-        Title="签到" ResizeMode="CanMinimize" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
+        Title="签到" ResizeMode="CanMinimize" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Loaded="MetroWindow_Loaded"
         >
     <Controls:MetroWindow.Resources>
         <Style x:Key="TabControlStyle1" TargetType="{x:Type TabControl}">
@@ -325,50 +325,16 @@
                 <ListBox x:Name="CourseSelection" Margin="10,52.093,10,10"
                          DisplayMemberPath="Name"    
                           Background="White" BorderBrush="Black" BorderThickness="0.5" HorizontalContentAlignment="Center" Style="{DynamicResource CourseBoxStyle}" SelectionChanged="CourseSelection_SelectionChanged" >
+                  
 
-
-                    <ListBoxItem Content="ListBoxItem"  />
-                    <ListBoxItem Content="item1"/>
-                    <ListBoxItem Content="ListBoxItem" />
-                    <ListBoxItem Content="item1"/>
-                    <ListBoxItem Content="ListBoxItem" />
-                    <ListBoxItem Content="item1"/>
-                    <ListBoxItem Content="ListBoxItem" />
-                    <ListBoxItem Content="item1"/>
-                    <ListBoxItem Content="ListBoxItem" />
-                    <ListBoxItem Content="ListBoxItem" />
-                    <ListBoxItem Content="ListBoxItem" />
-                    <ListBoxItem Content="ListBoxItem" />
-                    <ListBoxItem Content="ListBoxItem" />
-                    <ListBoxItem Content="ListBoxItem" />
-                    <ListBoxItem Content="ListBoxItem" />
-                    <ListBoxItem Content="ListBoxItem" />
-                    <ListBoxItem Content="ListBoxItem" />
-                    <ListBoxItem Content="item1"/>
-                    <ListBoxItem Content="ListBoxItem" />
-                    <ListBoxItem Content="item1"/>
-                    <ListBoxItem Content="ListBoxItem" />
-                    <ListBoxItem Content="ListBoxItem" />
-                    <ListBoxItem Content="item1"/>
-                    <ListBoxItem Content="ListBoxItem" />
-                    <ListBoxItem Content="item1"/>
-                    <ListBoxItem Content="item1"/>
-                    <ListBoxItem Content="item1"/>
-                    <ListBoxItem Content="item1"/>
-                    <ListBoxItem Content="item1"/>
-                    <ListBoxItem Content="item1"/>
-                    <ListBoxItem Content="item1"/>
-                    <ListBoxItem Content="item1"/>
-                    <ListBoxItem Content="item1"/>
-                    <ListBoxItem Content="item1"/>
                 </ListBox>
                 <Label x:Name="label" Content="请选择课程" Margin="13,10,10,0" VerticalAlignment="Top" FontSize="21.333" HorizontalContentAlignment="Center"/>
             </Grid>
             <Grid Grid.Column="1">
-                <Label  Content="请选择课程" Margin="25,0,17,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="26.667"/>
+                <Label  Content="请同步课程" Margin="25,0,17,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="26.667"/>
 
             </Grid>
-            <Grid Name="courseINFO" Grid.Column="1" OpacityMask="#FFACACAC" Background="White">
+            <Grid Name="courseInfoView" Grid.Column="1" OpacityMask="#FFACACAC" Background="White">
                 <Grid.Resources>
                     <ResourceDictionary>
                         <ResourceDictionary.MergedDictionaries>
@@ -426,28 +392,23 @@
                                     Style="{DynamicResource DateBoxStyle}"
                         			BorderThickness="0.5" BorderBrush="#FF918181" SelectionChanged="DateSelection_SelectionChanged" >
 
-
-                                        <ListBoxItem Content="ListBoxItem"/>
-                                        <ListBoxItem Content="ListBoxItem"/>
-                                        <ListBoxItem Content="ListBoxItem"/>
-
                                     </ListBox>
                                     <Label x:Name="label1" Content="请选择日期" Margin="13,10,10,0" VerticalAlignment="Top" FontSize="14.667" HorizontalContentAlignment="Center"/>
                                 </Grid>
                                 <Path Data="M167.66667,29.666667 L168.16634,431.833" HorizontalAlignment="Right" Margin="0,29.667,1.833,10" Stretch="Fill" Stroke="#FFBBBBBB" Width="1"/>
                             </Grid>
-                            <DataGrid ItemsSource="{Binding StudentInfo}" Name="HistoryDATA"
-                            	AutoGenerateColumns="False" Foreground="#FFE64141" Background="#FFFDFDFD" Margin="199.5,0,0,0">
+                            <DataGrid ItemsSource="{Binding Student}" Name="HistoryDATA"
+                            	AutoGenerateColumns="False" Foreground="Black" Background="#FFFDFDFD" Margin="199.5,0,0,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
                                 <DataGrid.Columns>
                                     <DataGridCheckBoxColumn Binding="{Binding RelativeSource={RelativeSource AncestorType=DataGridRow}, Path=IsSelected, Mode=OneWay}"
                                         EditingElementStyle="{DynamicResource MetroDataGridCheckBox}"
                                         ElementStyle="{DynamicResource MetroDataGridCheckBox}"
                                         Width="0.2*" />
-                                    <DataGridTextColumn Header="Name" Width="1*"  Binding="{Binding name,Mode=OneWay}"/>
+                                    <DataGridTextColumn Header="Name" Width="1*"  Binding="{Binding name,Mode=OneWay}" />
                                     <DataGridTextColumn Header="ID" Width="1*"  Binding="{Binding id,Mode=OneWay}"/>
                                     <DataGridTextColumn Header="College" Width="1*"  Binding="{Binding college,Mode=OneWay}"/>
                                     <DataGridTextColumn Header="Class" Width="1*"  Binding="{Binding sclass,Mode=OneWay}"/>
-                                    <DataGridTextColumn Header="Check" Width="1*" Foreground="{x:Null}"  Binding="{Binding arrive,Mode=OneWay}"/>
+                                    <DataGridTextColumn Header="Check" Width="1*"   Binding="{Binding arrive,Mode=OneWay}"/>
                                 </DataGrid.Columns>
                             </DataGrid>
                         </Grid>
@@ -482,8 +443,8 @@
                                             <RowDefinition/>
                                             <RowDefinition/>
                                         </Grid.RowDefinitions>
-                                        <Label x:Name="teacher1" Content="汪大大" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-                                        <Label x:Name="coursename1" Content="啊四道口附近啊圣诞快乐房价靠拢四大佛教" HorizontalContentAlignment="Center" Grid.Row="1" VerticalContentAlignment="Center"/>
+                                        <Label x:Name="teacher1" Content="{Binding teachername, Mode=TwoWay}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                                        <Label x:Name="coursename1" Content="{Binding coursename}" HorizontalContentAlignment="Center" Grid.Row="1" VerticalContentAlignment="Center"/>
                                         <Label x:Name="nrofstu1" Content="50" HorizontalContentAlignment="Center" Grid.Row="2" VerticalContentAlignment="Center" Margin="0,5,0,-5"/>
                                         <Label x:Name="arrived1" Content="0" HorizontalContentAlignment="Center" Grid.Row="3" VerticalContentAlignment="Center"/>
                                     </Grid>
