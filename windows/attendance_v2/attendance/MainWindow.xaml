@@ -304,7 +304,7 @@
                              IsPinned="False"
                              Position="Bottom"
                              TitleVisibility="Collapsed">
-                <widget:Appbar/>
+                <widget:Appbar x:Name="appbar"/>
             </Controls:Flyout>
             <Controls:Flyout Width="250"
                              IsPinned="False"

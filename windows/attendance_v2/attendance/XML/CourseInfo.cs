@@ -120,5 +120,34 @@ namespace attendanceManagement.XML
             }
             return students;
         }
+
+
+        //设置上课时间
+        public static bool setTimes(string cid,LinkedList<CourseDate> dates)
+        {
+
+            var dom = XDocument.Load(DIR.COURSES);
+            var root = dom.Root;
+
+            foreach(var course in root.Elements())
+            {
+                if(cid == course.Element("id").Value)
+                {
+                    XElement e = new XElement("date");
+                    foreach(var date in dates)
+                    {
+                        e.Add(new XElement("time",
+                            new XElement("w", date.get_week()),
+                            new XElement("t", date.get_start())
+                            ));
+                    }
+
+                    course.Element("date").ReplaceWith(e);
+                    dom.Save(DIR.COURSES);
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 }

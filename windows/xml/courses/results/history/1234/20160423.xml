@@ -2,25 +2,17 @@
 <course>
   <courseid>3011</courseid>
   <date>2010423</date>
-  <time>12:20</time>
+  <ts>12:20</ts>
+  <te>14:00</te>
   <students>
     <stu>
       <id>123456</id>
-      <check>-1</check>
-      <t></t>
-    </stu>
-    <stu>
-      <id>23456</id>
-      <check>-1</check>
-      <t></t>
-    </stu>
-    <stu>
-      <id>21312323456</id>
-      <check>-1</check>
-      <t></t>
-    </stu>
-    <stu>
-      <id>253242356</id>
+      <name>汪京陆</name>
+      <mac>303a64bdef1a</mac>
+      <college>国际学院</college>
+      <major>软工</major>
+      <sclass>3</sclass>
+      <sex>男</sex>
       <check>-1</check>
       <t></t>
     </stu>

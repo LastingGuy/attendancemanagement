@@ -1,7 +1,5 @@
 ﻿using attendanceManagement.widget;
 using attendanceManagement.XML;
-using MahApps.Metro.Controls.Dialogs;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -87,7 +85,7 @@ namespace attendanceManagement
                 dateindex = value;
                 if (dateindex != -1)
                 {
-                    Course course = courselist.ElementAt(value);
+                    Course course = CurrentCourse;
                     table = course.table;
                 }
                 else
@@ -165,6 +163,7 @@ namespace attendanceManagement
                     item.IsEnabled = false;
                     Window.CourseSelection.Items.Add(item);
                     Window.courseInfoView.Visibility = System.Windows.Visibility.Hidden;
+                    Window.appbar.btn_timesetting.IsEnabled = false;
                 }
                 else
                 {
@@ -173,6 +172,8 @@ namespace attendanceManagement
                         Window.CourseSelection.Items.Add(new ListBoxItem { Content = course.COURSENAME });
                     }
                     Window.courseInfoView.Visibility = System.Windows.Visibility.Visible;
+
+                    Window.appbar.btn_timesetting.IsEnabled = true;
                     Window.CourseSelection.SelectedIndex = 0;
                 }
             }
@@ -194,6 +195,9 @@ namespace attendanceManagement
                     var item = new ListBoxItem { Content = "暂无记录" };
                     item.IsEnabled = false;
                     Window.DateSelection.Items.Add(item);
+
+
+                   
                 }
                 else
                 {
@@ -201,6 +205,9 @@ namespace attendanceManagement
                     {
                         Window.DateSelection.Items.Add(new ListBoxItem { Content = data.date });
                     }
+
+
+                   
                     Window.DateSelection.SelectedIndex = 0;
                 }
             }
@@ -219,6 +226,15 @@ namespace attendanceManagement
                 return (List<Student>)Window.HistoryDATA.ItemsSource;
             }
         } 
+
+        //当前Course
+        public Course CurrentCourse
+        {
+            get
+            {
+                return courselist.ElementAt(courseindex);
+            }
+        }
 
     }
 
@@ -411,13 +427,27 @@ namespace attendanceManagement
                 return table;
             }
         }
-             
+
+        //保存上课时间直xml
+        public bool SaveTimeToXML
+        {
+            set
+            {
+                if(value)
+                {
+                    CourseInfo.setTimes(course_id, DATES);
+                }
+            }
+            
+        }
+
         //添加上课时间
         public void add_date(string start, string week)
         {
             CourseDate date = new CourseDate(start, week);
             dates.AddFirst(date);
         }
+
 
         //获得学生信息
         private Student getStudentInfo(string id)
@@ -436,14 +466,14 @@ namespace attendanceManagement
 
     public class CourseDate
     {
-        string start = "";
-        string week = "";
+        public string start = "";
+        public string week = "";
         public CourseDate(string start, string week)
         {
             this.start = start;
             this.week = week;
         }
-        public string toString()
+        override public string ToString()
         {
             return "周"+week + "   " + start;
         }

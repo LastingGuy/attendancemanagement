@@ -28,7 +28,7 @@
         </Grid>
         <Grid VerticalAlignment="Top" Height="100" Margin="158,0,700,0" HorizontalAlignment="Right">
             <Label x:Name="start_Label" Content="{Binding startlabel}" VerticalAlignment="Bottom" d:LayoutOverrides="Width" Margin="0,0,0,5.26" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
-            <ToggleButton Width="50" Name="start"
+            <ToggleButton Width="50" Name="btn_start"
                               Height="50"
                               Style="{DynamicResource MetroCircleToggleButtonStyle}" Margin="25,10,25,40"
                               IsChecked="{Binding checking}"
@@ -45,7 +45,7 @@
         </Grid>
         <Grid VerticalAlignment="Top" Height="100" Margin="258,0,600,0" HorizontalAlignment="Right">
             <Label x:Name="label7" Content="全部学生" VerticalAlignment="Bottom" d:LayoutOverrides="Width" Margin="0,0,0,5.26" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
-            <Button x:Name="btn_login_Copy2" Width="50"                
+            <Button x:Name="btn_allstudent" Width="50"                
         		Style="{DynamicResource MetroCircleButtonStyle}" Margin="25,10,25,40" Click="login_dialog">
                 <Rectangle x:Name="btn_start2" Width="20"
         			Height="20"
@@ -58,7 +58,7 @@
         </Grid>
         <Grid HorizontalAlignment="Right" Width="100" VerticalAlignment="Top" Height="100" Margin="0,0,500,0">
             <Label x:Name="label2" Content="迟到学生" VerticalAlignment="Bottom" d:LayoutOverrides="Width" Margin="0,0,0,5.26" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
-            <Button x:Name="btn_login_Copy1" Width="50"                
+            <Button x:Name="btn_late" Width="50"                
             	Style="{DynamicResource MetroCircleButtonStyle}" Margin="25,10,25,40" Click="login_dialog">
                 <Rectangle x:Name="btn_start1" Width="20"
             		Height="20"
@@ -71,7 +71,7 @@
         </Grid>
         <Grid VerticalAlignment="Top" Height="100" Margin="458,0,400,0" HorizontalAlignment="Right">
             <Label x:Name="label3" Content="未到学生" VerticalAlignment="Bottom" d:LayoutOverrides="Width" Margin="0,0,0,5.26" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
-            <Button x:Name="btn_login_Copy3" Width="50"                
+            <Button x:Name="btn_absence" Width="50"                
             	Style="{DynamicResource MetroCircleButtonStyle}" Margin="25,10,25,40" Click="login_dialog">
                 <Rectangle x:Name="btn_start3" Width="20"
             		Height="20"
@@ -84,7 +84,7 @@
         </Grid>
         <Grid HorizontalAlignment="Right" Width="100" VerticalAlignment="Top" Height="100" Margin="0,0,305,0">
             <Label x:Name="label4" Content="已到/未到" VerticalAlignment="Bottom" d:LayoutOverrides="Width" Margin="0,0,0,5.26" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
-            <Button x:Name="btn_login_Copy4" Width="50"                
+            <Button x:Name="btn_change" Width="50"                
             	Style="{DynamicResource MetroCircleButtonStyle}" Margin="25,10,25,40" Click="login_dialog">
                 <Rectangle x:Name="btn_start4" Width="20"
             		Height="20"
@@ -97,7 +97,7 @@
         </Grid>
         <Grid HorizontalAlignment="Right" Width="100" VerticalAlignment="Top" Height="100" Margin="0,0,100,0">
             <Label x:Name="label5" Content="同步" VerticalAlignment="Bottom" d:LayoutOverrides="Width" Margin="0,0,0,5.26" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
-            <Button x:Name="btn_login_Copy5" Width="50"                
+            <Button x:Name="btn_sync" Width="50"                
             	Style="{DynamicResource MetroCircleButtonStyle}" Margin="25,10,25,40" Click="login_dialog">
                 <Rectangle x:Name="btn_start5" Width="20"
             		Height="20"
@@ -123,7 +123,7 @@
         </Grid>
         <Grid HorizontalAlignment="Right" Width="100" VerticalAlignment="Top" Height="100" Margin="0,0,205,0">
             <Label x:Name="label8" Content="上课时间" VerticalAlignment="Bottom" d:LayoutOverrides="Width" Margin="0,0,0,5.26" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
-            <Button x:Name="btn_setting1" Width="50"                
+            <Button x:Name="btn_timesetting" Width="50"                
         		Style="{DynamicResource MetroCircleButtonStyle}" Margin="25,10,25,40" Click="btn_time_setting_Click" d:LayoutOverrides="HorizontalAlignment">
                 <Rectangle Width="20"
         			Height="20"
