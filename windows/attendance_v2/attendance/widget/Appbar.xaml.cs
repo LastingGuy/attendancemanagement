@@ -48,11 +48,11 @@ namespace attendanceManagement.widget
             }
         }
 
-        private async void btn_time_setting_Click(object sender, RoutedEventArgs e)
+        private void btn_time_setting_Click(object sender, RoutedEventArgs e)
         {
-            var dialog = new Dialog();
             var window = Window.GetWindow(this) as MainWindow;
-            await DialogManager.ShowMetroDialogAsync(window, dialog);
+            (window.Flyouts.Items[0] as Flyout).IsOpen = false;
+            MainwindowData.data.showTimeSetting = true;
         }
 
         private void btn_setting_Click(object sender, RoutedEventArgs e)

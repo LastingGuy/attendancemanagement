@@ -1,7 +1,10 @@
-﻿using attendanceManagement.XML;
+﻿using attendanceManagement.widget;
+using attendanceManagement.XML;
+using MahApps.Metro.Controls.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Controls;
 
@@ -27,10 +30,74 @@ namespace attendanceManagement
     class MainwindowData : attendanceManagementModel
     {
         public static MainwindowData data = new MainwindowData();
+
+        /// <summary>
+        /// 控件
+        /// </summary>
+        
+        //窗口
         public MainWindow Window;
 
-        public int CourseIndex { get; set; } = -1;
-        public int DateIndex { get; set; } = -1;
+        //时间设置对话框
+        CourseSettingDialog _timesettingdialog = new CourseSettingDialog();
+        public bool showTimeSetting
+        {
+            set
+            {
+                if(value)
+                {
+                    _timesettingdialog.DATES = courselist.ElementAt(courseindex).DATES;
+                    Window.timeSetting(Window, _timesettingdialog);
+                    
+                }
+                else
+                {
+                    Window.timeSetting(Window, _timesettingdialog,false);
+                }
+            }
+        }
+
+
+
+        //////////////////////////////////////////////////////////////////
+        /// <summary>
+        /// 数据
+        /// </summary>
+
+        int courseindex = -1;
+        public int CourseIndex
+        {
+            set
+            {
+                Course course = courselist.ElementAt(value);
+                courseindex = value;
+                DateIndex = -1;
+                coursename = course.COURSENAME;
+                teachername = course.TEACHERNAME;
+                historylist = course.HISTORY;
+            }
+        }
+
+
+        int dateindex = -1;
+        public int DateIndex
+        {
+            set
+            {
+                dateindex = value;
+                if (dateindex != -1)
+                {
+                    Course course = courselist.ElementAt(value);
+                    table = course.table;
+                }
+                else
+                {
+                    table = new List<Student>();
+                }
+            }
+        }
+
+
         public int checkIndex { get; set; } = -1;
 
         bool _checking = false;
@@ -262,6 +329,7 @@ namespace attendanceManagement
             get { return nrOfStu; }
         }
         
+        //获得上课时间个数
         public int NROFDATES
         {
             get
@@ -280,11 +348,14 @@ namespace attendanceManagement
         }
 
         //学生名单
+        List<Student> students;
         public List<Student> STUDENTS
         {
             get
             {
-                return CourseInfo.getStudents(course_id);
+                if(students==null)
+                    students = CourseInfo.getStudents(course_id);
+                return students;
             }
         }
 
@@ -305,15 +376,42 @@ namespace attendanceManagement
             get
             {
                 var temp =  CourseInfo.getHistory(COURSEPATH);
-                foreach(var item in temp)
-                {
-                    item.course = this;
-                }
                 return temp;
             }
 
         }
 
+
+        //历史考勤表
+        public List<Student> table
+        {
+            get
+            {
+                var table = HISTORY.ElementAt(MainwindowData.data.Window.DateSelection.SelectedIndex).table;
+
+                int n = 0;
+
+                while(n<table.Count)
+                {
+                    Student stu = table.ElementAt(n);
+                    var stuinfo = getStudentInfo(stu.id);
+                    if(stuinfo==null)
+                    {
+                        table.Remove(stu);
+                        continue;
+                    }
+
+                    stu.name = stuinfo.name;
+                    stu.major = stuinfo.major;
+                    stu.sclass = stuinfo.sclass;
+                    stu.college = stuinfo.college;
+
+                    n++;
+                }
+                return table;
+            }
+        }
+             
         //添加上课时间
         public void add_date(string start, string week)
         {
@@ -322,10 +420,21 @@ namespace attendanceManagement
         }
 
         //获得学生信息
-        
+        private Student getStudentInfo(string id)
+        {
+            foreach(Student stu in STUDENTS)
+            {
+                if(stu.id == id)
+                {
+                    return stu;
+                }
+            }
+
+            return null;
+        }
     }
 
-    class CourseDate
+    public class CourseDate
     {
         string start = "";
         string week = "";
@@ -334,17 +443,17 @@ namespace attendanceManagement
             this.start = start;
             this.week = week;
         }
-        public String toString()
+        public string toString()
         {
-            return week + " " + start;
+            return "周"+week + "   " + start;
         }
 
-        public String get_start()
+        public string get_start()
         {
             return start;
         }
 
-        public String get_week()
+        public string get_week()
         {
             return week;
         }
@@ -357,7 +466,6 @@ namespace attendanceManagement
         public string path;
         public string date = "";
         public string time = "";
-        public Course course;
         
         public List<Student> table
         {
@@ -367,6 +475,8 @@ namespace attendanceManagement
             }
         }
     }
+
+
     struct  DIR
     {
         //根目录

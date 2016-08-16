@@ -100,7 +100,7 @@
 
         </Style>
 
-        <widget:Dialog x:Key="dia"/>
+        
         <Style x:Key="CourseBoxStyle" TargetType="{x:Type ListBox}">
             <Setter Property="Background" Value="{DynamicResource WhiteBrush}"/>
             <Setter Property="BorderBrush" Value="{DynamicResource BlackBrush}"/>
@@ -452,13 +452,7 @@
                                 <Grid Margin="10,145.833,10,0" Height="74.167" VerticalAlignment="Top">
                                     <Label x:Name="label2" Content="上课时间" Margin="0,8.667,35,40.26" d:LayoutOverrides="Height"/>
                                     <Controls:DateTimePicker x:Name="DateTimePicker"
-                                                        
-                                    	HandVisibility="{Binding SelectedItem, ElementName=DateTimePickerHandVisibility, Mode=TwoWay}"
-                                    	IsClockVisible="{Binding IsChecked, ElementName=DateTimePickerIsClockVisible, Mode=TwoWay}"
-                                    	IsEnabled="{Binding IsChecked, ElementName=DateTimePickerIsEnabled, Mode=TwoWay}"
-                                    	IsReadOnly="{Binding IsChecked, ElementName=DateTimePickerIsReadOnly, Mode=TwoWay}"
-                                    	Orientation="{Binding SelectedItem, ElementName=DateTimePickerOrientation, Mode=TwoWay}"
-                                    	PickerVisibility="{Binding SelectedItem, ElementName=DateTimePickerPickerVisibility, Mode=TwoWay}" Height="12.667" Margin="0,40.24,0,7.927">
+                                      Height="12.667" Margin="0,40.24,0,7.927">
 
                                     </Controls:DateTimePicker>
                                 </Grid>

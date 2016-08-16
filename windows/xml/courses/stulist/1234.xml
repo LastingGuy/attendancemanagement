@@ -2,16 +2,16 @@
 <students>
 	<stu>
 		<id>123456</id>
-		<name>汪精陆1</name>
+		<name>汪京陆</name>
 		<mac>303a64bdef1a</mac>
-		<college></college>
-		<major></major>
-		<sclass></sclass>
-		<sex></sex>
+		<college>国际学院</college>
+		<major>软工</major>
+		<sclass>3</sclass>
+		<sex>男</sex>
 	</stu>	
 	<stu>
 		<id>123457</id>
-		<name>汪精陆1</name>
+		<name>哟哟哟</name>
 		<mac>303a64bdef1a</mac>
 		<college></college>
 		<major></major>

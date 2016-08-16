@@ -82,8 +82,8 @@
     <Compile Include="widget\CourseSettingView.xaml.cs">
       <DependentUpon>CourseSettingView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="widget\Dialog.xaml.cs">
-      <DependentUpon>Dialog.xaml</DependentUpon>
+    <Compile Include="widget\CourseSettingDialog.xaml.cs">
+      <DependentUpon>CourseSettingDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="widget\SettingView.xaml.cs">
       <DependentUpon>SettingView.xaml</DependentUpon>
@@ -119,7 +119,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="widget\Dialog.xaml">
+    <Page Include="widget\CourseSettingDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

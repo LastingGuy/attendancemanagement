@@ -107,13 +107,13 @@ namespace attendanceManagement.XML
                 foreach(var item in root.Elements())
                 {
                     Student stu = new Student();
-                    stu.name = root.Element("name").Value;
-                    stu.id = root.Element("id").Value;
-                    stu.mac = root.Element("mac").Value;
-                    stu.major = root.Element("major").Value;
-                    stu.sex = root.Element("sex").Value;
-                    stu.sclass = root.Element("sclass").Value;
-                    stu.college = root.Element("college").Value;
+                    stu.name = item.Element("name").Value;
+                    stu.id = item.Element("id").Value;
+                    stu.mac = item.Element("mac").Value;
+                    stu.major = item.Element("major").Value;
+                    stu.sex = item.Element("sex").Value;
+                    stu.sclass = item.Element("sclass").Value;
+                    stu.college = item.Element("college").Value;
 
                     students.Add(stu);
                 }

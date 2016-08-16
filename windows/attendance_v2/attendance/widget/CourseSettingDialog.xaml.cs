@@ -19,19 +19,22 @@ namespace attendanceManagement.widget
     /// <summary>
     /// Dialog.xaml 的交互逻辑
     /// </summary>
-    public partial class Dialog : CustomDialog
+    public partial class CourseSettingDialog : CustomDialog
     {
-        public Dialog()
+
+        //时间列表
+        public LinkedList<CourseDate> DATES
         {
-            InitializeComponent();
-           // Content = new CourseSettingView();
+            set
+            {
+                coursesettingview.DATES = value;
+            }
         }
 
-        private async void button_Click(object sender, RoutedEventArgs e)
+        public CourseSettingDialog()
         {
-            var window = Window.GetWindow(this) as MainWindow;
-            var dia = window.Resources["dia"] as BaseMetroDialog;
-            await DialogManager.HideMetroDialogAsync(window,this);
+            InitializeComponent();
         }
+
     }
 }
