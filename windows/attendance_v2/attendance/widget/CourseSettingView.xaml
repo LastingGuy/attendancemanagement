@@ -58,7 +58,7 @@
 					PickerVisibility="HourMinute" Height="12.667" Margin="20.8,100,92.8,0" Grid.Column="1" VerticalAlignment="Top" HorizontalContentAlignment="Center" SelectedTimeChanged="TimePicker_SelectionChanged"/>
                 <Button x:Name="btn_check" Width="50"
 					Height="50"
-					Style="{DynamicResource MetroCircleButtonStyle}" Grid.Column="1" Margin="0,90,28,0" HorizontalAlignment="Right" VerticalAlignment="Top" Click="btn_check_Click">
+					Style="{DynamicResource MetroCircleButtonStyle}" Grid.Column="1" Margin="0,90,28,0" HorizontalAlignment="Right" VerticalAlignment="Top" Click="btn_check_Click" Visibility="Hidden">
                     <Rectangle Width="20"
 						Height="20"
 						Fill="{Binding Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">

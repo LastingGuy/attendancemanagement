@@ -12,9 +12,22 @@ using System.Threading.Tasks;
 
 namespace attendanceManagement_test.ATTENDANCE
 {
+    /****************************************************************
+     * Author:汪京陆
+     * Date:2016/8/4
+     * Description:创建wifi.exe子进程，扫描连接的手机mac地址，检查学生到
+     *             课情况并更新UI
+     * 
+     * 第一次修改：
+     *      Date：2016/8/18
+     *      Description:
+     *          1、修改部分不存在数据结构
+     *             
+     ****************************************************************/
     class WIFIOPERATE
     {
 
+        
         const int FAIL = 0;
         const int SUCCESS = 1;
         const int FAIL_OPEN_HANDLE = 2;
@@ -41,7 +54,17 @@ namespace attendanceManagement_test.ATTENDANCE
         private CurrentCourse course;
         private bool started;
 
-        public bool openNetwork(string ssid,string passwd,int maxpeer)
+
+        /// <summary>
+        /// 打开负载网络
+        /// 
+        /// 创建子进程，调用wifi.exe -s <ssid> <passwd> <maxpeer>
+        /// </summary>
+        /// <param name="ssid">热点名称</param>
+        /// <param name="passwd">热点密码</param>
+        /// <param name="maxpeer">最大连接数</param>
+        /// <returns></returns>
+        public bool openNetwork(string ssid,string passwd,int maxpeer=100)
         {
             var wifi_process = new Process();
             wifi_process.StartInfo.FileName = "wifi.exe";
@@ -63,7 +86,13 @@ namespace attendanceManagement_test.ATTENDANCE
                 return true;
             }
             return false;
-        }
+        }//openNetwork结束
+
+
+        /// <summary>
+        /// 开始扫描
+        /// </summary>
+        /// <param name="datagird"></param>
         public void start(ref System.Windows.Controls.DataGrid datagird)
         {
             dataGird = datagird;

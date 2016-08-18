@@ -1,19 +1,8 @@
-﻿using attendanceManagement.XML;
-using MahApps.Metro.Controls.Dialogs;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace attendanceManagement.widget
 {
@@ -57,8 +46,21 @@ namespace attendanceManagement.widget
         }
 
 
+        /// <summary>
+        /// 日期选择框响应函数
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void DateListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+
+            /*
+             * 响应ListBoxItem点击操作，
+             * 如果DateListBox中存在Item，将相应item的星期、时间等信息填入day_selection和TimePicker中，
+             * 显示删除按钮；
+             * 如果不存在Item，则在day_selection中不填入任何信息，在TimePicker中填入“00：00”，隐藏删除按钮
+             * 
+             */
             index = DateListBox.SelectedIndex;
             if (index != -1 &&  _dates != null)
             {
@@ -108,7 +110,10 @@ namespace attendanceManagement.widget
                 btn_check.Visibility = Visibility.Hidden;
             }
         }
-        private void TimePicker_SelectionChanged(object sender, MahApps.Metro.Controls.TimePickerBaseSelectionChangedEventArgs<TimeSpan?> e)
+
+
+        private void TimePicker_SelectionChanged(object sender, 
+            MahApps.Metro.Controls.TimePickerBaseSelectionChangedEventArgs<TimeSpan?> e)
         {
             if (day_selection.SelectedIndex == -1 || DateListBox.SelectedIndex == -1)
                 return;
@@ -138,7 +143,7 @@ namespace attendanceManagement.widget
             string t = time.ToString(@"hh\:mm");
             int w = day_selection.SelectedIndex + 1;
 
-
+            //增加新建item
             if (index < _dates.Count)
             {
                 _dates.ElementAt(index).start = t;
@@ -155,6 +160,8 @@ namespace attendanceManagement.widget
 
             btn_check.Visibility = Visibility.Hidden;
             btn_delete.Visibility = Visibility.Visible;
+
+            //保存至xml文件
             MainwindowData.data.CurrentCourse.SaveTimeToXML = true;
         }
 
@@ -166,6 +173,8 @@ namespace attendanceManagement.widget
             DateListBox.Items.RemoveAt(index);
             DateListBox.SelectedIndex = temp;
 
+
+            //保存至xml文件
             MainwindowData.data.CurrentCourse.SaveTimeToXML = true;
         }
     }

@@ -6,12 +6,20 @@ using System;
 
 namespace attendanceManagement.XML
 {
+
+    /**************************************************************
+     * Author:汪京陆
+     * Date:2016/8/10
+     * Description:对xml文件的解析和保存
+     **************************************************************/
     class CourseInfo
     {
-        
 
-        //获取教师课程表
-        //解析 coursesdir 中内容 返回LinkedList<Course>
+        /// <summary>
+        ///获取教师课程表
+        ///解析 DIR.coursesdir 路径中内容 
+        /// </summary>
+        /// <returns>课程集合</returns>
         public static LinkedList<Course> getCourses()
         {
             var list = new LinkedList<Course>();
@@ -39,17 +47,25 @@ namespace attendanceManagement.XML
             return list;
         }
 
-        //获取历史纪录
-        //根据CourseSelection 中的序号 遍历 history  中所有文件 
+
+
+       /// <summary>
+       /// 获取历史纪录
+       /// 根据历史文件夹路径，遍历 history/<courseid>/ 文件夹中所有文件， 只返回文件名链表，不解析xml文件
+       /// </summary>
+       /// <param name="path">文件路径</param>
+       /// <returns>历史记录集合</returns>
         public static LinkedList<HistoryData> getHistory(string path)
         {
             LinkedList<HistoryData> history = new LinkedList<HistoryData>();
 
             try
             {
+                //获得文件夹信息
                 DirectoryInfo courses = new DirectoryInfo(path);
                 FileSystemInfo[] list = courses.GetFileSystemInfos();
 
+                //遍历文件
                 for (int i = 0; i < list.Length; i++)
                 {
                     if (list[i].Extension.Equals(".xml"))
@@ -71,7 +87,13 @@ namespace attendanceManagement.XML
             return history;
         }
 
-        //获取历史考勤表
+
+
+        /// <summary>
+        /// 获取历史考勤表
+        /// </summary>
+        /// <param name="path">考勤表路径</param>
+        /// <returns></returns>
         public static List<Student> getHistoryTable(string path)
         {
             List<Student> table = new List<Student>();
@@ -94,7 +116,11 @@ namespace attendanceManagement.XML
             return table;
         }
 
-        //获取学生名单
+        /// <summary>
+        /// 获取学生名单
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public static List<Student> getStudents(string id)
         {
             List<Student> students = new List<Student>();
@@ -122,7 +148,12 @@ namespace attendanceManagement.XML
         }
 
 
-        //设置上课时间
+        /// <summary>
+        /// 设置上课时间
+        /// </summary>
+        /// <param name="cid">课程id</param>
+        /// <param name="dates">添加的日期</param>
+        /// <returns></returns>
         public static bool setTimes(string cid,LinkedList<CourseDate> dates)
         {
 

@@ -65,6 +65,7 @@
     </ApplicationDefinition>
     <Compile Include="attendanceManagementModel.cs" />
     <Compile Include="ATTENDANCE\BTHOPERATE.cs" />
+    <Compile Include="ATTENDANCE\WIFIOPERATE.cs" />
     <Compile Include="Behaviors\DateTimeNowBehavior.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

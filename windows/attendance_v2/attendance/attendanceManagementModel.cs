@@ -6,6 +6,20 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Controls;
 
+/*******************************************************************************
+ * author:汪京陆
+ * Date:2016/8/10
+ * Description:此文件中提供了整个工程所需的所有数据结构
+ * 
+ * attendanceManatementModel:对有需要数据绑定的类，需要集成此类，提供setProperty方法，更新UI
+ * MainwindowData:提供对窗口的数据绑定
+ * Student:存储学生个人信息
+ * Course:课程类
+ * CourseDate:保存课程上课时间，在Course类中使用
+ * HistoryData：保存历史考勤表
+ * DIR：保存
+ * **************************************************************************/
+
 namespace attendanceManagement
 {
     class attendanceManagementModel : INotifyPropertyChanged
@@ -24,19 +38,24 @@ namespace attendanceManagement
             
     }
 
-    //主窗口MODEL
+    /// <summary>
+    /// 主窗口Model
+    /// </summary>
     class MainwindowData : attendanceManagementModel
     {
         public static MainwindowData data = new MainwindowData();
 
-        /// <summary>
-        /// 控件
-        /// </summary>
-        
-        //窗口
+        /*********************************************************************************************
+         * 控件
+         * *****************************************************************************************/
+               
+        //主窗口
         public MainWindow Window;
 
-        //时间设置对话框
+        /// <summary>
+        /// 时间设置对话框{get;}
+        /// 赋值为true是显示，false关闭
+        /// </summary>
         CourseSettingDialog _timesettingdialog = new CourseSettingDialog();
         public bool showTimeSetting
         {
@@ -45,22 +64,20 @@ namespace attendanceManagement
                 if(value)
                 {
                     _timesettingdialog.DATES = courselist.ElementAt(courseindex).DATES;
-                    Window.timeSetting(Window, _timesettingdialog);
-                    
+                    Window.timeSetting( _timesettingdialog);             
                 }
                 else
                 {
-                    Window.timeSetting(Window, _timesettingdialog,false);
+                    Window.timeSetting( _timesettingdialog,false);
                 }
             }
         }
 
 
 
-        //////////////////////////////////////////////////////////////////
-        /// <summary>
-        /// 数据
-        /// </summary>
+        /****************************************************************************************
+         * 数据
+         * *************************************************************************************/
 
         int courseindex = -1;
         public int CourseIndex
@@ -93,6 +110,8 @@ namespace attendanceManagement
                     table = new List<Student>();
                 }
             }
+
+            get { return dateindex; }
         }
 
 
@@ -147,6 +166,30 @@ namespace attendanceManagement
             {
                 setProperty(ref _coursename, value);
             }
+        }
+
+        //绑定上课时间
+        string _coursetime;
+        public string coursetime
+        {
+            set { setProperty(ref _coursetime, value); }
+            get { return _coursetime; }
+        }
+
+        //绑定上课人数
+        int _nrofstu;
+        public int nrofstu
+        {
+            set { setProperty(ref _nrofstu, value); }
+            get { return _nrofstu; }
+        }
+
+        //绑定已到人数
+        int _arrived;
+        public int arrived
+        {
+            set { setProperty(ref _arrived, value); }
+            get { return _arrived; }
         }
 
         //绑定CourseSelection listbox
@@ -238,6 +281,10 @@ namespace attendanceManagement
 
     }
 
+    /// <summary>
+    /// 学生类
+    /// 保存学生个人信息
+    /// </summary>
     class Student
     {
         public string name { get; set; }
@@ -282,7 +329,12 @@ namespace attendanceManagement
         }    
     }
 
-    //课程
+    /// <summary>
+    /// 课程类
+    /// 
+    /// 存储课程的基本信息
+    /// 
+    /// </summary>
     class Course
     {
         //课程id,课程名，教师名，人数，上课时间
@@ -386,7 +438,11 @@ namespace attendanceManagement
         }
 
        
-        //历史纪录
+        /// <summary>
+        /// 获得历史纪录{get;}
+        /// 利用CourseInfo.getHistory对COURSEPATH文件夹中xml文件进行解析，
+        /// 获得一个LinkedList<HistoryData>类型的链表，并返回
+        /// </summary>    
         public LinkedList<HistoryData> HISTORY
         {
             get
@@ -398,7 +454,9 @@ namespace attendanceManagement
         }
 
 
-        //历史考勤表
+        /// <summary>
+        /// 获得历史考勤表
+        /// </summary>
         public List<Student> table
         {
             get
@@ -428,7 +486,39 @@ namespace attendanceManagement
             }
         }
 
-        //保存上课时间直xml
+        /// <summary>
+        /// 获得历史考勤表上课人数
+        /// </summary>
+        public int nrofstu
+        {
+            get { return students.Count; }
+        }
+
+
+        /// <summary>
+        /// 获得历史考勤表已到人数 {get;}
+        /// </summary>
+        public int nrofarrived
+        {
+            get
+            {
+                int selectdateindex = MainwindowData.data.DateIndex;
+                var temp = HISTORY.ElementAt(selectdateindex);
+                int count = 0;
+                foreach(var stu in temp.table)
+                {
+                    if (stu.CHECK == 1)
+                        count++;
+                }
+                return count;
+            }
+        }
+
+
+        /// <summary>
+        /// 保存上课时间直xml {get;}
+        /// 复制为true保存
+        /// </summary>
         public bool SaveTimeToXML
         {
             set
@@ -441,12 +531,15 @@ namespace attendanceManagement
             
         }
 
-        //添加上课时间
+
+        /// <summary>
+        /// 添加上课时间
+        /// </summary>
         public void add_date(string start, string week)
         {
             CourseDate date = new CourseDate(start, week);
             dates.AddFirst(date);
-        }
+        }//方法add_date结束
 
 
         //获得学生信息
@@ -461,9 +554,12 @@ namespace attendanceManagement
             }
 
             return null;
-        }
+        }//方法getStudentInfo结束
     }
 
+    /// <summary>
+    /// 上课时间
+    /// </summary>
     public class CourseDate
     {
         public string start = "";
@@ -490,7 +586,9 @@ namespace attendanceManagement
     }
 
 
-    //历史纪录
+    /// <summary>
+    /// 历史记录
+    /// </summary>
     class HistoryData
     {
         public string path;
