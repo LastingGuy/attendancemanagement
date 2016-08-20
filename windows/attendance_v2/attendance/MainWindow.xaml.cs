@@ -9,6 +9,7 @@ using attendanceManagement.XML;
 using System.IO;
 using MahApps.Metro.Controls.Dialogs;
 using attendanceManagement.widget;
+using attendanceManagement.Models;
 
 
 /***********************************************************************

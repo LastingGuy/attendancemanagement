@@ -65,11 +65,20 @@
     </ApplicationDefinition>
     <Compile Include="attendanceManagementModel.cs" />
     <Compile Include="ATTENDANCE\BTHOPERATE.cs" />
+    <Compile Include="ATTENDANCE\Status.cs" />
     <Compile Include="ATTENDANCE\WIFIOPERATE.cs" />
     <Compile Include="Behaviors\DateTimeNowBehavior.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models\attendanceManagementModel.cs" />
+    <Compile Include="Models\CheckStatus.cs" />
+    <Compile Include="Models\Course.cs" />
+    <Compile Include="Models\CourseDate.cs" />
+    <Compile Include="Models\DIR.cs" />
+    <Compile Include="Models\HistoryData.cs" />
+    <Compile Include="Models\MainwindowData.cs" />
+    <Compile Include="Models\Student.cs" />
     <Compile Include="NET\DownLoad.cs" />
     <Compile Include="NET\NET.cs" />
     <Compile Include="NET\UpLoad.cs" />

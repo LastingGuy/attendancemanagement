@@ -492,18 +492,18 @@
                                 </Grid>
                                 <Path Data="M191,23.333 L190.5,430.833" HorizontalAlignment="Right" Margin="0,23.333,3.5,10" Stretch="Fill" Width="1" Fill="#FFF4F4F5" Stroke="#FFBBBBBB"/>
                             </Grid>
-                            <DataGrid ItemsSource="{Binding Albums}"
-                            	AutoGenerateColumns="False" Foreground="#FFE64141" Background="#FFFDFDFD" Margin="200.5,0,0,-2.667">
+                            <DataGrid x:Name="NewTable" ItemsSource="{Binding Student}"
+                            	AutoGenerateColumns="False" Foreground="Black" Background="#FFFDFDFD" Margin="200.5,0,0,-2.667">
                                 <DataGrid.Columns>
                                     <DataGridCheckBoxColumn Binding="{Binding IsSelected, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}}"
                             			EditingElementStyle="{DynamicResource MetroDataGridCheckBox}"
                             			ElementStyle="{DynamicResource MetroDataGridCheckBox}"
                             			Width="0.2*" />
-                                    <DataGridTextColumn Header="Name" Width="1*"/>
-                                    <DataGridTextColumn Header="ID" Width="1*"/>
-                                    <DataGridTextColumn Header="College" Width="1*"/>
-                                    <DataGridTextColumn Header="Class" Width="1*"/>
-                                    <DataGridTextColumn Header="Check" Width="1*" Foreground="{x:Null}"/>
+                                    <DataGridTextColumn Header="Name" Width="1*"  Binding="{Binding name,Mode=OneWay}" />
+                                    <DataGridTextColumn Header="ID" Width="1*"  Binding="{Binding id,Mode=OneWay}"/>
+                                    <DataGridTextColumn Header="College" Width="1*"  Binding="{Binding college,Mode=OneWay}"/>
+                                    <DataGridTextColumn Header="Class" Width="1*"  Binding="{Binding sclass,Mode=OneWay}"/>
+                                    <DataGridTextColumn Header="Check" Width="1*"   Binding="{Binding arrive,Mode=OneWay}"/>
                                 </DataGrid.Columns>
                             </DataGrid>
                         </Grid>

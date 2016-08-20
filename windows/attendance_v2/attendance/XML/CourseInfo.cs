@@ -3,6 +3,7 @@ using System.Xml.Linq;
 using System.Security.Cryptography;
 using System.IO;
 using System;
+using attendanceManagement.Models;
 
 namespace attendanceManagement.XML
 {
@@ -106,7 +107,10 @@ namespace attendanceManagement.XML
                 {
                     Student stu = new Student();
                     stu.id = item.Element("id").Value;
-                    stu.CHECK = Convert.ToInt32(item.Element("check").Value);
+
+                    //stu.CHECK = Convert.ToInt32(item.Element("check").Value);
+                    stu.CHECK = CheckStatus.parseCode(item.Element("check").Value);
+
                     stu.time = item.Element("t").Value;
 
                     table.Add(stu);

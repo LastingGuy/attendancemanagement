@@ -1,16 +1,13 @@
-﻿using attendanceManagement;
+﻿using attendanceManagement.Models;
 using attendanceManagement.NET;
 using attendanceManagement.XML;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
-using System.Threading.Tasks;
 
-namespace attendanceManagement_test.ATTENDANCE
+namespace attendanceManagement.ATTENDANCE
 {
     /****************************************************************
      * Author:汪京陆
@@ -18,32 +15,17 @@ namespace attendanceManagement_test.ATTENDANCE
      * Description:创建wifi.exe子进程，扫描连接的手机mac地址，检查学生到
      *             课情况并更新UI
      * 
-     * 第一次修改：
-     *      Date：2016/8/18
-     *      Description:
-     *          1、修改部分不存在数据结构
      *             
      ****************************************************************/
     class WIFIOPERATE
     {
-
-        
-        const int FAIL = 0;
-        const int SUCCESS = 1;
-        const int FAIL_OPEN_HANDLE = 2;
-        const int VERSION_IS_LOW = 3;
-        const int FAIL_TO_SET_ALLWO = 4;
-        const int FAIL_TO_SET_SSID = 5;
-        const int FAIL_TO_SET_PASS = 6;
-        const int FAIL_TO_START_USING = 7;
-        const int FAIL_TO_START_NETWORK = 8;
 
         private string list;
         private string[] macs;
 
         private bool isWifiRun = false;
 
-        private static System.Windows.Controls.DataGrid dataGird;
+        private static MainwindowData windowdata;
         private static Thread thread = null;
         SynchronizationContext m_SyncContext = null;
 
@@ -51,7 +33,8 @@ namespace attendanceManagement_test.ATTENDANCE
         private DateTime dt_end;
         private DateTime uploadtime;
 
-        private CurrentCourse course;
+        private Course course;
+        private List<Student> students;
         private bool started;
 
 
@@ -64,7 +47,7 @@ namespace attendanceManagement_test.ATTENDANCE
         /// <param name="passwd">热点密码</param>
         /// <param name="maxpeer">最大连接数</param>
         /// <returns></returns>
-        public bool openNetwork(string ssid,string passwd,int maxpeer=100)
+        public bool openNetwork(string ssid, string passwd, int maxpeer = 100)
         {
             var wifi_process = new Process();
             wifi_process.StartInfo.FileName = "wifi.exe";
@@ -80,7 +63,7 @@ namespace attendanceManagement_test.ATTENDANCE
             string error = wifi_process.StandardError.ReadToEnd();
 
             wifi_process.WaitForExit();
-            if(result==SUCCESS.ToString())
+            if (result == Status.OK.ToString())
             {
                 isWifiRun = true;
                 return true;
@@ -90,48 +73,80 @@ namespace attendanceManagement_test.ATTENDANCE
 
 
         /// <summary>
+        /// 关闭负载网络
+        /// </summary>
+        /// <returns></returns>
+        void shutdown()
+        {
+            var wifi_process = new Process();
+            wifi_process.StartInfo.FileName = "wifi.exe";
+            wifi_process.StartInfo.Arguments = "-q";
+            wifi_process.StartInfo.UseShellExecute = false;
+            wifi_process.StartInfo.CreateNoWindow = true;
+            wifi_process.StartInfo.RedirectStandardError = true;
+            wifi_process.StartInfo.RedirectStandardOutput = true;
+            wifi_process.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            wifi_process.Start();
+            wifi_process.WaitForExit();
+        }
+
+        /// <summary>
         /// 开始扫描
         /// </summary>
-        /// <param name="datagird"></param>
-        public void start(ref System.Windows.Controls.DataGrid datagird)
+        /// <param name="data"></param>
+        public void start(MainwindowData data)
         {
-            dataGird = datagird;
+            windowdata = data;
 
-            course = CurrentCourse.getInstance();
-            dt_start = DateTime.Parse(course.getStartTime());
-            dt_end = DateTime.Parse(course.getEndTime());
+            course = windowdata.CurrentCourse;
             started = true;
 
             m_SyncContext = SynchronizationContext.Current;
 
+            students = course.STUDENTS;
+
             uploadtime = dt_start;
             uploadtime.AddMinutes(5);
-            if(!isWifiRun)
+            if (!isWifiRun)
             {
                 openNetwork("attendance", "123123123", 100);
             }
 
-            if (thread == null&&isWifiRun)
-            {
-                thread = new Thread(listMacThread);
-                thread.Start();
+            thread = new Thread(listMacThread);
+            if(isWifiRun)
+            thread.Start();
+        }
 
+        /// <summary>
+        /// 结束扫描，关闭负载网络
+        /// </summary>
+        public void end()
+        {
+            if (started)
+            {
+                thread.Abort();
+                new Thread(shutdown).Start();        //关闭负载网络
             }
         }
+
 
         private void listMacThread()
         {
-            while(isWifiRun)
+            while (isWifiRun)
             {
+               // Thread.Sleep(10000);
                 getList();
                 getMacs();
-                List<StudentInfo> studentList = checkAttendance();
+                List<Student> studentList = checkAttendance();
                 m_SyncContext.Post(syncdatagird, studentList);
 
-                ZXmlDocument.generateResultXml();
+                //ZXmlDocument.generateResultXml();
             }
         }
 
+        /// <summary>
+        /// 获得扫描结果
+        /// </summary>
         private void getList()
         {
             var wifi_process = new Process();
@@ -149,6 +164,9 @@ namespace attendanceManagement_test.ATTENDANCE
             wifi_process.WaitForExit();
         }
 
+        /// <summary>
+        /// 解析获得的已连接设备mac地址列表
+        /// </summary>
         private void getMacs()
         {
             const string pattern = "<([^>]*)>";
@@ -165,116 +183,117 @@ namespace attendanceManagement_test.ATTENDANCE
         }
 
 
-        private List<StudentInfo> checkAttendance()
+        private List<Student> checkAttendance()
         {
 
-            List<StudentInfo> list = course.getStudentList();
-
-
-            for (int i = 0; i < list.Count; i++)
+            for (int i = 0; i < students.Count; i++)
             {
                 bool arrived = false;
                 for (int j = 0; j < macs.Length; j++)
                 {
-                    if (list[i].macAdr.ToUpper() == macs[j].ToUpper())
+                    if (students[i].mac.ToUpper() == macs[j].ToUpper())
                     {
                         arrived = true;
                         break;
                     }
+
                 }
 
-                int last = list[i].check;
-                list[i].check = judgeState(list[i].check, arrived);
-                list[i].arrive = getState(list[i].check);
-
-                if (last != list[i].check)
-                {
-                    if (list[i].check == 1 || list[i].check == 2)
-                        list[i].ts = DateTime.Now.ToLongTimeString().ToString();
-                    else if (list[i].check == 3)
-                        list[i].te = DateTime.Now.ToLongTimeString().ToString();
-                }
+                if (arrived)
+                    students[i].CHECK = CheckStatus.ARRIVED;
+                else
+                    students[i].CHECK = CheckStatus.ABSENCE;
 
             }
 
 
-            return list;
+            return students;
         }
 
+        
         private void show()
         {
 
-            List<StudentInfo> list = course.getStudentList();
+            List<Student> list = course.STUDENTS;
             for (int n = 0; n < list.Count; n++)
             {
-                list[n].check = 0;
-                list[n].arrive = "未到";
+                list[n].CHECK = CheckStatus.ABSENCE;
             }
 
-            dataGird.ItemsSource = list;
-
+            windowdata.newtable = list;
         }
 
+        /// <summary>
+        /// 同步ui
+        /// </summary>
+        /// <param name="data"></param>
         private void syncdatagird(object data)
         {
-            dataGird.ItemsSource = (List<StudentInfo>)data;
-            dataGird.Items.Refresh();
+            windowdata.newtable = (List<Student>)data;
+
         }
 
-        //判断未到0、出勤1、迟到2、早退3
-        private int judgeState(int stateNow, bool arrived)
-        {
+        /// <summary>
+        /// 判断未到0、出勤1、迟到2、早退3，以弃用
+        /// </summary>
+        //private int judgeState(int stateNow, bool arrived)
+        //{
 
-            DateTime presentTime = DateTime.Now;
-            int state = 0;
-            if (stateNow == -1 || stateNow == 0)
-            {
-                if (arrived == true)
-                {
-                    state = DateTime.Compare(presentTime, dt_start) > 0 ? 2 : 1;
-                    state = DateTime.Compare(presentTime, dt_end) > 0 ? 0 : state;
-                }
-                else
-                    state = 0;
-            }
-            else
-            {
-                if (!arrived)
-                {
-                    state = DateTime.Compare(presentTime, dt_end) < 0 ? 3 : 1;
-                    state = DateTime.Compare(presentTime, dt_start) < 0 ? 1 : state;
-                }
-                else
-                    state = stateNow;
-            }
-            return state;
-        }
+        //    DateTime presentTime = DateTime.Now;
+        //    int state = 0;
+        //    if (stateNow == -1 || stateNow == 0)
+        //    {
+        //        if (arrived == true)
+        //        {
+        //            state = DateTime.Compare(presentTime, dt_start) > 0 ? 2 : 1;
+        //            state = DateTime.Compare(presentTime, dt_end) > 0 ? 0 : state;
+        //        }
+        //        else
+        //            state = 0;
+        //    }
+        //    else
+        //    {
+        //        if (!arrived)
+        //        {
+        //            state = DateTime.Compare(presentTime, dt_end) < 0 ? 3 : 1;
+        //            state = DateTime.Compare(presentTime, dt_start) < 0 ? 1 : state;
+        //        }
+        //        else
+        //            state = stateNow;
+        //    }
+        //    return state;
+        //}
 
-        private void upload()
-        {
-            if (DateTime.Compare(DateTime.Now, uploadtime) < 0)
-            {
-                new UpLoad().checkin_file(course.getCourseId(), string.Format("{0:yyyyMMdd}", DateTime.Today), "123456");
-                uploadtime.AddMinutes(50);
-            }
-        }
 
-        //得到UI中显示状态文字
-        private string getState(int state)
-        {
-            switch (state)
-            {
-                case 0:
-                    return "未到";
-                case 1:
-                    return "到课";
-                case 2:
-                    return "迟到";
-                case 3:
-                    return "早退";
-                default:
-                    return "";
-            }
-        }
+        /// <summary>
+        /// 上传至服务器，以弃用
+        /// </summary>
+        //private void upload()
+        //{
+        //    if (DateTime.Compare(DateTime.Now, uploadtime) < 0)
+        //    {
+        //        new UpLoad().checkin_file(course.COURSEID, string.Format("{0:yyyyMMdd}", DateTime.Today), "123456");
+        //        uploadtime.AddMinutes(50);
+        //    }
+        //}
+    
+
+        //得到UI中显示状态文字，以弃用
+        //private string getState(int state)
+        //{
+        //    switch (state)
+        //    {
+        //        case 0:
+        //            return "未到";
+        //        case 1:
+        //            return "到课";
+        //        case 2:
+        //            return "迟到";
+        //        case 3:
+        //            return "早退";
+        //        default:
+        //            return "";
+        //    }
+        //}
     }
 }

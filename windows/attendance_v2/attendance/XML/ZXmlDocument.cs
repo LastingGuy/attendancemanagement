@@ -2,8 +2,7 @@
 using System.IO;
 using System.Collections.Generic;
 using System.Xml;
-
-
+using attendanceManagement.Models;
 
 namespace attendanceManagement.XML
 {
