@@ -1,7 +1,9 @@
 ﻿using attendanceManagement.ATTENDANCE;
 using attendanceManagement.widget;
+using attendanceManagement.XML;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -47,47 +49,101 @@ namespace attendanceManagement.Models
 
 
         /****************************************************************************************
-         * 数据
+         * 后台数据
          * *************************************************************************************/
 
+        /// <summary>
+        /// 课程选择框中选中序号
+        /// </summary>
         int courseindex = -1;
         public int CourseIndex
         {
             set
             {
+                // 获得当前选中课程，并将日期选择框选中序号赋值为-1，
+                // 把课程名和教师姓名显示在UI中，将历史记录绑定到日期
+                // 选择框中。
+
                 Course course = courselist.ElementAt(value);
                 courseindex = value;
                 DateIndex = -1;
                 coursename = course.COURSENAME;
                 teachername = course.TEACHERNAME;
                 historylist = course.HISTORY;
+                checkingtable = new CheckingTable(CurrentCourse.COURSEID, CheckingDate, CheckingTime); //新建考勤表，并显示在UI中
+
+                //设置新建选项卡
+                WIFIName = _coursename + "_" + _teachername;
+                WIFIPass = "12345678";
+                Window.checkingtime.SelectedDate = DateTime.Today;
+                TimeSpan temp;
+                TimeSpan.TryParse(DateTime.Now.ToString("HH:mm"), out temp);
+                Window.checkingtime.SelectedTime = temp;
+                
+
+                //如果正在考勤且当前查看课程与考勤课程不符，禁用”新建“tab项
+                if (checking)
+                {
+                    if (checkIndex != courseindex)
+                    {
+                        currentTab = 0;
+                        newTabisenable = false;
+                    }
+                    else
+                    {
+                        newTabisenable = true;
+                        currentTab = 1;
+                    }
+                }
+                else
+                {                   
+                    newTabisenable = true;
+                }
+
+
+               
+               
             }
         }
 
 
+        /// <summary>
+        /// 日期选择框中选中序号
+        /// </summary>
         int dateindex = -1;
         public int DateIndex
         {
             set
             {
+                //将历史考勤表显示在UI中，如果不选中任何
+                //item（value==-1),清空表格
+
                 dateindex = value;
                 if (dateindex != -1)
                 {
-                    Course course = CurrentCourse;
-                    historytable = course.table;
+                    historycheckingtable = CurrentCourse.table(Window.DateSelection.SelectedIndex);
+                   
                 }
                 else
                 {
-                    historytable = new List<Student>();
+                    historycheckingtable = new CheckingTable();
+                    nrofstu = CurrentCourse.nrofstu;
+                    arrived = 0;
+                    coursetime = "--:--";
                 }
             }
 
             get { return dateindex; }
         }
 
-
+        /// <summary>
+        /// 正在进行考勤的课程序号
+        /// </summary>
         public int checkIndex { get; set; } = -1;
 
+        /// <summary>
+        /// 控制考勤开启/关闭
+        /// </summary>
         bool _checking = false;
         WIFIOPERATE attendance = new WIFIOPERATE();
         public bool checking
@@ -96,22 +152,65 @@ namespace attendanceManagement.Models
             set
             {
                 setProperty(ref _checking, value);
-                if (_checking)
+                if (_checking)                //赋值为true，考勤开始
                 {
                     startlabel = "关闭热点";
-                   
-                    attendance.openNetwork(_coursename + "_", "123456789");
-                    attendance.start(this);
+
+                    checkIndex = courseindex;   //设置当前考勤课程序号
+                    attendance.openNetwork(WIFIName, WIFIPass); //设置并打开热点
+                    checkingtable = new CheckingTable(CurrentCourse.COURSEID, CheckingDate, CheckingTime); //新建考勤表，并显示在UI中
+                    attendance.start(this);  //开始扫描
                 }
-                else
+                else                          //考勤结束
                 {
+                    checkIndex = -1;
                     startlabel = "开启热点";
-                    attendance.end();
+                    attendance.end();       //关闭热点
+                    CourseInfo.saveAttendancetable(checkingtable);  //保存考勤表
+
+                    newTabisenable = true;    //当新建选项卡禁用时开启
+                    historylist = CurrentCourse.HISTORY;       //刷新历史记录
                 }
                    
             }
         }
 
+        /// <summary>
+        /// 当前tab
+        /// </summary>
+        public int currentTab
+        {
+            set
+            {
+                if (value <= -1 || value > 1)  //保证传入值在-1和1之间
+                    return;
+                Window.CourseInfoTabControl.SelectedIndex = value;
+            }
+            get { return Window.CourseInfoTabControl.SelectedIndex; }
+        }
+
+        
+        public bool newTabisenable
+        {
+            set
+            {
+                if(value)
+                {
+                    (Window.CourseInfoTabControl.Items[1] as TabItem).IsEnabled = true;
+                }
+                else
+                {
+                    (Window.CourseInfoTabControl.Items[1] as TabItem).IsEnabled = false;
+                }
+            }
+        }
+
+
+
+        /// ////////////////////////////////////Label数据绑定/////////////////////
+        /// <summary>
+        /// 设置开启热点按钮显示字符
+        /// </summary>
         string _startlabel = "开启热点";
         public string startlabel
         {
@@ -172,6 +271,71 @@ namespace attendanceManagement.Models
             get { return _arrived; }
         }
 
+        //正在考勤的总人数
+        int _nrofstu_checking;
+        public int nrofstu_checking
+        {
+            get { return _nrofstu_checking; }
+            set { setProperty(ref _nrofstu_checking, value); }
+        }
+
+
+        //正在考勤的已到人数
+        int _arrived_checking;
+        public int arrived_checking
+        {
+            get { return _arrived_checking; }
+            set { setProperty(ref _arrived_checking, value); }
+        }
+
+
+        /////////////////////////////////////textbox数据绑定////////////////////////
+
+        public string WIFIPass
+        {
+            set { Window.wifi_password.Password = value; }
+            get { return Window.wifi_password.Password; }          
+        }
+
+        public string WIFIName
+        {
+            set { Window.wifi_name.Text = value; }
+            get { return Window.wifi_name.Text; }
+        }
+
+        public string CheckingDate
+        {
+            get
+            {
+                try
+                {
+                    var date = Window.checkingtime.SelectedDate.Value;
+                    return date.ToString("yyyyMMdd");
+                }
+                catch(Exception e)
+                {
+                    return "";
+                }
+            }
+        }
+     
+        public string CheckingTime
+        {
+            get
+            {
+                try
+                {
+                    var time = Window.checkingtime.SelectedTime.Value;
+                    return time.ToString(@"hh\:mm");
+                }
+                catch (Exception e)
+                {
+                    return "";
+                }
+            }
+        }
+        //////////////////////////////////////表格///////////////////////////////////
+
         //绑定CourseSelection listbox
         LinkedList<Course> _courselist;
         public LinkedList<Course> courselist
@@ -179,6 +343,9 @@ namespace attendanceManagement.Models
             get { return _courselist; }
             set
             {
+                //在课程选择框中添加课程，如没有课
+                //程，则添加并显示"暂无课程"item。
+
                 _courselist = value;
                 if (_courselist.Count == 0)
                 {
@@ -197,21 +364,20 @@ namespace attendanceManagement.Models
                     Window.courseInfoView.Visibility = System.Windows.Visibility.Visible;
 
                     Window.appbar.btn_timesetting.IsEnabled = true;
-                    Window.CourseSelection.SelectedIndex = 0;
+                    Window.CourseSelection.SelectedIndex = 0;   //选择第一个item
                 }
             }
         }
 
         //绑定DateSelection listbox
-        LinkedList<HistoryData> _historylist;
-        public LinkedList<HistoryData> historylist
+        LinkedList<CheckingTable> _historylist;
+        public LinkedList<CheckingTable> historylist
         {
             get { return _historylist; }
             set
             {
                 _historylist = value;
                 Window.DateSelection.Items.Clear();
-                //while(Window.DateSelection)
 
                 if (_historylist.Count == 0)
                 {
@@ -219,13 +385,12 @@ namespace attendanceManagement.Models
                     item.IsEnabled = false;
                     Window.DateSelection.Items.Add(item);
 
-
-
                 }
                 else
                 {
-                    foreach (HistoryData data in _historylist)
+                    foreach (CheckingTable data in _historylist)
                     {
+                        
                         Window.DateSelection.Items.Add(new ListBoxItem { Content = data.date });
                     }
 
@@ -237,32 +402,45 @@ namespace attendanceManagement.Models
         }
 
         //绑定历史表格
-        public List<Student> historytable
+        CheckingTable _historychcekingtable;
+        public CheckingTable historycheckingtable
         {
             set
             {
-                Window.HistoryDATA.ItemsSource = value;
+                _historychcekingtable = value;
+                Window.HistoryDATA.ItemsSource = _historychcekingtable.students;
                 Window.HistoryDATA.Items.Refresh();
+
+                nrofstu = _historychcekingtable.nrOfstu;
+                arrived = _historychcekingtable.arrived;
+                coursetime = _historychcekingtable.date + " " + _historychcekingtable.ts;
             }
             get
             {
-                return (List<Student>)Window.HistoryDATA.ItemsSource;
+                return _historychcekingtable;
             }
         }
 
         //绑定新建表格
-        public List<Student> newtable
+        CheckingTable _checkingtable;
+        public CheckingTable checkingtable
         {
             set
             {
-                Window.NewTable.ItemsSource = value;
+                _checkingtable = value;
+                Window.NewTable.ItemsSource = _checkingtable.students;
                 Window.NewTable.Items.Refresh();
+                arrived_checking = _checkingtable.arrived;
+                nrofstu_checking = _checkingtable.nrOfstu;
             }
             get
             {
-                return (List<Student>)Window.NewTable.ItemsSource;
+                return _checkingtable;
             }
         }
+
+        ////////////////////////////////////////////////////////////////
+
 
         //当前Course
         public Course CurrentCourse

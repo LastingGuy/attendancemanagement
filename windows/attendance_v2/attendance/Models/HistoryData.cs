@@ -12,7 +12,7 @@ namespace attendanceManagement.Models
     /// </summary>
     class HistoryData
     {
-        public string path;
+        public string path  ="";
         public string date = "";
         public string time = "";
 
@@ -20,7 +20,7 @@ namespace attendanceManagement.Models
         {
             get
             {
-                return CourseInfo.getHistoryTable(path + date + ".xml");
+                return new List<Student>();
             }
         }
     }

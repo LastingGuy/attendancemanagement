@@ -34,7 +34,7 @@ namespace attendanceManagement.ATTENDANCE
         private DateTime uploadtime;
 
         private Course course;
-        private List<Student> students;
+        private CheckingTable table;
         private bool started;
 
 
@@ -96,6 +96,7 @@ namespace attendanceManagement.ATTENDANCE
         /// <param name="data"></param>
         public void start(MainwindowData data)
         {
+            
             windowdata = data;
 
             course = windowdata.CurrentCourse;
@@ -103,7 +104,7 @@ namespace attendanceManagement.ATTENDANCE
 
             m_SyncContext = SynchronizationContext.Current;
 
-            students = course.STUDENTS;
+            table = windowdata.checkingtable;
 
             uploadtime = dt_start;
             uploadtime.AddMinutes(5);
@@ -134,7 +135,7 @@ namespace attendanceManagement.ATTENDANCE
         {
             while (isWifiRun)
             {
-               // Thread.Sleep(10000);
+                Thread.Sleep(5000);
                 getList();
                 getMacs();
                 List<Student> studentList = checkAttendance();
@@ -186,12 +187,12 @@ namespace attendanceManagement.ATTENDANCE
         private List<Student> checkAttendance()
         {
 
-            for (int i = 0; i < students.Count; i++)
+            for (int i = 0; i < table.students.Count; i++)
             {
                 bool arrived = false;
                 for (int j = 0; j < macs.Length; j++)
                 {
-                    if (students[i].mac.ToUpper() == macs[j].ToUpper())
+                    if (table.students[i].mac.ToUpper() == macs[j].ToUpper())
                     {
                         arrived = true;
                         break;
@@ -200,28 +201,17 @@ namespace attendanceManagement.ATTENDANCE
                 }
 
                 if (arrived)
-                    students[i].CHECK = CheckStatus.ARRIVED;
-                else
-                    students[i].CHECK = CheckStatus.ABSENCE;
+                    table.students[i].CHECK = CheckStatus.ARRIVED;
+                //else               
+                //    students[i].CHECK = CheckStatus.ABSENCE;
 
             }
 
 
-            return students;
+            return table.students;
         }
 
-        
-        private void show()
-        {
-
-            List<Student> list = course.STUDENTS;
-            for (int n = 0; n < list.Count; n++)
-            {
-                list[n].CHECK = CheckStatus.ABSENCE;
-            }
-
-            windowdata.newtable = list;
-        }
+       
 
         /// <summary>
         /// 同步ui
@@ -229,7 +219,7 @@ namespace attendanceManagement.ATTENDANCE
         /// <param name="data"></param>
         private void syncdatagird(object data)
         {
-            windowdata.newtable = (List<Student>)data;
+            windowdata.checkingtable = (CheckingTable)table;
 
         }
 

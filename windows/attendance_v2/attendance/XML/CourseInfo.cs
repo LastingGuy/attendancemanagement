@@ -49,19 +49,19 @@ namespace attendanceManagement.XML
         }
 
 
-
        /// <summary>
        /// 获取历史纪录
        /// 根据历史文件夹路径，遍历 history/<courseid>/ 文件夹中所有文件， 只返回文件名链表，不解析xml文件
        /// </summary>
        /// <param name="path">文件路径</param>
        /// <returns>历史记录集合</returns>
-        public static LinkedList<HistoryData> getHistory(string path)
+        public static LinkedList<CheckingTable> getHistory(string courseid)
         {
-            LinkedList<HistoryData> history = new LinkedList<HistoryData>();
+            LinkedList<CheckingTable> history = new LinkedList<CheckingTable>();
 
             try
             {
+                string path = DIR.HISTORY + courseid + "/";
                 //获得文件夹信息
                 DirectoryInfo courses = new DirectoryInfo(path);
                 FileSystemInfo[] list = courses.GetFileSystemInfos();
@@ -71,10 +71,9 @@ namespace attendanceManagement.XML
                 {
                     if (list[i].Extension.Equals(".xml"))
                     {
-                        HistoryData data = new HistoryData();
-                        string str = list[i].Name.Replace(".xml", "");
-                        data.date = str;
-                        data.path = path;
+                        
+                        string filename = list[i].Name.Replace(".xml", "");
+                        CheckingTable data = CheckingTable.getFromFile(filename,courseid);
                         history.AddFirst(data);
                     }
                 }
@@ -89,19 +88,22 @@ namespace attendanceManagement.XML
         }
 
 
-
         /// <summary>
         /// 获取历史考勤表
         /// </summary>
         /// <param name="path">考勤表路径</param>
         /// <returns></returns>
-        public static List<Student> getHistoryTable(string path)
+        public static CheckingTable getHistoryTable(CheckingTable table)
         {
-            List<Student> table = new List<Student>();
+            //List<Student> table = new List<Student>();
+            string path = DIR.HISTORY + table.courseID + "/" + table.filename + ".xml";
             if(File.Exists(path))
             {
                 var dom = XDocument.Load(path);
                 var root = dom.Root;
+
+                table.ts = root.Element("ts").Value;
+                table.te = root.Element("te").Value;
 
                 foreach(var item in root.Element("students").Elements())
                 {
@@ -113,12 +115,13 @@ namespace attendanceManagement.XML
 
                     stu.time = item.Element("t").Value;
 
-                    table.Add(stu);
+                    table.students.Add(stu);
                 }
 
             }
             return table;
         }
+
 
         /// <summary>
         /// 获取学生名单
@@ -183,6 +186,53 @@ namespace attendanceManagement.XML
                 }
             }
             return false;
+        }
+
+
+        /// <summary>
+        /// 保存考勤表
+        /// </summary>
+        /// <param name="table">考勤表</param>
+        /// <returns></returns>
+        public static bool saveAttendancetable(CheckingTable table)
+        {
+            bool result = false;
+
+            XDocument dom = new XDocument();
+            XElement root = new XElement("course");
+
+            XElement courseid = new XElement("courseid", table.courseID);
+            XElement date = new XElement("date", table.date);
+            XElement ts = new XElement("ts",table.ts);
+            XElement te = new XElement("te",table.te);
+
+            XElement students = new XElement("students");
+            foreach(var student in table.students)
+            {
+                XElement stu = new XElement("stu",
+                    new XElement("id", student.id),
+                    new XElement("name",student.name),
+                    new XElement("mac",student.mac),
+                    new XElement("college",student.college),
+                    new XElement("major",student.major),
+                    new XElement("sclass",student.sclass),
+                    new XElement("sex",student.sex),
+                    new XElement("check",student.CheckCode),
+                    new XElement("t",student.time)
+                    );
+
+                students.Add(stu);
+            }
+
+            root.Add(courseid, date, ts, te, students);
+            dom.Add(root);
+
+            //保存至history文件夹
+            dom.Save(DIR.safedir(DIR.HISTORY + table.courseID, table.date+ table.ts.Replace(":","") + ".xml"));
+            //保存至upload文件夹
+            dom.Save(DIR.safedir(DIR.UPLOAD , table.courseID + table.date + table.ts.Replace(":", "") + ".xml"));
+
+            return result;
         }
     }
 }

@@ -121,11 +121,11 @@ namespace attendanceManagement.Models
         /// 利用CourseInfo.getHistory对COURSEPATH文件夹中xml文件进行解析，
         /// 获得一个LinkedList<HistoryData>类型的链表，并返回
         /// </summary>    
-        public LinkedList<HistoryData> HISTORY
+        public LinkedList<CheckingTable> HISTORY
         {
             get
             {
-                var temp = CourseInfo.getHistory(COURSEPATH);
+                var temp = CourseInfo.getHistory(course_id);
                 return temp;
             }
 
@@ -135,21 +135,20 @@ namespace attendanceManagement.Models
         /// <summary>
         /// 获得历史考勤表
         /// </summary>
-        public List<Student> table
+        public CheckingTable table(int index)
         {
-            get
-            {
-                var table = HISTORY.ElementAt(MainwindowData.data.Window.DateSelection.SelectedIndex).table;
-
+           
+                var table = HISTORY.ElementAt(index);
+                table = CourseInfo.getHistoryTable(table);
                 int n = 0;
 
-                while (n < table.Count)
+                while (n < table.students.Count)
                 {
-                    Student stu = table.ElementAt(n);
+                    Student stu = table.students.ElementAt(n);
                     var stuinfo = getStudentInfo(stu.id);
                     if (stuinfo == null)
                     {
-                        table.Remove(stu);
+                        table.students.Remove(stu);
                         continue;
                     }
 
@@ -161,7 +160,6 @@ namespace attendanceManagement.Models
                     n++;
                 }
                 return table;
-            }
         }
 
         /// <summary>
@@ -169,28 +167,9 @@ namespace attendanceManagement.Models
         /// </summary>
         public int nrofstu
         {
-            get { return students.Count; }
+            get { return STUDENTS.Count; }
         }
 
-
-        /// <summary>
-        /// 获得历史考勤表已到人数 {get;}
-        /// </summary>
-        public int nrofarrived
-        {
-            get
-            {
-                int selectdateindex = MainwindowData.data.DateIndex;
-                var temp = HISTORY.ElementAt(selectdateindex);
-                int count = 0;
-                foreach (var stu in temp.table)
-                {
-                    if (stu.CHECK.isArrived())
-                        count++;
-                }
-                return count;
-            }
-        }
 
 
         /// <summary>

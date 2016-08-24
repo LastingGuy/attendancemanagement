@@ -72,6 +72,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\attendanceManagementModel.cs" />
+    <Compile Include="Models\CheckingTable.cs" />
     <Compile Include="Models\CheckStatus.cs" />
     <Compile Include="Models\Course.cs" />
     <Compile Include="Models\CourseDate.cs" />

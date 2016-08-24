@@ -68,9 +68,9 @@ namespace attendanceManagement.Models
         public static CheckStatus parseCode(string code)
         {
             if (code == "1")
-                return ABSENCE;
-            else
                 return ARRIVED;
+            else
+                return ABSENCE;
         }
 
         /**************************

@@ -115,8 +115,6 @@ namespace attendanceManagement
         }
 
 
-
-
     }//MainWindow结束
    
 }

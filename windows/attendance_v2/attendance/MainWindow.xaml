@@ -343,7 +343,7 @@
                         </ResourceDictionary.MergedDictionaries>
                     </ResourceDictionary>
                 </Grid.Resources>
-                <TabControl Controls:TabControlHelper.IsUnderlined="True" Style="{DynamicResource TabControlStyle1}" BorderBrush="#FF382626" Background="White">
+                <TabControl x:Name="CourseInfoTabControl" Controls:TabControlHelper.IsUnderlined="True" Style="{DynamicResource TabControlStyle1}" BorderBrush="#FF382626" Background="White" >
                     <TabItem Controls:ControlsHelper.HeaderFontSize="18" Header="历史" BorderBrush="{x:Null}" Background="{x:Null}">
                         <Grid Margin="0,0,0,-2.667">
                             <Grid HorizontalAlignment="Left" Width="199.5">
@@ -414,7 +414,7 @@
                         </Grid>
                     </TabItem>
                     <TabItem Controls:ControlsHelper.HeaderFontSize="18" Header="新建">
-                        <Grid>
+                        <Grid >
                             <Grid Margin="0,-0.333,0,0" HorizontalAlignment="Left" Width="195.5">
                                 <Grid Height="151.167" VerticalAlignment="Top">
 
@@ -443,22 +443,21 @@
                                             <RowDefinition/>
                                             <RowDefinition/>
                                         </Grid.RowDefinitions>
-                                        <Label x:Name="teacher1" Content="{Binding teachername, Mode=TwoWay}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                                        <Label x:Name="teacher1" Content="{Binding teachername}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
                                         <Label x:Name="coursename1" Content="{Binding coursename}" HorizontalContentAlignment="Center" Grid.Row="1" VerticalContentAlignment="Center"/>
-                                        <Label x:Name="nrofstu1" Content="50" HorizontalContentAlignment="Center" Grid.Row="2" VerticalContentAlignment="Center" Margin="0,5,0,-5"/>
-                                        <Label x:Name="arrived1" Content="0" HorizontalContentAlignment="Center" Grid.Row="3" VerticalContentAlignment="Center"/>
+                                        <Label x:Name="nrofstu1" Content="{Binding nrofstu_checking}" HorizontalContentAlignment="Center" Grid.Row="2" VerticalContentAlignment="Center" Margin="0,5,0,-5"/>
+                                        <Label x:Name="arrived1" Content="{Binding arrived_checking}" HorizontalContentAlignment="Center" Grid.Row="3" VerticalContentAlignment="Center"/>
                                     </Grid>
                                 </Grid>
                                 <Grid Margin="10,145.833,10,0" Height="74.167" VerticalAlignment="Top">
                                     <Label x:Name="label2" Content="上课时间" Margin="0,8.667,35,40.26" d:LayoutOverrides="Height"/>
-                                    <Controls:DateTimePicker x:Name="DateTimePicker"
+                                    <Controls:DateTimePicker x:Name="checkingtime"
                                       Height="12.667" Margin="0,40.24,0,7.927">
-
                                     </Controls:DateTimePicker>
                                 </Grid>
                                 <Grid Margin="10,225,10,0" Height="51" VerticalAlignment="Top">
                                     <Label x:Name="label2_Copy" Content="热点名称" Margin="0,0,35,0" VerticalAlignment="Top"/>
-                                    <TextBox  Controls:TextBoxHelper.ButtonCommand="{Binding TextBoxButtonCmd, Mode=OneWay}"
+                                    <TextBox x:Name="wifi_name"  Controls:TextBoxHelper.ButtonCommand="{Binding TextBoxButtonCmd, Mode=OneWay}"
                                          Text="Clear button" Margin="0,25.24,0,-0.24" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Height="15.427">
                                         <TextBox.Style>
                                             <Style BasedOn="{StaticResource MetroTextBox}" TargetType="{x:Type TextBox}">
@@ -478,10 +477,10 @@
                                 </Grid>
                                 <Grid Margin="10,281,10,0" Height="57.333" VerticalAlignment="Top">
                                     <Label x:Name="label2_Copy1" Content="密码" Margin="0,0,35,0" VerticalAlignment="Top"/>
-                                    <PasswordBox Margin="0,30.24,0,0"
+                                    <PasswordBox x:Name="wifi_password" Margin="0,30.24,0,0"
                                  Style="{StaticResource MetroButtonRevealedPasswordBox}"
                                  Controls:TextBoxHelper.ClearTextButton="{Binding RelativeSource={RelativeSource Self}, Path=(Controls:TextBoxHelper.HasText), Mode=OneWay}"
-                                 Controls:TextBoxHelper.IsWaitingForData="True"
+                                 Controls:TextBoxHelper.IsWaitingForData="False"
                                  Controls:TextBoxHelper.UseFloatingWatermark="True"
                                  d:LayoutOverrides="LeftMargin, RightMargin" Height="17.26" VerticalAlignment="Top" Password="12345678" />
                                 </Grid>
