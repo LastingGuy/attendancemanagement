@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<course>
+  <courseid>1234</courseid>
+  <date>20160824</date>
+  <ts>23:42</ts>
+  <te></te>
+  <students>
+    <stu>
+      <id>123456</id>
+      <name>汪京陆</name>
+      <mac>c0eefb46f7bc</mac>
+      <college>国际学院</college>
+      <major>软工</major>
+      <sclass>3</sclass>
+      <sex>男</sex>
+      <check>0</check>
+      <t />
+    </stu>
+    <stu>
+      <id>123457</id>
+      <name>哟哟哟</name>
+      <mac>303a64bdef1a</mac>
+      <college></college>
+      <major></major>
+      <sclass></sclass>
+      <sex></sex>
+      <check>0</check>
+      <t />
+    </stu>
+    <stu>
+      <id>123458</id>
+      <name>汪精陆1</name>
+      <mac>303a64bdef1a</mac>
+      <college></college>
+      <major></major>
+      <sclass></sclass>
+      <sex></sex>
+      <check>0</check>
+      <t />
+    </stu>
+  </students>
+</course>

@@ -6,23 +6,19 @@
     <teacher>汪京陆</teacher>
     <teacherid>2001</teacherid>
     <nrofstu>12</nrofstu>
-    <date />
+    <date>
+      <time>
+        <w>3</w>
+        <t>03:00</t>
+      </time>
+    </date>
   </course>
   <course>
     <id>1235</id>
     <name>c++开发</name>
     <teacher>汪京陆</teacher>
     <nrofstu>12</nrofstu>
-    <date>
-      <time>
-        <w>5</w>
-        <t>07:00</t>
-      </time>
-      <time>
-        <w>7</w>
-        <t>00:00</t>
-      </time>
-    </date>
+    <date />
   </course>
   <course>
     <id>1236</id>
