@@ -85,6 +85,7 @@
                             <th data-field="name">课程名</th>
                             <th data-field="teacher_name">教师编号</th>
                             <th data-field="teacher_id">教师姓名</th>
+                            <th data-field="attendance">查看考勤</th>
                             <th data-field="edit">编 辑</th>
                         </tr>
                         </thead>
@@ -95,6 +96,7 @@
                             <td><?php echo ($vo["cname"]); ?></td>
                             <td><?php echo ($vo["teacher"]["tid"]); ?></td>
                             <td><?php echo ($vo["teacher"]["tname"]); ?></td>
+                            <td><a class="btn btn-primary btn-xs" href="../Course/courseCondition?course_id=<?php echo ($vo["cid"]); ?>&course_name=<?php echo ($vo["cname"]); ?>">查 看</a></td>
                             <td><button class="btn btn-primary btn-xs" data-toggle="modal"
                                         data-target="#changeModal" onclick="edit_before(<?php echo ($vo["cid"]); ?>);">编 辑</button></td>
                         </tr><?php endforeach; endif; else: echo "" ;endif; ?>

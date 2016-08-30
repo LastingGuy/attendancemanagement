@@ -9,6 +9,11 @@ namespace Home\Controller;
 use Think\Controller;
 class ClassController extends Controller {
     public function index(){
+        if(!session('?admin'))
+        {
+            header('Location:'.U("Home/Index/index"));
+        }
+
         $res_path = C("RES_PATH");
         $this->assign("res_path",$res_path);
         $model = D('ClassSitutation');
@@ -18,6 +23,11 @@ class ClassController extends Controller {
     }
 
     public function add(){
+        if(!session('?admin'))
+        {
+            header('Location:'.U("Home/Index/index"));
+        }
+
         //得到数据
         $data['cid'] = I("get.course_id");
         $data['sid'] = I("get.stu_id");
@@ -40,6 +50,11 @@ class ClassController extends Controller {
     }
 
     public function delete(){
+        if(!session('?admin'))
+        {
+            header('Location:'.U("Home/Index/index"));
+        }
+
         $ids = I("get.ids");
         $model = M('ClassSitutation');
         $result = Array();

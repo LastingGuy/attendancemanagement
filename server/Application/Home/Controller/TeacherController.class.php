@@ -10,6 +10,10 @@ use Think\Controller;
 use Think\Exception;
 class TeacherController extends Controller {
     public function index(){
+        if(!session('?admin'))
+        {
+            header('Location:'.U("Home/Index/index"));
+        }
         $res_path = C("RES_PATH");
         $this->assign("res_path",$res_path);
         $tea = M('Teacher');
@@ -20,6 +24,11 @@ class TeacherController extends Controller {
     }
 
     public function add(){
+        if(!session('?admin'))
+        {
+            header('Location:'.U("Home/Index/index"));
+        }
+
         //得到数据
         $data['tid'] = I("get.id");
         $data['tname'] = I("get.name");
@@ -45,6 +54,11 @@ class TeacherController extends Controller {
     }
 
     public function delete(){
+        if(!session('?admin'))
+        {
+            header('Location:'.U("Home/Index/index"));
+        }
+
         $ids = I("get.ids");
         $model = M('Teacher');
         $result = Array();
@@ -58,6 +72,11 @@ class TeacherController extends Controller {
 
 
     public function editBefore(){
+
+        if(!session('?admin'))
+        {
+            header('Location:'.U("Home/Index/index"));
+        }
         $id = I("get.id");
 
         $model = M("Teacher");
@@ -66,6 +85,11 @@ class TeacherController extends Controller {
     }
 
     public function update(){
+        if(!session('?admin'))
+        {
+            header('Location:'.U("Home/Index/index"));
+        }
+        
         //得到数据
         $data['tid'] = I("get.id");
         $data['tname'] = I("get.name");

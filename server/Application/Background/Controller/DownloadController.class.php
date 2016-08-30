@@ -10,7 +10,13 @@ use Think\Controller;
 class DownloadController extends Controller{
     //获取课程xml
     public function getCourse(){
-        $tea_id = I('get.teacher_id');
+
+        if(!session('?teacher'))
+        {
+            header('Location:'.U("Home/Index/index"));
+        }
+        $tea_id = session("teacher");
+
         $xml = new \DOMDocument('1.0','utf-8');
         $courses = $xml->createElement("courses");
         $model = D('Course');
@@ -56,6 +62,11 @@ class DownloadController extends Controller{
     //获取考勤名单xml
     public function getAttendanceList()
     {
+        if(!session('?teacher'))
+        {
+            header('Location:'.U("Home/Index/index"));
+        }
+
         $course_id = I("get.course_id",'123');
         $xml = new \DOMDocument('1.0', 'utf-8');
         $students = $xml->createElement("students");
@@ -103,9 +114,14 @@ class DownloadController extends Controller{
 
     //获取md5
     public function getMD5(){
-        $tea_id = I("get.tea_id");
+        if(!session('?teacher'))
+        {
+            header('Location:'.U("Home/Index/index"));
+        }
+        $tea_id = session("teacher");
+
         $model = M("Teacher");
         $data = $model->where("tid='$tea_id'")->find();
-        $this->show($data['tchange']);
+        echo $data['tchange'];
     }
 }

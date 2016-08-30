@@ -13,6 +13,10 @@ class UploadController extends Controller {
     private static $rootpath = 'd:/Upload/';    //上传根目录
 
     public function upload(){
+        if(!session('?teacher'))
+        {
+            header('Location:'.U("Home/Index/index"));
+        }
 
         $upload = new \Think\Upload();
         $upload->maxSize = 3145728;
@@ -46,6 +50,10 @@ class UploadController extends Controller {
     }
 
     private function handleXml($oldfile,$filename){
+        if(!session('?teacher'))
+        {
+            header('Location:'.U("Home/Index/index"));
+        }
         $xml = new \DOMDocument();
         $course_id = null;
         //找到课程id

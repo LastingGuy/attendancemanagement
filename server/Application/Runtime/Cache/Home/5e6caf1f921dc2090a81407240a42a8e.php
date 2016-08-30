@@ -87,7 +87,9 @@
                                 <th data-field="sex"  data-sortable="true">性 别</th>
                                 <th data-field="nationality">国 家</th>
                                 <th data-field="college">学 院</th>
+                                <th data-field="major">专 业</th>
                                 <th data-field="class" >班 级</th>
+                                <th data-field="tel">电 话</th>
                                 <th data-field="mac" >Mac地址</th>
                                 <th data-field="password" >密 码</th>
                                 <th data-field="edit">编 辑</th>
@@ -104,7 +106,9 @@
                                 </td>
                                 <td><?php echo ($vo["snationality"]); ?></td>
                                 <td><?php echo ($vo["scollege"]); ?></td>
+                                <td><?php echo ($vo["smajor"]); ?></td>
                                 <td><?php echo ($vo["sclass"]); ?></td>
+                                <td><?php echo ($vo["stel"]); ?></td>
                                 <td><?php echo ($vo["smac"]); ?></td>
                                 <td><?php echo ($vo["spassword"]); ?></td>
                                 <td><button class="btn btn-primary btn-xs" data-toggle="modal"
@@ -184,10 +188,28 @@
                         </div>
 
                         <div class="form-group">
+                            <div id="check9">
+                                <label  class="col-lg-2 col-lg-offset-1 control-label">专 业</label>
+                                <div class="col-lg-6">
+                                    <input type="text" class="form-control" placeholder="请输入专业"  id="major" name="major">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
                             <div id="check6">
-                                <label  class="col-lg-2 col-lg-offset-1 control-label">班级</label>
+                                <label  class="col-lg-2 col-lg-offset-1 control-label">班 级</label>
                                 <div class="col-lg-6">
                                     <input type="text" class="form-control" placeholder="请输入班级"  id="class" name="class">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div>
+                                <label  class="col-lg-2 col-lg-offset-1 control-label">电 话</label>
+                                <div class="col-lg-6">
+                                    <input type="text" class="form-control" placeholder="请输入电话"  id="tel" name="tel">
                                 </div>
                             </div>
                         </div>
@@ -290,9 +312,27 @@
 
                         <div class="form-group">
                             <div>
+                                <label  class="col-lg-2 col-lg-offset-1 control-label">专 业</label>
+                                <div class="col-lg-6">
+                                    <input type="text" class="form-control" placeholder="请输入专业"  id="emajor" name="emjor">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div>
                                 <label  class="col-lg-2 col-lg-offset-1 control-label">班 级</label>
                                 <div class="col-lg-6">
                                     <input type="text" class="form-control" placeholder="请输入班级"  id="eclass" name="eclass">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div id="check10">
+                                <label  class="col-lg-2 col-lg-offset-1 control-label">电 话</label>
+                                <div class="col-lg-6">
+                                    <input type="text" class="form-control" placeholder="请输入电话"  id="etel" name="etel">
                                 </div>
                             </div>
                         </div>
@@ -380,7 +420,8 @@
             var aclass = $("#class").val();
             var mac = $("#mac").val();
             var passwd = $("#passwd").val();
-
+            var major = $("#major").val();
+            var tel = $("#tel").val();
             $.get("../Student/add",{
                 "id":id,
                 "name":name,
@@ -389,7 +430,9 @@
                 "college":college,
                 "aclass":aclass,
                 "mac":mac,
-                "passwd":passwd
+                "passwd":passwd,
+                "major":major,
+                "tel":tel
             },function(data,status){
                 if(data["success"]){
                     $("#close").click();
@@ -419,6 +462,8 @@
                 $("#eclass").val(data['sclass']);
                 $("#emac").val(data['smac']);
                 $("#epassword").val(data['spassword']);
+                $("#etel").val(data['etel']);
+                $("#emajor").val(data['emajor']);
 
                 $("#eid").attr("disabled","disabled");
             });
@@ -433,6 +478,8 @@
             var eclass = $("#eclass").val();
             var emac = $("#emac").val();
             var epasswd = $("#epassed").val();
+            var etel = $("#etel").val();
+            var emajor = $("#emajor").val();
 
             $.get("../Student/update",{
                 "id":eid,
@@ -442,7 +489,9 @@
                 "college":ecollege,
                 "class":eclass,
                 "mac":emac,
-                "passwd":epasswd
+                "passwd":epasswd,
+                "tel":etel,
+                "major":emajor
             },function(data,status){
                 if(data["success"]){
                     $("#close2").click();

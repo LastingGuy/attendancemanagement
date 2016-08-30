@@ -11,6 +11,10 @@ class StudentController extends Controller
 {
     public function index()
     {
+        if(!session('?admin'))
+        {
+            header('Location:'.U("Home/Index/index"));
+        }
         $res_path = C("RES_PATH");
         $this->assign("res_path", $res_path);
         $stu = M("Student");
@@ -22,6 +26,10 @@ class StudentController extends Controller
 
     public function add()
     {
+        if(!session('?admin'))
+        {
+            header('Location:'.U("Home/Index/index"));
+        }
         //得到数据
         $id = I("get.id");
         $name = I("get.name");
@@ -31,6 +39,8 @@ class StudentController extends Controller
         $aclass = I("get.aclass");
         $mac = I("get.mac");
         $passwd = I("get.passwd");
+        $major = I("get.major");
+        $tel = I("get.tel");
 
         $stu = M('Student');
         $data["sid"] = $id;
@@ -41,6 +51,9 @@ class StudentController extends Controller
         $data["sclass"]  = $aclass;
         $data["smac"]  = $mac;
         $data["spassword"]  = $passwd;
+        $data['stel'] = $tel;
+        $data['smajor'] = $major;
+
         try{
             $result = $stu->add($data);
         }
@@ -61,6 +74,10 @@ class StudentController extends Controller
 
     public function delete()
     {
+        if(!session('?admin'))
+        {
+            header('Location:'.U("Home/Index/index"));
+        }
         $ids = I("get.ids");
         $stu = M("Student");
         $result = Array();
@@ -72,6 +89,10 @@ class StudentController extends Controller
     }
 
     public function findClass(){
+        if(!session('?admin'))
+        {
+            header('Location:'.U("Home/Index/index"));
+        }
         $id = I("get.id");
         $model = new \Think\Model();
         $list = $model->query("select * from zhengcy_class where zcy_Mno='%s'",$id);
@@ -79,6 +100,10 @@ class StudentController extends Controller
     }
 
     public function student(){
+        if(!session('?admin'))
+        {
+            header('Location:'.U("Home/Index/index"));
+        }
         $res_path = C("RES_PATH");
         $student = I("get.id");
         $model = new \Think\Model();
@@ -90,6 +115,10 @@ class StudentController extends Controller
     }
 
     public function editBefore(){
+        if(!session('?admin'))
+        {
+            header('Location:'.U("Home/Index/index"));
+        }
         $id = I("get.id");
 
         $stu = M('Student');
@@ -99,6 +128,10 @@ class StudentController extends Controller
     }
 
     public function update(){
+        if(!session('?admin'))
+        {
+            header('Location:'.U("Home/Index/index"));
+        }
         //得到数据
 
         $data['sid'] = I("get.id");
@@ -109,17 +142,19 @@ class StudentController extends Controller
         $data['sclass'] = I("get.class");
         $data['smac'] = I("get.mac");
         $data['spasswd'] = I("get.passwd");
+        $data['smajor'] = I("get.major");
+        $data['stel'] = I("get.tel");
 
         $stu = M("Student");
         $result = $stu->save($data);
 
 
         if($result == true)
-            $data['success'] = true;
+            $res['success'] = true;
         else
-            $data['success'] = false;
+            $res['success'] = false;
 
-        $this->ajaxReturn($data);
+        $this->ajaxReturn($res);
 
     }
 
