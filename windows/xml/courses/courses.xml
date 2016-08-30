@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<courses>
+  <course>
+    <id>1234</id>
+    <name>数据库</name>
+    <teacher>汪京陆</teacher>
+    <teacherid>2001</teacherid>
+    <nrofstu>12</nrofstu>
+    <date>
+      <time>
+        <w>3</w>
+        <t>03:00</t>
+      </time>
+    </date>
+  </course>
+  <course>
+    <id>1235</id>
+    <name>c++开发</name>
+    <teacher>汪京陆</teacher>
+    <nrofstu>12</nrofstu>
+    <date />
+  </course>
+  <course>
+    <id>1236</id>
+    <name>计算机通信</name>
+    <teacher>汪京陆</teacher>
+    <nrofstu>12</nrofstu>
+    <date>
+      <time>
+        <w>4</w>
+        <t>03:30</t>
+      </time>
+    </date>
+  </course>
+</courses>

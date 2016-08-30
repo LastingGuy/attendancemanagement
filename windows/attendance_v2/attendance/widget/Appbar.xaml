@@ -1,0 +1,139 @@
+﻿<UserControl x:Class="attendanceManagement.widget.Appbar"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:attendanceManagement.widget"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resources/Icons.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid Margin="0,10,0,0" Height="100" VerticalAlignment="Top" d:LayoutOverrides="Height" >
+        <Grid HorizontalAlignment="Left" Width="100" VerticalAlignment="Top" Height="100">
+            <Label x:Name="label" Content="登录" VerticalAlignment="Bottom" d:LayoutOverrides="Width" Margin="0,0,0,5.26" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+            <Button x:Name="btn_login" Width="50"                
+            	Style="{DynamicResource MetroCircleButtonStyle}" Margin="20,10,26,31" Click="login_dialog" HorizontalAlignment="Center" Height="50">
+                <Rectangle Width="20"
+            		Height="20"
+            		Fill="White">
+                    <Rectangle.OpacityMask>
+                        <VisualBrush Stretch="Uniform" Visual="{DynamicResource appbar_people}" />
+                    </Rectangle.OpacityMask>
+                </Rectangle>
+            </Button>
+        </Grid>
+        <Grid VerticalAlignment="Top" Height="100" Margin="0,0,608.4,0" HorizontalAlignment="Right">
+            <Label x:Name="start_Label" Content="{Binding startlabel}" VerticalAlignment="Bottom" d:LayoutOverrides="Width" Margin="0,0,0,5.26" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+            <ToggleButton Width="50" Name="btn_start"
+                              Height="50"
+                              Style="{DynamicResource MetroCircleToggleButtonStyle}" Margin="25,10,25,40"
+                              IsChecked="{Binding checking}"
+                              
+                          >
+                <Rectangle Width="20"
+                               Height="20"
+                               Fill="White">
+                    <Rectangle.OpacityMask>
+                        <VisualBrush Stretch="Uniform" Visual="{DynamicResource appbar_radar_screen}" />
+                    </Rectangle.OpacityMask>
+                </Rectangle>
+            </ToggleButton>
+        </Grid>
+        <Grid VerticalAlignment="Top" Height="100" Margin="0,0,503.4,0" HorizontalAlignment="Right">
+            <Label x:Name="label7" Content="全部学生" VerticalAlignment="Bottom" d:LayoutOverrides="Width" Margin="0,0,0,5.26" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+            <Button x:Name="btn_allstudent" Width="50"                
+        		Style="{DynamicResource MetroCircleButtonStyle}" Margin="25,10,25,40" Click="btn_allstudent_Click">
+                <Rectangle x:Name="btn_start2" Width="20"
+        			Height="20"
+        			Fill="White">
+                    <Rectangle.OpacityMask>
+                        <VisualBrush Stretch="Uniform" Visual="{DynamicResource appbar_people_multiple}" />
+                    </Rectangle.OpacityMask>
+                </Rectangle>
+            </Button>
+        </Grid>
+        <Grid HorizontalAlignment="Right" Width="100" VerticalAlignment="Top" Height="100" Margin="0,0,500,0" Visibility="Hidden">
+            <Label x:Name="label2" Content="迟到学生" VerticalAlignment="Bottom" d:LayoutOverrides="Width" Margin="0,0,0,5.26" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+            <Button x:Name="btn_late" Width="50"                
+            	Style="{DynamicResource MetroCircleButtonStyle}" Margin="25,10,25,40" Click="login_dialog">
+                <Rectangle x:Name="btn_start1" Width="20"
+            		Height="20"
+            		Fill="White">
+                    <Rectangle.OpacityMask>
+                        <VisualBrush Stretch="Uniform" Visual="{DynamicResource appbar_smiley_cry}" />
+                    </Rectangle.OpacityMask>
+                </Rectangle>
+            </Button>
+        </Grid>
+        <Grid VerticalAlignment="Top" Height="100" Margin="458,0,400,0" HorizontalAlignment="Right">
+            <Label x:Name="label3" Content="未到学生" VerticalAlignment="Bottom" d:LayoutOverrides="Width" Margin="0,0,0,5.26" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+            <Button x:Name="btn_absence" Width="50"                
+            	Style="{DynamicResource MetroCircleButtonStyle}" Margin="25,10,25,40" Click="btn_absence_Click">
+                <Rectangle x:Name="btn_start3" Width="20"
+            		Height="20"
+            		Fill="White">
+                    <Rectangle.OpacityMask>
+                        <VisualBrush Stretch="Uniform" Visual="{DynamicResource appbar_smiley_frown}" />
+                    </Rectangle.OpacityMask>
+                </Rectangle>
+            </Button>
+        </Grid>
+        <Grid HorizontalAlignment="Right" Width="100" VerticalAlignment="Top" Height="100" Margin="0,0,305,0">
+            <Label x:Name="label4" Content="已到/未到" VerticalAlignment="Bottom" d:LayoutOverrides="Width" Margin="0,0,0,5.26" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+            <Button x:Name="btn_change" Width="50"                
+            	Style="{DynamicResource MetroCircleButtonStyle}" Margin="25,10,25,40" Click="btn_change_Click">
+                <Rectangle x:Name="btn_start4" Width="20"
+            		Height="20"
+            		Fill="White">
+                    <Rectangle.OpacityMask>
+                        <VisualBrush Stretch="Uniform" Visual="{DynamicResource appbar_people_sensor}" />
+                    </Rectangle.OpacityMask>
+                </Rectangle>
+            </Button>
+        </Grid>
+        <Grid HorizontalAlignment="Right" Width="100" VerticalAlignment="Top" Height="100" Margin="0,0,100,0">
+            <Label x:Name="label5" Content="同步" VerticalAlignment="Bottom" d:LayoutOverrides="Width" Margin="0,0,0,5.26" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+            <Button x:Name="btn_sync" Width="50"                
+            	Style="{DynamicResource MetroCircleButtonStyle}" Margin="25,10,25,40" Click="login_dialog">
+                <Rectangle x:Name="btn_start5" Width="20"
+            		Height="20"
+            		Fill="White">
+                    <Rectangle.OpacityMask>
+                        <VisualBrush Stretch="Uniform" Visual="{DynamicResource appbar_refresh}" />
+                    </Rectangle.OpacityMask>
+                </Rectangle>
+            </Button>
+        </Grid>
+        <Grid HorizontalAlignment="Right" Width="100" VerticalAlignment="Top" Height="100" Margin="0,0,-1.6,0">
+            <Label x:Name="label6" Content="设置" VerticalAlignment="Bottom" d:LayoutOverrides="Width" Margin="0,0,0,5.26" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+            <Button x:Name="btn_setting" Width="50"                
+            	Style="{DynamicResource MetroCircleButtonStyle}" Margin="25,10,25,40"  d:LayoutOverrides="HorizontalAlignment" Click="btn_setting_Click">
+                <Rectangle Width="20"
+            		Height="20"
+            		Fill="White">
+                    <Rectangle.OpacityMask>
+                        <VisualBrush Stretch="Uniform" Visual="{DynamicResource appbar_settings}" />
+                    </Rectangle.OpacityMask>
+                </Rectangle>
+            </Button>
+        </Grid>
+        <Grid HorizontalAlignment="Right" Width="100" VerticalAlignment="Top" Height="100" Margin="0,0,205,0">
+            <Label x:Name="label8" Content="上课时间" VerticalAlignment="Bottom" d:LayoutOverrides="Width" Margin="0,0,0,5.26" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+            <Button x:Name="btn_timesetting" Width="50"                
+        		Style="{DynamicResource MetroCircleButtonStyle}" Margin="25,10,25,40" Click="btn_time_setting_Click" d:LayoutOverrides="HorizontalAlignment">
+                <Rectangle Width="20"
+        			Height="20"
+        			Fill="White">
+                    <Rectangle.OpacityMask>
+                        <VisualBrush Stretch="Uniform" Visual="{DynamicResource appbar_clipboard_edit}" />
+                    </Rectangle.OpacityMask>
+                </Rectangle>
+            </Button>
+        </Grid>
+
+    </Grid>
+</UserControl>

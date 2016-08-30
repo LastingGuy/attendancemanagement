@@ -1,0 +1,70 @@
+﻿<UserControl x:Class="attendanceManagement.widget.SettingView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:attendanceManagement.widget"
+             xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+             mc:Ignorable="d" d:DesignWidth="300">
+    <Grid Width="200">
+
+        <TextBox x:Name="textBox" Height="24.333" Margin="3.942,-105.667,9.667,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>
+        <TextBlock x:Name="textBlock" Margin="63,0,65,10" TextWrapping="Wrap" VerticalAlignment="Bottom" d:LayoutOverrides="Width">
+            <Hyperlink NavigateUri="http://www.jingl.wang"
+                       RequestNavigate="Hyperlink_RequestNavigate">
+                查看操作指南 
+                </Hyperlink>
+        </TextBlock>
+        <Grid Margin="0,10,0,0" VerticalAlignment="Top">
+            <Grid Margin="10,37.02,0,0" VerticalAlignment="Top">
+                <TextBlock TextWrapping="Wrap" Text="默认热点名" VerticalAlignment="Top" Margin="10,0"/>
+                <TextBox x:Name="wifiname" 
+        			Controls:TextBoxHelper.ButtonCommand="{Binding TextBoxButtonCmd, Mode=OneWay}"
+        			Height="21" VerticalAlignment="Top" Margin="10,20.24,10,0">
+                    <TextBox.Style>
+                        <Style BasedOn="{StaticResource MetroTextBox}" TargetType="{x:Type TextBox}">
+                            <Setter Property="Controls:TextBoxHelper.ClearTextButton" Value="True" />
+                            <Style.Triggers>
+                                <Trigger Property="Controls:TextBoxHelper.HasText" Value="False">
+                                    <Setter Property="Controls:TextBoxHelper.ClearTextButton" Value="False" />
+                                    <Setter Property="Controls:TextBoxHelper.Watermark" Value="默认为课程名+教师姓名" />
+                                </Trigger>
+                                <Trigger Property="Controls:TextBoxHelper.HasText" Value="True">
+                                    <Setter Property="Controls:TextBoxHelper.ClearTextButton" Value="True" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBox.Style>
+                </TextBox>
+            </Grid>
+            <Grid Margin="10,83.26,0,0" VerticalAlignment="Top">
+                <TextBlock x:Name="textBlock1" TextWrapping="Wrap" Text="默认密码" VerticalAlignment="Top" Margin="10,0,0,0"/>
+                <PasswordBox x:Name="wifipassword" 
+            		Style="{StaticResource MetroButtonRevealedPasswordBox}"
+            		Controls:TextBoxHelper.ClearTextButton="{Binding (Controls:TextBoxHelper.HasText), Mode=OneWay, RelativeSource={RelativeSource Self}}"
+            		Controls:TextBoxHelper.IsWaitingForData="True"
+            		Controls:TextBoxHelper.Watermark="Revealed PasswordBox" Margin="10,20.24,10,0" Height="14" VerticalAlignment="Top"
+            		Password="12345678"
+                />
+            </Grid>
+            <Label x:Name="label" Content="热点设置" Height="32.02" Margin="10,0" VerticalAlignment="Top" FontSize="14.667" FontWeight="Bold"/>
+        </Grid>
+        <Grid Margin="3.942,156.5,0,0" VerticalAlignment="Top">
+            <Label x:Name="label1" Content="清空缓存" Margin="10,0" VerticalAlignment="Top" FontSize="13.333" FontWeight="Bold"/>
+            <Button x:Name="btn_clean" Width="100"
+                    
+                    Content="清空"
+                    Style="{DynamicResource AccentedSquareButtonStyle}" Margin="46.029,27,50.029,0" Height="27.5" VerticalAlignment="Top" Click="btn_clean_Click" />
+
+            <Controls:MetroProgressBar x:Name="clean_process"
+                                       Width="200"
+                                       Margin="-13.942,59.5,10,0"
+                                       Foreground="{DynamicResource AccentColorBrush}"
+                                       IsIndeterminate="True"
+                                       Maximum="100"
+                                       Minimum="0"              
+                                       Value="{Binding ElementName=horizSlider, Path=Value}" VerticalAlignment="Top" Visibility="Hidden" />
+        </Grid>
+
+    </Grid>
+</UserControl>

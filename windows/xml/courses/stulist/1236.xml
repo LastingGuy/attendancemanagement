@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>  
+<students>
+	<stu>
+		<id>123456</id>
+		<name>汪京陆</name>
+		<mac>c0eefb46f7bc</mac>
+		<college>国际学院</college>
+		<major>软工</major>
+		<sclass>3</sclass>
+		<sex>男</sex>
+	</stu>	
+</students>
