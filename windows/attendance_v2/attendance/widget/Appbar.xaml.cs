@@ -63,5 +63,19 @@ namespace attendanceManagement.widget
             (window.Flyouts.Items[1] as Flyout).IsOpen = true;
         }
 
+        private void btn_absence_Click(object sender, RoutedEventArgs e)
+        {
+            MainwindowData.data.showAbsenceStudents = true;
+        }
+
+        private void btn_allstudent_Click(object sender, RoutedEventArgs e)
+        {
+            MainwindowData.data.showAllStudents = true;
+        }
+
+        private void btn_change_Click(object sender, RoutedEventArgs e)
+        {
+            MainwindowData.data.ChangeState = true;
+        }
     }
 }

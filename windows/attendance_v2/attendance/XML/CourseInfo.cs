@@ -228,9 +228,9 @@ namespace attendanceManagement.XML
             dom.Add(root);
 
             //保存至history文件夹
-            dom.Save(DIR.safedir(DIR.HISTORY + table.courseID, table.date+ table.ts.Replace(":","") + ".xml"));
+            dom.Save(DIR.safedir(DIR.HISTORY + table.courseID, table.date + ".xml"));
             //保存至upload文件夹
-            dom.Save(DIR.safedir(DIR.UPLOAD , table.courseID + table.date + table.ts.Replace(":", "") + ".xml"));
+            dom.Save(DIR.safedir(DIR.UPLOAD , table.courseID + table.date  + ".xml"));
 
             return result;
         }

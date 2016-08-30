@@ -398,7 +398,7 @@
                                 <Path Data="M167.66667,29.666667 L168.16634,431.833" HorizontalAlignment="Right" Margin="0,29.667,1.833,10" Stretch="Fill" Stroke="#FFBBBBBB" Width="1"/>
                             </Grid>
                             <DataGrid ItemsSource="{Binding Student}" Name="HistoryDATA"
-                            	AutoGenerateColumns="False" Foreground="Black" Background="#FFFDFDFD" Margin="199.5,0,0,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                            	AutoGenerateColumns="False" Foreground="Black" Background="#FFFDFDFD" Margin="199.5,0,0,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" CanUserAddRows="False">
                                 <DataGrid.Columns>
                                     <DataGridCheckBoxColumn Binding="{Binding RelativeSource={RelativeSource AncestorType=DataGridRow}, Path=IsSelected, Mode=OneWay}"
                                         EditingElementStyle="{DynamicResource MetroDataGridCheckBox}"
@@ -492,7 +492,7 @@
                                 <Path Data="M191,23.333 L190.5,430.833" HorizontalAlignment="Right" Margin="0,23.333,3.5,10" Stretch="Fill" Width="1" Fill="#FFF4F4F5" Stroke="#FFBBBBBB"/>
                             </Grid>
                             <DataGrid x:Name="NewTable" ItemsSource="{Binding Student}"
-                            	AutoGenerateColumns="False" Foreground="Black" Background="#FFFDFDFD" Margin="200.5,0,0,-2.667">
+                            	AutoGenerateColumns="False" Foreground="Black" Background="#FFFDFDFD" Margin="200.5,0,0,-2.667" CanUserAddRows="False">
                                 <DataGrid.Columns>
                                     <DataGridCheckBoxColumn Binding="{Binding IsSelected, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}}"
                             			EditingElementStyle="{DynamicResource MetroDataGridCheckBox}"

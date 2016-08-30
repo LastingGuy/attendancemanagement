@@ -408,8 +408,7 @@ namespace attendanceManagement.Models
             set
             {
                 _historychcekingtable = value;
-                Window.HistoryDATA.ItemsSource = _historychcekingtable.students;
-                Window.HistoryDATA.Items.Refresh();
+                showAllStudents = true;
 
                 nrofstu = _historychcekingtable.nrOfstu;
                 arrived = _historychcekingtable.arrived;
@@ -420,6 +419,40 @@ namespace attendanceManagement.Models
                 return _historychcekingtable;
             }
         }
+
+        //显示未到学生
+        public bool showAbsenceStudents
+        {
+            set
+            {
+                if (value)
+                {
+                    if (currentTab == 0)
+                        Window.HistoryDATA.ItemsSource = _historychcekingtable.absenceStudents;
+                    else
+                        Window.HistoryDATA.ItemsSource = _checkingtable.absenceStudents;
+                    Window.HistoryDATA.Items.Refresh();
+                }
+            }
+        }
+
+        //显示已到全部学生
+        public bool showAllStudents
+        {
+            set
+            {
+                if(value)
+                {
+                    if(currentTab==0)
+                        Window.HistoryDATA.ItemsSource = _historychcekingtable.students;
+                    else
+                        Window.HistoryDATA.ItemsSource = _checkingtable.students;
+                    Window.HistoryDATA.Items.Refresh();
+                }
+            }
+        }
+
+
 
         //绑定新建表格
         CheckingTable _checkingtable;
@@ -436,6 +469,49 @@ namespace attendanceManagement.Models
             get
             {
                 return _checkingtable;
+            }
+        }
+
+        //修改学生出勤状态
+        public bool ChangeState
+        {
+            set
+            {
+                if(value)
+                {
+                    if(currentTab==0)
+                    {
+                        var list = Window.HistoryDATA.SelectedItems;
+                        foreach(Student temp in list)
+                        {
+                            foreach(Student stu in _historychcekingtable.students)
+                            {
+                                if(stu.id == temp.id)
+                                {
+                                    stu.changeState();
+                                }
+                            }
+                        }
+                        Window.HistoryDATA.Items.Refresh();
+                        CourseInfo.saveAttendancetable(historycheckingtable);
+                    }
+                    else
+                    {
+                        var list = Window.NewTable.SelectedItems;
+                        
+                        foreach (Student temp in list)
+                        {
+                            foreach (Student stu in _checkingtable.students)
+                            {
+                                if (stu.id == temp.id)
+                                {
+                                    stu.changeState();
+                                }
+                            }
+                        }
+                        Window.NewTable.Items.Refresh();
+                    }
+                }
             }
         }
 

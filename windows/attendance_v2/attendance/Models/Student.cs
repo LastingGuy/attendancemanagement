@@ -82,6 +82,16 @@ namespace attendanceManagement.Models
             get { return check.code(); }
         }
 
+
+        //修改状态
+        public void changeState()
+        {
+            if (check == CheckStatus.ABSENCE)
+                check = CheckStatus.ARRIVED;
+            else
+                check = CheckStatus.ABSENCE;
+        }
+
     }
 
 }

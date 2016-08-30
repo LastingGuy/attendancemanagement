@@ -17,6 +17,21 @@ namespace attendanceManagement.Models
 
         public List<Student> students;
 
+        public List<Student> absenceStudents
+        {
+            get
+            {
+                List<Student> list = new List<Student>();
+                foreach(Student stu in students)
+                {
+                    if(!stu.CHECK.isArrived())
+                    {
+                        list.Add(stu);
+                    }
+                }
+                return list;
+            }
+        }
 
         /// <summary>
         /// 构造考勤表不导入学生名单
