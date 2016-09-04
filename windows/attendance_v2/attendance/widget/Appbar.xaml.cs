@@ -15,6 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using MahApps.Metro.Controls;
 using attendanceManagement.Models;
+using attendanceManagement.NET;
 
 namespace attendanceManagement.widget
 {
@@ -44,7 +45,7 @@ namespace attendanceManagement.widget
             }
             else
             {
-
+                new UpLoad().login(result.Username, result.Password);
                 MessageDialogResult messageResult = await window.ShowMessageAsync("Authentication Information", String.Format("Username: {0}\nPassword: {1}\nShouldRemember: {2}", result.Username, result.Password, result.ShouldRemember));
             }
         }
@@ -76,6 +77,11 @@ namespace attendanceManagement.widget
         private void btn_change_Click(object sender, RoutedEventArgs e)
         {
             MainwindowData.data.ChangeState = true;
+        }
+
+        private void btn_sync_Click(object sender, RoutedEventArgs e)
+        {
+            new DownLoad().getclasslist();
         }
     }
 }

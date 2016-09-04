@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Net;
+using attendanceManagement.Models;
+using System.IO;
 
 namespace attendanceManagement.NET
 {
@@ -24,18 +26,26 @@ namespace attendanceManagement.NET
             }
            
         }
-        public string getclasslist(string teacherid)
+        public bool getclasslist()
         {
             try
             {
                 WebClient client = new WebClient();
-                string post = "?teacherid=" + teacherid;
-                client.DownloadFile(URL.getclasslist_dir + post, "list/classes.xml");
-                return client.DownloadString(URL.getclasslist_dir + post);
+                client.Headers.Set("Cookie", Teacher.cookie);
+                string result = client.DownloadString(URL_GETCOURSE);
+                if (result == "\"error\"")
+                    return false;
+                else
+                {
+                    var file = File.Open(DIR.COURSES,FileMode.CreateNew);
+                    file.Write(Encoding.UTF8.GetBytes(result), 0, Encoding.UTF8.GetByteCount(result));
+                    file.Close();
+                    return true;
+                }
             }
             catch (WebException e)
             {
-                return "";
+                return false;
             }
         }
     }

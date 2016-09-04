@@ -7,7 +7,7 @@ using System.IO;
 
 namespace attendanceManagement.NET
 {
-    class NET
+    class NET:URL
     {
 
 
@@ -24,6 +24,7 @@ namespace attendanceManagement.NET
         //初始化post写入
         protected void postBegin(Stream stream,string boundary)
         {
+            
             this.stream = stream;
             this.boundary = boundary; 
         }

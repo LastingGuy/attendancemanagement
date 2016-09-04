@@ -5,11 +5,65 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Net;
 using System.IO;
+using attendanceManagement.Models;
 
 namespace attendanceManagement.NET
 {
     class UpLoad:NET
     {
+        public bool login(string tid,string passwd)
+        {
+            string _result;
+            string _cookie;
+            try
+            {
+                HttpWebRequest request = WebRequest.Create(URL_Login) as HttpWebRequest;
+                CookieContainer cookie = new CookieContainer();
+
+
+                request.CookieContainer = cookie;
+                request.AllowAutoRedirect = true;
+                request.Method = "POST";
+
+                string boundary = DateTime.Now.Ticks.ToString("X"); // 随机分隔线
+                request.ContentType = "multipart/form-data;charset=utf-8;boundary=" + boundary;
+
+                Stream postStream = request.GetRequestStream();
+
+                //构建post数据
+                postBegin(postStream, boundary);
+                addPostData("username", tid);
+                addPostData("password", passwd);
+                addPostData("type", "1");
+                postEnd();
+
+
+                HttpWebResponse response = request.GetResponse() as HttpWebResponse;
+                Stream stream = response.GetResponseStream();
+                stream.ReadTimeout = 15 * 1000;
+                StreamReader reader = new StreamReader(stream, Encoding.UTF8);
+                _result = reader.ReadToEnd();
+                _cookie = cookie.GetCookieHeader(request.RequestUri);
+                if(_result=="\"2\"")
+                {
+                    Teacher.cookie = _cookie;
+                    Teacher.tid = tid;
+                    Teacher.passwd = passwd;
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+                
+            }
+            catch(Exception e)
+            {
+                return false;
+            }
+
+        }
+
         public bool checkin_file(string classid,string date,string key)
         {
            
