@@ -8,8 +8,15 @@ namespace attendanceManagement.Models
 {
     class Teacher
     {
-        static string name;
-
+        public static bool remember { get; set; } = true;
+        public static bool isLogin { get; set; } = false;
+        public static string LoginState
+        {
+            get
+            {
+                return isLogin ? "true" : "false";
+            }
+        }
         public static string cookie;
         public static string tid;
         public static string passwd;

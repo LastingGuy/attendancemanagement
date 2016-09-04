@@ -1,6 +1,8 @@
 ﻿using attendanceManagement.ATTENDANCE;
+using attendanceManagement.NET;
 using attendanceManagement.widget;
 using attendanceManagement.XML;
+using MahApps.Metro.Controls.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -63,44 +65,50 @@ namespace attendanceManagement.Models
                 // 获得当前选中课程，并将日期选择框选中序号赋值为-1，
                 // 把课程名和教师姓名显示在UI中，将历史记录绑定到日期
                 // 选择框中。
-
-                Course course = courselist.ElementAt(value);
-                courseindex = value;
-                DateIndex = -1;
-                coursename = course.COURSENAME;
-                teachername = course.TEACHERNAME;
-                historylist = course.HISTORY;
-                checkingtable = new CheckingTable(CurrentCourse.COURSEID, CheckingDate, CheckingTime); //新建考勤表，并显示在UI中
-
-                //设置新建选项卡
-                WIFIName = _coursename + "_" + _teachername;
-                WIFIPass = "12345678";
-                Window.checkingtime.SelectedDate = DateTime.Today;
-                TimeSpan temp;
-                TimeSpan.TryParse(DateTime.Now.ToString("HH:mm"), out temp);
-                Window.checkingtime.SelectedTime = temp;
-                
-
-                //如果正在考勤且当前查看课程与考勤课程不符，禁用”新建“tab项
-                if (checking)
+                try
                 {
-                    if (checkIndex != courseindex)
+                    Course course = courselist.ElementAt(value);
+                    courseindex = value;
+                    DateIndex = -1;
+                    coursename = course.COURSENAME;
+                    teachername = course.TEACHERNAME;
+                    historylist = course.HISTORY;
+                    checkingtable = new CheckingTable(CurrentCourse.COURSEID, CheckingDate, CheckingTime); //新建考勤表，并显示在UI中
+
+                    //设置新建选项卡
+                    WIFIName = _coursename + "_" + _teachername;
+                    WIFIPass = "12345678";
+                    Window.checkingtime.SelectedDate = DateTime.Today;
+                    TimeSpan temp;
+                    TimeSpan.TryParse(DateTime.Now.ToString("HH:mm"), out temp);
+                    Window.checkingtime.SelectedTime = temp;
+
+
+                    //如果正在考勤且当前查看课程与考勤课程不符，禁用”新建“tab项
+                    if (checking)
                     {
-                        currentTab = 0;
-                        newTabisenable = false;
+                        if (checkIndex != courseindex)
+                        {
+                            currentTab = 0;
+                            newTabisenable = false;
+                        }
+                        else
+                        {
+                            newTabisenable = true;
+                            currentTab = 1;
+                        }
                     }
                     else
                     {
                         newTabisenable = true;
-                        currentTab = 1;
                     }
-                }
-                else
-                {                   
-                    newTabisenable = true;
-                }
 
-
+                }
+                catch(ArgumentOutOfRangeException e)
+                {
+                    System.Console.WriteLine(e.Message);
+                    return;
+                }
                
                
             }
@@ -347,6 +355,8 @@ namespace attendanceManagement.Models
                 //程，则添加并显示"暂无课程"item。
 
                 _courselist = value;
+                Window.CourseSelection.SelectedIndex = -1;
+                Window.CourseSelection.Items.Clear();
                 if (_courselist.Count == 0)
                 {
                     var item = new ListBoxItem { Content = "暂无课程" };
@@ -515,8 +525,38 @@ namespace attendanceManagement.Models
             }
         }
 
-        ////////////////////////////////////////////////////////////////
+        //////////////////////////////功能///////////////////////////////
 
+        public bool Login
+        {
+            set
+            {
+                if(value)
+                {
+                    if (new UpLoad().login(Teacher.tid, Teacher.passwd))
+                    {
+                        CourseInfo.saveConfig();
+                        if(!Teacher.remember)
+                        {
+                            Teacher.tid = "";
+                            Teacher.passwd = "";
+                        }
+                        Teacher.isLogin = true;
+                        Window.loginInfo("Authentication Information", "登陆成功");
+
+                    }
+                    else
+                    {
+                        Teacher.isLogin = false;
+                        Teacher.tid = "";
+                        Teacher.passwd = "";
+                        Window.loginInfo("Authentication Information", "登陆失败");
+
+                    }
+                }
+            }
+        }
+        
 
         //当前Course
         public Course CurrentCourse

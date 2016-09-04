@@ -234,5 +234,21 @@ namespace attendanceManagement.XML
 
             return result;
         }
+
+
+        public static bool saveConfig()
+        {
+            bool result = false;
+            XDocument dom = new XDocument();
+            XElement root = new XElement("config",
+                new XElement("login", Teacher.LoginState),
+                new XElement("username", Teacher.tid),
+                new XElement("passwd", Teacher.passwd),
+                new XElement("cookie", Teacher.cookie)
+                );
+            dom.Add(root);
+            dom.Save(DIR.CONFIG);
+            return result;
+        }
     }
 }

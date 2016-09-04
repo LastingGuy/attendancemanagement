@@ -16,6 +16,7 @@ using System.Windows.Shapes;
 using MahApps.Metro.Controls;
 using attendanceManagement.Models;
 using attendanceManagement.NET;
+using attendanceManagement.XML;
 
 namespace attendanceManagement.widget
 {
@@ -39,14 +40,19 @@ namespace attendanceManagement.widget
             (window.Flyouts.Items[0] as Flyout).IsOpen = false;
             // window.teacher.Content = "hahaha";
             LoginDialogData result = await window.ShowLoginAsync("Authentication", "Enter your password", new LoginDialogSettings { ColorScheme = window.MetroDialogOptions.ColorScheme, RememberCheckBoxVisibility = Visibility.Visible });
+
+            Teacher.tid = result.Username;
+            Teacher.passwd = result.Password;
+            Teacher.remember = result.ShouldRemember;
+
             if (result == null)
             {
                 //User pressed cancel
             }
             else
             {
-                new UpLoad().login(result.Username, result.Password);
-                MessageDialogResult messageResult = await window.ShowMessageAsync("Authentication Information", String.Format("Username: {0}\nPassword: {1}\nShouldRemember: {2}", result.Username, result.Password, result.ShouldRemember));
+                MainwindowData.data.Login = true;
+                
             }
         }
 
@@ -81,7 +87,13 @@ namespace attendanceManagement.widget
 
         private void btn_sync_Click(object sender, RoutedEventArgs e)
         {
-            new DownLoad().getclasslist();
+            var download = new DownLoad();
+            download.getclasslist(); 
+            MainwindowData.data.courselist = CourseInfo.getCourses();
+            foreach(var course in MainwindowData.data.courselist)
+            {
+                download.getstulist(course.COURSEID);
+            }
         }
     }
 }

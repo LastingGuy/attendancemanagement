@@ -114,6 +114,15 @@ namespace attendanceManagement
             }
         }
 
+        public async void loginInfo(string header,string content)
+        {
+            MessageDialogResult messageResult = await DialogManager.ShowMessageAsync(this,header, content);
+        }
+        public async void errorBoard(string message)
+        {
+            MessageDialogResult messageResult = await DialogManager.ShowMessageAsync(this, "Wrong", message);
+        }
+
 
     }//MainWindow结束
    

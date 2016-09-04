@@ -11,21 +11,32 @@ namespace attendanceManagement.NET
 {
     class DownLoad : NET
     {
-        public string getstulist(string classid, string key)
+        public bool getstulist(string courseid)
         {
             try
             {
                 WebClient client = new WebClient();
-                string post = "?classid=" + classid + "&key=" + key;
-                client.DownloadFile(URL.getstulist_dir + post, "list/list.xml");
-                return client.DownloadString(URL.getclasslist_dir + post);
+                string post = "?course_id=" + courseid;
+                client.Headers.Set("Cookie", Teacher.cookie);
+                string result = client.DownloadString(URL_GETSTULIST + post);
+
+                if (result != "\"error\"" || result != "")
+                {
+                    var file = File.Create(DIR.STULIST + "/" + courseid + ".xml");
+                    file.Write(Encoding.UTF8.GetBytes(result), 0, Encoding.UTF8.GetByteCount(result));
+                    file.Close();
+                    return true;
+                }
+                else
+                    return false;
             }
             catch (WebException e)
             {
-                return "";
+                return false;
             }
            
         }
+
         public bool getclasslist()
         {
             try
@@ -33,11 +44,11 @@ namespace attendanceManagement.NET
                 WebClient client = new WebClient();
                 client.Headers.Set("Cookie", Teacher.cookie);
                 string result = client.DownloadString(URL_GETCOURSE);
-                if (result == "\"error\"")
+                if (result == "\"error\"" || result == "")
                     return false;
                 else
                 {
-                    var file = File.Open(DIR.COURSES,FileMode.CreateNew);
+                    var file = File.Create(DIR.COURSES);
                     file.Write(Encoding.UTF8.GetBytes(result), 0, Encoding.UTF8.GetByteCount(result));
                     file.Close();
                     return true;

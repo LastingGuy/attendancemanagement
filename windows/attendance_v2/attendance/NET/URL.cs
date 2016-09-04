@@ -27,6 +27,7 @@ namespace attendanceManagement.NET
 
         private const string background = root + "/background";
         private const string home = root + "/home";
+        private const string download = background + "/Download";
 
         protected string URL_Login
         {
@@ -35,9 +36,15 @@ namespace attendanceManagement.NET
                 return home + "/index/login";
             }
         }
+
         protected string URL_GETCOURSE
         {
-            get { return background + "/Download/getCourse"; }
+            get { return download + "/getCourse"; }
+        }
+
+        protected string URL_GETSTULIST
+        {
+            get { return download + "/getAttendanceList"; }
         }
     }
 }
