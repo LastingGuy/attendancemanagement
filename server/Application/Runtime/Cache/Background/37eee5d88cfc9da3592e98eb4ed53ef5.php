@@ -1,0 +1,2 @@
+<?php if (!defined('THINK_PATH')) exit();?><?xml version="1.0" encoding="utf-8"?>
+<students><stu><id>1234</id><name></name><mac></mac><college></college><major></major><sclass></sclass><sex></sex><tel></tel></stu></students>
