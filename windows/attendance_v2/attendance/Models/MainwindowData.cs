@@ -527,6 +527,9 @@ namespace attendanceManagement.Models
 
         //////////////////////////////功能///////////////////////////////
 
+        /// <summary>
+        /// 登陆
+        /// </summary>
         public bool Login
         {
             set
@@ -535,14 +538,21 @@ namespace attendanceManagement.Models
                 {
                     if (new UpLoad().login(Teacher.tid, Teacher.passwd))
                     {
+                        Teacher.isLogin = true;
+                        string md5 = new DownLoad().getmd5();
+                        if (md5 != null && md5 != Teacher.md5)
+                        {
+                            ASYNC_FILES = true;
+                            Teacher.md5 = md5;
+                        }
                         CourseInfo.saveConfig();
                         if(!Teacher.remember)
                         {
                             Teacher.tid = "";
                             Teacher.passwd = "";
                         }
-                        Teacher.isLogin = true;
-                        Window.loginInfo("Authentication Information", "登陆成功");
+                        
+                        //Window.loginInfo("Authentication Information", "登陆成功");
 
                     }
                     else
@@ -557,6 +567,31 @@ namespace attendanceManagement.Models
             }
         }
         
+        /// <summary>
+        /// 同步
+        /// </summary>
+        public bool ASYNC_FILES
+        {
+            set
+            {
+                if(value)
+                {
+                    if(!Teacher.isLogin)
+                    {
+                        Window.errorBoard("Please Log In First~");
+                        return;
+                    }
+
+                    var download = new DownLoad();
+                    download.getclasslist();
+                    MainwindowData.data.courselist = CourseInfo.getCourses();
+                    foreach (var course in MainwindowData.data.courselist)
+                    {
+                        download.getstulist(course.COURSEID);
+                    }
+                }
+            }
+        }
 
         //当前Course
         public Course CurrentCourse

@@ -73,5 +73,14 @@ namespace attendanceManagement.Models
             }
             return path;
         }
+
+
+
+        public static FileSystemInfo[] getFiles(string path)
+        {
+            DirectoryInfo courses = new DirectoryInfo(path);
+            FileSystemInfo[] list = courses.GetFileSystemInfos();
+            return list;
+        }
     };
 }

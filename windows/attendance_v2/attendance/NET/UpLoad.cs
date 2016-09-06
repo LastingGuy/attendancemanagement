@@ -64,13 +64,14 @@ namespace attendanceManagement.NET
 
         }
 
-        public bool checkin_file(string classid,string date,string key)
+        public bool checkin_file(string classid,string date)
         {
            
             string path = "db\\"+date+".xml";
             // 设置参数
             HttpWebRequest request = WebRequest.Create(URL.checkin_file_dir) as HttpWebRequest;
             CookieContainer cookieContainer = new CookieContainer();
+
             request.CookieContainer = cookieContainer;
             request.AllowAutoRedirect = true;
             request.Method = "POST";
@@ -81,10 +82,7 @@ namespace attendanceManagement.NET
             Stream postStream = request.GetRequestStream();
         
             postBegin(postStream,boundary);
-            addPostData("cid", classid);
-            addPostData("key", key);
-            addPostData("date", date);
-            addPostFile("file", path);
+           
             postEnd();
 
             try

@@ -46,5 +46,10 @@ namespace attendanceManagement.NET
         {
             get { return download + "/getAttendanceList"; }
         }
+
+        protected string URL_MD5
+        {
+            get { return download + "/getMD5"; }
+        }
     }
 }

@@ -64,7 +64,7 @@ namespace attendanceManagement.XML
                 string path = DIR.HISTORY + courseid + "/";
                 //获得文件夹信息
                 DirectoryInfo courses = new DirectoryInfo(path);
-                FileSystemInfo[] list = courses.GetFileSystemInfos();
+                FileSystemInfo[] list = DIR.getFiles(path);
 
                 //遍历文件
                 for (int i = 0; i < list.Length; i++)
@@ -239,16 +239,47 @@ namespace attendanceManagement.XML
         public static bool saveConfig()
         {
             bool result = false;
-            XDocument dom = new XDocument();
-            XElement root = new XElement("config",
-                new XElement("login", Teacher.LoginState),
-                new XElement("username", Teacher.tid),
-                new XElement("passwd", Teacher.passwd),
-                new XElement("cookie", Teacher.cookie)
-                );
-            dom.Add(root);
-            dom.Save(DIR.CONFIG);
+            try
+            {
+                XDocument dom = new XDocument();
+                XElement root = new XElement("config",
+                    new XElement("remember", Teacher.remember ? "true" : "false"),
+                    new XElement("login", Teacher.LoginState),
+                    new XElement("username", Teacher.tid),
+                    new XElement("passwd", Teacher.passwd),
+                    new XElement("cookie", Teacher.cookie),
+                    new XElement("md5",Teacher.md5)
+                    );
+                dom.Add(root);
+                dom.Save(DIR.CONFIG);
+                result = true;
+            }
+            catch(Exception e)
+            {
+                result = false;
+            }
             return result;
+        }
+
+        public static bool getConfig()
+        {
+            try
+            {
+                var dom = XDocument.Load(DIR.CONFIG);
+                var root = dom.Root;
+
+                Teacher.remember = root.Element("remember").Value == "true" ? true : false;
+                Teacher.tid = root.Element("username").Value;
+                Teacher.passwd = root.Element("passwd").Value;
+                Teacher.cookie = root.Element("cookie").Value;
+                Teacher.md5 = root.Element("md5").Value;
+                Teacher.isLogin = false;
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
         }
     }
 }

@@ -39,11 +39,17 @@ namespace attendanceManagement.widget
             var window = Window.GetWindow(this) as MainWindow;
             (window.Flyouts.Items[0] as Flyout).IsOpen = false;
             // window.teacher.Content = "hahaha";
-            LoginDialogData result = await window.ShowLoginAsync("Authentication", "Enter your password", new LoginDialogSettings { ColorScheme = window.MetroDialogOptions.ColorScheme, RememberCheckBoxVisibility = Visibility.Visible });
-
-            Teacher.tid = result.Username;
-            Teacher.passwd = result.Password;
-            Teacher.remember = result.ShouldRemember;
+            string user = Teacher.tid;
+            string passwd = Teacher.passwd;
+            LoginDialogData result = await window.ShowLoginAsync("Authentication", "Enter your password", new LoginDialogSettings {
+                ColorScheme = window.MetroDialogOptions.ColorScheme,
+                RememberCheckBoxVisibility = Visibility.Visible,
+                InitialUsername = user,
+                InitialPassword = passwd,
+                NegativeButtonVisibility = Visibility.Visible,
+                RememberCheckBoxText = "不保存账号"               
+    });
+        
 
             if (result == null)
             {
@@ -51,6 +57,9 @@ namespace attendanceManagement.widget
             }
             else
             {
+                Teacher.tid = result.Username;
+                Teacher.passwd = result.Password;
+                Teacher.remember = !result.ShouldRemember;
                 MainwindowData.data.Login = true;
                 
             }
@@ -87,13 +96,9 @@ namespace attendanceManagement.widget
 
         private void btn_sync_Click(object sender, RoutedEventArgs e)
         {
-            var download = new DownLoad();
-            download.getclasslist(); 
-            MainwindowData.data.courselist = CourseInfo.getCourses();
-            foreach(var course in MainwindowData.data.courselist)
-            {
-                download.getstulist(course.COURSEID);
-            }
+            MainwindowData.data.ASYNC_FILES = true;
+            var window = Window.GetWindow(this) as MainWindow;
+            (window.Flyouts.Items[0] as Flyout).IsOpen = false;
         }
     }
 }

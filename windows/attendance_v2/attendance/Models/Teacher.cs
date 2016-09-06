@@ -20,6 +20,7 @@ namespace attendanceManagement.Models
         public static string cookie;
         public static string tid;
         public static string passwd;
+        public static string md5;
         
 
     }
