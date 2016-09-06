@@ -9,19 +9,17 @@ namespace Background\Controller;
 use Think\Controller;
 class UploadController extends Controller {
 
-    private static $saveroot = 'd:/new';    //最终保存根目录
-    private static $rootpath = 'd:/Upload/';    //上传根目录
-
     public function upload(){
         if(!session('?teacher'))
         {
-            header('Location:'.U("Home/Index/index"));
+            $this->show("error");
+            return ;
         }
 
         $upload = new \Think\Upload();
         $upload->maxSize = 3145728;
         $upload->etxs = array('xml');
-        $upload->rootPath = self::$rootpath;
+        $upload->rootPath = C("UPLOAD_ROOT");
         $upload->savePath = '';
         $upload->autoSub = false;
 
@@ -31,14 +29,14 @@ class UploadController extends Controller {
         }else{ //上传成功
            //$this->success('上传成功！');
         }
-        $oldfile = self::$rootpath.'/'.$info['photo']['savename'];
+        $oldfile = C("UPLOAD_ROOT").'/'.$info['file']['savename'];
 
         //判断文件是否已经存在并处理
-        $course_id = $this->handleXml($oldfile,$info['photo']['name']);
+        $course_id = $this->handleXml($oldfile,$info['file']['name']);
 
 
-        $newpath = self::$saveroot.'/'.$course_id;
-        $newname = $info['photo']['name'];
+        $newpath = C("SAVE_ROOT").'/'.$course_id;
+        $newname = $info['file']['name'];
         $newfile = $newpath.'/'.$newname;
 
         mkdir($newpath,0777,true);
@@ -47,13 +45,12 @@ class UploadController extends Controller {
 
         //对新文件进行处理
         $this->handleNewXml($newpath,$newname);
+
+        $this->show("success");
     }
 
     private function handleXml($oldfile,$filename){
-        if(!session('?teacher'))
-        {
-            header('Location:'.U("Home/Index/index"));
-        }
+
         $xml = new \DOMDocument();
         $course_id = null;
         //找到课程id
@@ -62,12 +59,11 @@ class UploadController extends Controller {
             $elm = $root->getElementsByTagName("courseid");
             $course_id = $elm[0]->nodeValue;
 
-
             //查看文件是否存在
-            if(file_exists(self::$saveroot.'/'.$course_id.'/'.$filename)) {
+            if(file_exists(C("SAVE_ROOT").'/'.$course_id.'/'.$filename)) {
                 //文件存在，删除数据库中数据
                 $xml = new \DOMDocument();
-                if($xml->load(self::$saveroot.'/'.$course_id.'/'.$filename)){
+                if($xml->load(C("SAVE_ROOT").'/'.$course_id.'/'.$filename)){
                     $root = $xml->documentElement;
                     $elm = $root->getElementsByTagName("stu");
                     $model = M("Absence");
@@ -80,7 +76,6 @@ class UploadController extends Controller {
                 }
             }
         }
-
         return $course_id;
     }
 

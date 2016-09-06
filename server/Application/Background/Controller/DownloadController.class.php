@@ -13,7 +13,8 @@ class DownloadController extends Controller{
 
         if(!session('?teacher'))
         {
-            header('Location:'.U("Home/Index/index"));
+            $this->show("error");
+            return ;
         }
         $tea_id = session("teacher");
 
@@ -22,6 +23,7 @@ class DownloadController extends Controller{
         $model = D('Course');
         $model1 = M('classSitutation');
         $list = $model->relation(true)->where("tid='$tea_id'")->select();
+
         foreach($list as $data){
             $course = $xml->createElement("course");
 
@@ -64,7 +66,8 @@ class DownloadController extends Controller{
     {
         if(!session('?teacher'))
         {
-            header('Location:'.U("Home/Index/index"));
+            $this->show("error");
+            return ;
         }
 
         $course_id = I("get.course_id",'123');
@@ -116,7 +119,8 @@ class DownloadController extends Controller{
     public function getMD5(){
         if(!session('?teacher'))
         {
-            header('Location:'.U("Home/Index/index"));
+            $this->show("error");
+            return ;
         }
         $tea_id = session("teacher");
 
