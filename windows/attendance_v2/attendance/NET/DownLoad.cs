@@ -4,38 +4,82 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Net;
+using attendanceManagement.Models;
+using System.IO;
 
 namespace attendanceManagement.NET
 {
     class DownLoad : NET
     {
-        public string getstulist(string classid, string key)
+        public bool getstulist(string courseid)
         {
             try
             {
                 WebClient client = new WebClient();
-                string post = "?classid=" + classid + "&key=" + key;
-                client.DownloadFile(URL.getstulist_dir + post, "list/list.xml");
-                return client.DownloadString(URL.getclasslist_dir + post);
+                string post = "?course_id=" + courseid;
+                client.Headers.Set("Cookie", Teacher.cookie);
+                client.Encoding = Encoding.UTF8;
+                string result = client.DownloadString(URL_GETSTULIST + post);
+
+                if (result != "\"error\"" && result != "")
+                {
+                    var file = File.Create(DIR.STULIST + "/" + courseid + ".xml");
+                    file.Write(Encoding.UTF8.GetBytes(result), 0, Encoding.UTF8.GetByteCount(result));
+                    file.Close();
+                    return true;
+                }
+                else
+                    return false;
             }
             catch (WebException e)
             {
-                return "";
+                return false;
             }
            
         }
-        public string getclasslist(string teacherid)
+
+        public bool getclasslist()
         {
             try
             {
                 WebClient client = new WebClient();
-                string post = "?teacherid=" + teacherid;
-                client.DownloadFile(URL.getclasslist_dir + post, "list/classes.xml");
-                return client.DownloadString(URL.getclasslist_dir + post);
+                client.Headers.Set("Cookie", Teacher.cookie);
+                string result = client.DownloadString(URL_GETCOURSE);
+                if (result == "\"error\"" || result == "")
+                    return false;
+                else
+                {
+                    var file = File.Create(DIR.COURSES);
+                    file.Write(Encoding.UTF8.GetBytes(result), 0, Encoding.UTF8.GetByteCount(result));
+                    file.Close();
+                    return true;
+                }
             }
             catch (WebException e)
             {
-                return "";
+                return false;
+            }
+        }
+
+        public string getmd5()
+        {
+            try
+            {
+                WebClient client = new WebClient();
+                client.Headers.Set("cookie", Teacher.cookie);
+                string result = client.DownloadString(URL_MD5);
+                if(result=="\"error\""||result=="")
+                {
+                    return null;
+                }
+                else
+                {
+                    return result;
+                }
+            }
+            catch(Exception e)
+            {
+                return null;
             }
         }
     }

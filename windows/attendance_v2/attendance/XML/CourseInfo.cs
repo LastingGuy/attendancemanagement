@@ -4,6 +4,8 @@ using System.Security.Cryptography;
 using System.IO;
 using System;
 using attendanceManagement.Models;
+using attendanceManagement.Exceptions;
+using System.Xml;
 
 namespace attendanceManagement.XML
 {
@@ -24,29 +26,48 @@ namespace attendanceManagement.XML
         public static LinkedList<Course> getCourses()
         {
             var list = new LinkedList<Course>();
-            if (!File.Exists(DIR.COURSES))
-                return list;
-            
-            var dom = XDocument.Load(DIR.COURSES);
-            var root = dom.Root;
-            
-
-            foreach(var courseElement in root.Elements())
+            try
             {
-                Course course = new Course();
-                course.COURSENAME = courseElement.Element("name").Value;
-                course.COURSEID = courseElement.Element("id").Value;
-                course.TEACHERNAME = courseElement.Element("teacher").Value;
-                course.NROFSTU = Convert.ToInt32(courseElement.Element("nrofstu").Value);
-                foreach(var time in courseElement.Element("date").Elements())
+                if (!File.Exists(DIR.COURSES))
+                    return list;
+
+                var dom = XDocument.Load(DIR.COURSES);
+                var root = dom.Root;
+
+
+                foreach (var courseElement in root.Elements())
                 {
-                    course.add_date(time.Element("t").Value, time.Element("w").Value);
-                }
-                list.AddLast(course);
+                    Course course = new Course();
+                    course.COURSENAME = courseElement.Element("name").Value;
+                    course.COURSEID = courseElement.Element("id").Value;
+                    course.TEACHERNAME = courseElement.Element("teacher").Value;
+                    course.NROFSTU = Convert.ToInt32(courseElement.Element("nrofstu").Value);
+                    foreach (var time in courseElement.Element("date").Elements())
+                    {
+                        course.add_date(time.Element("t").Value, time.Element("w").Value);
+                    }
+                    list.AddLast(course);
+                }            
+                
+            }
+            catch(FileNotFoundException e)
+            {
+                System.Console.Write(e.Message);
+                ErrorBroadcast.error("文件不存在,请重新同步！");
+            }
+            catch(XmlException e)
+            {
+                System.Console.Write(e.Message);
+                ErrorBroadcast.error("文件损坏,请重新同步！");
+            }
+            catch(Exception e)
+            {
+                System.Console.Write(e.Message);
+                ErrorBroadcast.error("出现未知错误,请重新同步！");
             }
 
             return list;
-        }
+            }
 
 
        /// <summary>
@@ -63,8 +84,7 @@ namespace attendanceManagement.XML
             {
                 string path = DIR.HISTORY + courseid + "/";
                 //获得文件夹信息
-                DirectoryInfo courses = new DirectoryInfo(path);
-                FileSystemInfo[] list = courses.GetFileSystemInfos();
+                FileSystemInfo[] list = DIR.getFiles(path);
 
                 //遍历文件
                 for (int i = 0; i < list.Length; i++)
@@ -81,7 +101,8 @@ namespace attendanceManagement.XML
             }
             catch (Exception e)
             {
-                return history;
+                System.Console.Write(e.Message);
+                ErrorBroadcast.error("出现未知错误");
             }
 
             return history;
@@ -95,30 +116,56 @@ namespace attendanceManagement.XML
         /// <returns></returns>
         public static CheckingTable getHistoryTable(CheckingTable table)
         {
-            //List<Student> table = new List<Student>();
             string path = DIR.HISTORY + table.courseID + "/" + table.filename + ".xml";
-            if(File.Exists(path))
+            try
             {
-                var dom = XDocument.Load(path);
-                var root = dom.Root;
-
-                table.ts = root.Element("ts").Value;
-                table.te = root.Element("te").Value;
-
-                foreach(var item in root.Element("students").Elements())
+                if (File.Exists(path))
                 {
-                    Student stu = new Student();
-                    stu.id = item.Element("id").Value;
+                    var dom = XDocument.Load(path);
+                    var root = dom.Root;
 
-                    //stu.CHECK = Convert.ToInt32(item.Element("check").Value);
-                    stu.CHECK = CheckStatus.parseCode(item.Element("check").Value);
+                    table.ts = root.Element("ts").Value;
+                    table.te = root.Element("te").Value;
 
-                    stu.time = item.Element("t").Value;
+                    foreach (var item in root.Element("students").Elements())
+                    {
+                        Student stu = new Student();
+                        stu.id = item.Element("id").Value;
 
-                    table.students.Add(stu);
+                        //stu.CHECK = Convert.ToInt32(item.Element("check").Value);
+                        stu.CHECK = CheckStatus.parseCode(item.Element("check").Value);
+
+                        stu.time = item.Element("t").Value;
+
+                        table.students.Add(stu);
+                    }
+
                 }
-
+                
             }
+            catch (FileNotFoundException e)
+            {
+                System.Console.Write(e.Message);
+                ErrorBroadcast.error("文件不存在!");
+                DIR.delete(path);
+            }
+            catch (XmlException e)
+            {
+                System.Console.Write(e.Message);
+                ErrorBroadcast.error("文件损坏！");
+                DIR.delete(path);
+            }
+            catch(FileDamagedException e)
+            {
+                e.error();
+                DIR.delete(path);
+            }
+            catch (Exception e)
+            {
+                System.Console.Write(e.Message);
+                ErrorBroadcast.error("出现未知错误！");
+            }
+
             return table;
         }
 
@@ -230,9 +277,56 @@ namespace attendanceManagement.XML
             //保存至history文件夹
             dom.Save(DIR.safedir(DIR.HISTORY + table.courseID, table.date + ".xml"));
             //保存至upload文件夹
-            dom.Save(DIR.safedir(DIR.UPLOAD , table.courseID + table.date  + ".xml"));
+            dom.Save(DIR.safedir(DIR.UPLOAD , table.date + table.courseID + ".xml"));
 
             return result;
+        }
+
+
+        public static bool saveConfig()
+        {
+            bool result = false;
+            try
+            {
+                XDocument dom = new XDocument();
+                XElement root = new XElement("config",
+                    new XElement("remember", Teacher.remember ? "true" : "false"),
+                    new XElement("login", Teacher.LoginState),
+                    new XElement("username", Teacher.tid),
+                    new XElement("passwd", Teacher.passwd),
+                    new XElement("cookie", Teacher.cookie),
+                    new XElement("md5",Teacher.md5)
+                    );
+                dom.Add(root);
+                dom.Save(DIR.CONFIG);
+                result = true;
+            }
+            catch(Exception e)
+            {
+                result = false;
+            }
+            return result;
+        }
+
+        public static bool getConfig()
+        {
+            try
+            {
+                var dom = XDocument.Load(DIR.CONFIG);
+                var root = dom.Root;
+
+                Teacher.remember = root.Element("remember").Value == "true" ? true : false;
+                Teacher.tid = root.Element("username").Value;
+                Teacher.passwd = root.Element("passwd").Value;
+                Teacher.cookie = root.Element("cookie").Value;
+                Teacher.md5 = root.Element("md5").Value;
+                Teacher.isLogin = false;
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
         }
     }
 }

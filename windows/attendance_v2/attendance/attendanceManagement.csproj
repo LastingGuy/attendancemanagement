@@ -68,6 +68,8 @@
     <Compile Include="ATTENDANCE\Status.cs" />
     <Compile Include="ATTENDANCE\WIFIOPERATE.cs" />
     <Compile Include="Behaviors\DateTimeNowBehavior.cs" />
+    <Compile Include="Exceptions\ErrorBroadcast.cs" />
+    <Compile Include="Exceptions\Exceptions.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
@@ -80,6 +82,7 @@
     <Compile Include="Models\HistoryData.cs" />
     <Compile Include="Models\MainwindowData.cs" />
     <Compile Include="Models\Student.cs" />
+    <Compile Include="Models\Teacher.cs" />
     <Compile Include="NET\DownLoad.cs" />
     <Compile Include="NET\NET.cs" />
     <Compile Include="NET\UpLoad.cs" />

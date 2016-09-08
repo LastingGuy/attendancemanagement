@@ -15,6 +15,8 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using MahApps.Metro.Controls;
 using attendanceManagement.Models;
+using attendanceManagement.NET;
+using attendanceManagement.XML;
 
 namespace attendanceManagement.widget
 {
@@ -37,15 +39,29 @@ namespace attendanceManagement.widget
             var window = Window.GetWindow(this) as MainWindow;
             (window.Flyouts.Items[0] as Flyout).IsOpen = false;
             // window.teacher.Content = "hahaha";
-            LoginDialogData result = await window.ShowLoginAsync("Authentication", "Enter your password", new LoginDialogSettings { ColorScheme = window.MetroDialogOptions.ColorScheme, RememberCheckBoxVisibility = Visibility.Visible });
+            string user = Teacher.tid;
+            string passwd = Teacher.passwd;
+            LoginDialogData result = await window.ShowLoginAsync("Authentication", "Enter your password", new LoginDialogSettings {
+                ColorScheme = window.MetroDialogOptions.ColorScheme,
+                RememberCheckBoxVisibility = Visibility.Visible,
+                InitialUsername = user,
+                InitialPassword = passwd,
+                NegativeButtonVisibility = Visibility.Visible,
+                RememberCheckBoxText = "不保存账号"               
+    });
+        
+
             if (result == null)
             {
                 //User pressed cancel
             }
             else
             {
-
-                MessageDialogResult messageResult = await window.ShowMessageAsync("Authentication Information", String.Format("Username: {0}\nPassword: {1}\nShouldRemember: {2}", result.Username, result.Password, result.ShouldRemember));
+                Teacher.tid = result.Username;
+                Teacher.passwd = result.Password;
+                Teacher.remember = !result.ShouldRemember;
+                MainwindowData.data.Login = true;
+                
             }
         }
 
@@ -76,6 +92,13 @@ namespace attendanceManagement.widget
         private void btn_change_Click(object sender, RoutedEventArgs e)
         {
             MainwindowData.data.ChangeState = true;
+        }
+
+        private void btn_sync_Click(object sender, RoutedEventArgs e)
+        {
+            MainwindowData.data.ASYNC_FILES = true;
+            var window = Window.GetWindow(this) as MainWindow;
+            (window.Flyouts.Items[0] as Flyout).IsOpen = false;
         }
     }
 }

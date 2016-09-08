@@ -88,6 +88,12 @@ namespace attendanceManagement
             DataContext = MainwindowData.data;
             MainwindowData.data.Window = this;
 
+
+            //读取登陆信息
+            if (CourseInfo.getConfig())
+                MainwindowData.data.Login = true;
+            else
+                errorBoard("请登陆");
             //导入课程表
             MainwindowData.data.courselist = CourseInfo.getCourses();
             
@@ -112,6 +118,15 @@ namespace attendanceManagement
             {
                 await DialogManager.HideMetroDialogAsync(this, dialog);
             }
+        }
+
+        public async void loginInfo(string header,string content)
+        {
+            MessageDialogResult messageResult = await DialogManager.ShowMessageAsync(this,header, content);
+        }
+        public async void errorBoard(string message)
+        {
+            MessageDialogResult messageResult = await DialogManager.ShowMessageAsync(this, "Wrong", message);
         }
 
 

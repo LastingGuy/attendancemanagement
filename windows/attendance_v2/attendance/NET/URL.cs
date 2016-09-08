@@ -9,22 +9,53 @@ namespace attendanceManagement.NET
 {
     class URL
     {
-        private const string root = "http://jingl.wang/attendance";
+        private const string root = "http://xxbird.cn/attendance/index.php";
         private const string php_dir = root + "/php";
         private const string api_dir = php_dir + "/api";
         private const string download_dir = api_dir + "/download";
         private const string checkin_dir = api_dir + "/checkin";
 
         //下载
-        public const string getclasslist_dir = download_dir + "/getclasslist.php";
-        public const string getstulist_dir = download_dir + "/getstulist.php";
+        protected const string getclasslist_dir = download_dir + "/getclasslist.php";
+        protected const string getstulist_dir = download_dir + "/getstulist.php";
 
 
         //check in
-        public const string checkin_one_dir = checkin_dir + "/checkin_one_stu.php";
-        public const string checkin_file_dir = checkin_dir + "/checkinbyfile.php";
-        public const string checkin_string_dir = checkin_dir + "/checkinbystring.php";
+        protected const string checkin_one_dir = checkin_dir + "/checkin_one_stu.php";
+        protected const string checkin_file_dir = checkin_dir + "/checkinbyfile.php";
+        protected const string checkin_string_dir = checkin_dir + "/checkinbystring.php";
 
+        private const string background = root + "/background";
+        private const string home = root + "/home";
+        private const string download = background + "/Download";
+        private const string upload = background + "/Upload";
 
+        protected string URL_Login
+        {
+            get
+            {
+                return home + "/index/login";
+            }
+        }
+
+        protected string URL_GETCOURSE
+        {
+            get { return download + "/getCourse"; }
+        }
+
+        protected string URL_GETSTULIST
+        {
+            get { return download + "/getAttendanceList"; }
+        }
+
+        protected string URL_UPLOAD
+        {
+            get { return upload + "/upload"; }
+        }
+
+        protected string URL_MD5
+        {
+            get { return download + "/getMD5"; }
+        }
     }
 }

@@ -98,7 +98,7 @@
         <Grid HorizontalAlignment="Right" Width="100" VerticalAlignment="Top" Height="100" Margin="0,0,100,0">
             <Label x:Name="label5" Content="同步" VerticalAlignment="Bottom" d:LayoutOverrides="Width" Margin="0,0,0,5.26" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
             <Button x:Name="btn_sync" Width="50"                
-            	Style="{DynamicResource MetroCircleButtonStyle}" Margin="25,10,25,40" Click="login_dialog">
+            	Style="{DynamicResource MetroCircleButtonStyle}" Margin="25,10,25,40" Click="btn_sync_Click">
                 <Rectangle x:Name="btn_start5" Width="20"
             		Height="20"
             		Fill="White">

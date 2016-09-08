@@ -9,16 +9,43 @@ namespace attendanceManagement.Models
 {
     class DIR
     {
+
         //根目录
-        public const string ROOT = "courses/";
+        static string _ROOT = "courses/";
+        public static string ROOT
+        {
+            get { return safedir(_ROOT); }
+        }
         //名单目录
-        public const string STULIST = ROOT + "stulist/";
+        static string _STULIST = _ROOT + "stulist/";
+        public static string STULIST
+        {
+            get { return safedir(_STULIST); }
+        }
         //历史目录
-        public const string HISTORY = ROOT + "results/history/";
+        static string _HISTORY = _ROOT + "results/history/";
+        public static string HISTORY
+        {
+            get { return safedir(_HISTORY); }
+        }
         //上传目录
-        public const string UPLOAD = ROOT + "results/upload/";
+        static string _UPLOAD = _ROOT + "results/upload/";
+        public static string UPLOAD
+        {
+            get { return safedir(_UPLOAD); }
+        }
         //课表文件
-        public const string COURSES = ROOT + "courses.xml";
+        //static string _COURSES = ROOT + "courses.xml";
+        public static string COURSES
+        {
+            get { return ROOT + "courses.xml"; }
+        }
+        //登陆信息
+        public static string CONFIG
+        {
+            get { return "config.xml"; }
+        }
+
 
         /// <summary>
         /// 检测文件夹是否存在，如果不存在，则新建文件夹，防止文件夹不存在而报错
@@ -28,12 +55,44 @@ namespace attendanceManagement.Models
         /// <returns>完整路径，即path+filename</returns>
         public static string safedir(string path, string filename)
         {
+            //if (!Directory.Exists(path))
+            //{
+            //    DirectoryInfo directoryInfo = new DirectoryInfo(path);
+            //    directoryInfo.Create();
+            //}
+            path = safedir(path);
+            return path + "/" + filename;
+        }
+
+        private static string safedir(string path)
+        {
             if (!Directory.Exists(path))
             {
                 DirectoryInfo directoryInfo = new DirectoryInfo(path);
                 directoryInfo.Create();
             }
-            return path + "/" + filename;
+            return path;
+        }
+
+
+
+        public static FileSystemInfo[] getFiles(string path)
+        {
+            DirectoryInfo courses = new DirectoryInfo(path);
+            FileSystemInfo[] list = courses.GetFileSystemInfos();
+            return list;
+        }
+
+        public static void delete(string path)
+        {
+            if(File.Exists(path))
+            {
+                File.Delete(path);
+            }
+            else if(Directory.Exists(path))
+            {
+                Directory.Delete(path);
+            }
         }
     };
 }
