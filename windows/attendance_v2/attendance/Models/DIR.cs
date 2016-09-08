@@ -82,5 +82,17 @@ namespace attendanceManagement.Models
             FileSystemInfo[] list = courses.GetFileSystemInfos();
             return list;
         }
+
+        public static void delete(string path)
+        {
+            if(File.Exists(path))
+            {
+                File.Delete(path);
+            }
+            else if(Directory.Exists(path))
+            {
+                Directory.Delete(path);
+            }
+        }
     };
 }

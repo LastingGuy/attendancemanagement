@@ -544,14 +544,13 @@ namespace attendanceManagement.Models
                         {
                             ASYNC_FILES = true;
                             Teacher.md5 = md5;
-                        }
-                        CourseInfo.saveConfig();
+                        }                     
                         if(!Teacher.remember)
                         {
                             Teacher.tid = "";
                             Teacher.passwd = "";
                         }
-                        
+                        CourseInfo.saveConfig();
                         //Window.loginInfo("Authentication Information", "登陆成功");
 
                     }
@@ -589,6 +588,8 @@ namespace attendanceManagement.Models
                     {
                         download.getstulist(course.COURSEID);
                     }
+
+                    new UpLoad().uploadTable();
                 }
             }
         }

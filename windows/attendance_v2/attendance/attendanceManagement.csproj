@@ -68,6 +68,8 @@
     <Compile Include="ATTENDANCE\Status.cs" />
     <Compile Include="ATTENDANCE\WIFIOPERATE.cs" />
     <Compile Include="Behaviors\DateTimeNowBehavior.cs" />
+    <Compile Include="Exceptions\ErrorBroadcast.cs" />
+    <Compile Include="Exceptions\Exceptions.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>

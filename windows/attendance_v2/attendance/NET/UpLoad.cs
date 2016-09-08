@@ -64,36 +64,44 @@ namespace attendanceManagement.NET
 
         }
 
-        public bool checkin_file(string classid,string date)
+        public bool uploadTable()
         {
-           
-            string path = "db\\"+date+".xml";
-            // 设置参数
-            HttpWebRequest request = WebRequest.Create(URL.checkin_file_dir) as HttpWebRequest;
-            CookieContainer cookieContainer = new CookieContainer();
-
-            request.CookieContainer = cookieContainer;
-            request.AllowAutoRedirect = true;
-            request.Method = "POST";
-
-            string boundary = DateTime.Now.Ticks.ToString("X"); // 随机分隔线
-            request.ContentType = "multipart/form-data;charset=utf-8;boundary=" + boundary;
-           
-            Stream postStream = request.GetRequestStream();
-        
-            postBegin(postStream,boundary);
-           
-            postEnd();
-
             try
             {
-                //发送请求并获取相应回应数据
-                HttpWebResponse response = request.GetResponse() as HttpWebResponse;
-                //直到request.GetResponse()程序才开始向目标网页发送Post请求
-                Stream instream = response.GetResponseStream();
-                StreamReader sr = new StreamReader(instream, Encoding.UTF8);
-                //返回结果网页（html）代码
-                string content = sr.ReadToEnd();
+                foreach (var file in DIR.getFiles(DIR.UPLOAD))
+                {
+                    string path = file.FullName;
+                    // 设置参数
+                    HttpWebRequest request = WebRequest.Create(URL_UPLOAD) as HttpWebRequest;
+                    CookieContainer cookieContainer = new CookieContainer();
+
+                    request.Headers.Set("Cookie", Teacher.cookie);
+                    request.AllowAutoRedirect = true;
+                    request.Method = "POST";
+
+                    string boundary = DateTime.Now.Ticks.ToString("X"); // 随机分隔线
+                    request.ContentType = "multipart/form-data;charset=utf-8;boundary=" + boundary;
+
+                    Stream postStream = request.GetRequestStream();
+
+                    string filename = file.Name.Replace(".xml", "").Substring(0, 8);
+                    postBegin(postStream, boundary);
+                    addPostFile("file", path,filename);
+                    postEnd();
+
+
+                    //发送请求并获取相应回应数据
+                    HttpWebResponse response = request.GetResponse() as HttpWebResponse;
+                    //直到request.GetResponse()程序才开始向目标网页发送Post请求
+                    Stream instream = response.GetResponseStream();
+                    StreamReader sr = new StreamReader(instream, Encoding.UTF8);
+                    //返回结果网页（html）代码
+                    string content = sr.ReadToEnd();
+                    if(content=="success")
+                    {
+                        DIR.delete(path);
+                    }
+                }
                
             }
             catch(Exception e)

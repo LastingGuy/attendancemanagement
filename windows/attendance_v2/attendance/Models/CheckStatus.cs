@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using attendanceManagement.Exceptions;
 
 /********************************************
  * Author:汪京陆
@@ -69,8 +69,10 @@ namespace attendanceManagement.Models
         {
             if (code == "1")
                 return ARRIVED;
-            else
+            else if (code == "0")
                 return ABSENCE;
+            else
+                throw new FileDamagedException();
         }
 
         /**************************
