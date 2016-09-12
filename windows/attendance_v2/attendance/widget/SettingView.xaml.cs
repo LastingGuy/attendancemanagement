@@ -1,4 +1,6 @@
-﻿using System;
+﻿using attendanceManagement.Models;
+using attendanceManagement.XML;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -27,7 +29,7 @@ namespace attendanceManagement.widget
         public SettingView()
         {
             InitializeComponent();
-
+           
         }
 
         private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
@@ -49,7 +51,8 @@ namespace attendanceManagement.widget
         private void clean_thread()
         {
             m_SyncContext.Post(clean_process_operate, true);
-            Thread.Sleep(10000);
+            DIR.delete(DIR.ROOT);
+            m_SyncContext.Post(reload, null);
             m_SyncContext.Post(clean_process_operate, false);
         }
 
@@ -59,6 +62,30 @@ namespace attendanceManagement.widget
                 clean_process.Visibility = Visibility.Visible;
             else
                 clean_process.Visibility = Visibility.Hidden;
+        }
+        private void reload(object flag)
+        {
+            MainwindowData.data.courselist = CourseInfo.getCourses();
+        }
+
+        private void wifiname_LostFocus(object sender, RoutedEventArgs e)
+        {
+            Teacher.defaultWifiName = wifiname.Text;
+            MainwindowData.data.WIFIName = Teacher.defaultWifiName;
+            CourseInfo.saveConfig();
+        }
+
+        private void wifipassword_LostFocus(object sender, RoutedEventArgs e)
+        {
+            Teacher.defaultWifiPass = wifipassword.Password;
+            MainwindowData.data.WIFIPass = Teacher.defaultWifiPass;
+            CourseInfo.saveConfig();
+        }
+
+        private void UserControl_GotFocus(object sender, RoutedEventArgs e)
+        {
+            wifiname.Text = Teacher.defaultWifiName != "" ? Teacher.defaultWifiName : "";
+            wifipassword.Password = Teacher.defaultWifiPass != "" ? Teacher.defaultWifiPass : "12345678";
         }
     }
 }

@@ -84,7 +84,7 @@ namespace attendanceManagement.XML
             {
                 string path = DIR.HISTORY + courseid + "/";
                 //获得文件夹信息
-                FileSystemInfo[] list = DIR.getFiles(path);
+                FileSystemInfo[] list = DIR.getFiles(DIR.safedir(path));
 
                 //遍历文件
                 for (int i = 0; i < list.Length; i++)
@@ -295,7 +295,9 @@ namespace attendanceManagement.XML
                     new XElement("username", Teacher.tid),
                     new XElement("passwd", Teacher.passwd),
                     new XElement("cookie", Teacher.cookie),
-                    new XElement("md5",Teacher.md5)
+                    new XElement("md5",Teacher.md5),
+                    new XElement("wifiname",Teacher.defaultWifiName),
+                    new XElement("wifipasswd",Teacher.defaultWifiPass)
                     );
                 dom.Add(root);
                 dom.Save(DIR.CONFIG);
@@ -320,6 +322,8 @@ namespace attendanceManagement.XML
                 Teacher.passwd = root.Element("passwd").Value;
                 Teacher.cookie = root.Element("cookie").Value;
                 Teacher.md5 = root.Element("md5").Value;
+                Teacher.defaultWifiName = root.Element("wifiname").Value;
+                Teacher.defaultWifiPass = root.Element("wifipasswd").Value;
                 Teacher.isLogin = false;
                 return true;
             }

@@ -8,6 +8,7 @@ using MahApps.Metro.Controls;
 using attendanceManagement.XML;
 using System.IO;
 using MahApps.Metro.Controls.Dialogs;
+using MahApps.Metro.Controls;
 using attendanceManagement.widget;
 using attendanceManagement.Models;
 
@@ -94,6 +95,8 @@ namespace attendanceManagement
                 MainwindowData.data.Login = true;
             else
                 errorBoard("请登陆");
+
+
             //导入课程表
             MainwindowData.data.courselist = CourseInfo.getCourses();
             
@@ -127,6 +130,27 @@ namespace attendanceManagement
         public async void errorBoard(string message)
         {
             MessageDialogResult messageResult = await DialogManager.ShowMessageAsync(this, "Wrong", message);
+        }
+
+        public async void showProgressDialog(bool flag,string title="",string message="")
+        {
+            if (flag)
+            {
+                var settings = new MetroDialogSettings()
+                {
+                    NegativeButtonText = "Close now",
+                    AnimateShow = false,
+                    AnimateHide = false
+                };
+                var dia = await this.ShowProgressAsync("Please wait...", "We are baking some cupcakes!", settings: settings);
+                MainwindowData.data.progressDialog = dia;
+                dia.SetIndeterminate();
+
+            }
+            else
+            {
+                MainwindowData.data.progressDialog.SetCancelable(true);
+            }
         }
 
 

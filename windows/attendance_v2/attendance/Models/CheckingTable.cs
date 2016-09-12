@@ -22,12 +22,20 @@ namespace attendanceManagement.Models
             get
             {
                 List<Student> list = new List<Student>();
-                foreach(Student stu in students)
+                try
                 {
-                    if(!stu.CHECK.isArrived())
+                    
+                    foreach (Student stu in students)
                     {
-                        list.Add(stu);
+                        if (!stu.CHECK.isArrived())
+                        {
+                            list.Add(stu);
+                        }
                     }
+                }
+                catch(Exception e)
+                {
+                    System.Console.Write(e.Message);
                 }
                 return list;
             }

@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 
@@ -48,7 +49,7 @@ namespace attendanceManagement.Models
             }
         }
 
-
+        public ProgressDialogController progressDialog;
 
         /****************************************************************************************
          * 后台数据
@@ -76,8 +77,8 @@ namespace attendanceManagement.Models
                     checkingtable = new CheckingTable(CurrentCourse.COURSEID, CheckingDate, CheckingTime); //新建考勤表，并显示在UI中
 
                     //设置新建选项卡
-                    WIFIName = _coursename + "_" + _teachername;
-                    WIFIPass = "12345678";
+                    WIFIName =Teacher.defaultWifiName!=""?Teacher.defaultWifiName: _coursename + "_" + _teachername;
+                    WIFIPass =Teacher.defaultWifiPass!=""?Teacher.defaultWifiPass: "12345678";
                     Window.checkingtime.SelectedDate = DateTime.Today;
                     TimeSpan temp;
                     TimeSpan.TryParse(DateTime.Now.ToString("HH:mm"), out temp);
@@ -418,7 +419,8 @@ namespace attendanceManagement.Models
             set
             {
                 _historychcekingtable = value;
-                showAllStudents = true;
+                Window.HistoryDATA.ItemsSource = _historychcekingtable.students;
+                Window.HistoryDATA.Items.Refresh();
 
                 nrofstu = _historychcekingtable.nrOfstu;
                 arrived = _historychcekingtable.arrived;
@@ -438,10 +440,15 @@ namespace attendanceManagement.Models
                 if (value)
                 {
                     if (currentTab == 0)
+                    {
                         Window.HistoryDATA.ItemsSource = _historychcekingtable.absenceStudents;
+                        Window.HistoryDATA.Items.Refresh();
+                    }
                     else
-                        Window.HistoryDATA.ItemsSource = _checkingtable.absenceStudents;
-                    Window.HistoryDATA.Items.Refresh();
+                    {
+                        Window.NewTable.ItemsSource = _checkingtable.absenceStudents;
+                        Window.NewTable.Items.Refresh();
+                    }
                 }
             }
         }
@@ -453,11 +460,16 @@ namespace attendanceManagement.Models
             {
                 if(value)
                 {
-                    if(currentTab==0)
+                    if (currentTab == 0)
+                    {
                         Window.HistoryDATA.ItemsSource = _historychcekingtable.students;
+                        Window.HistoryDATA.Items.Refresh();
+                    }
                     else
-                        Window.HistoryDATA.ItemsSource = _checkingtable.students;
-                    Window.HistoryDATA.Items.Refresh();
+                    {
+                        Window.NewTable.ItemsSource = _checkingtable.students;
+                        Window.NewTable.Items.Refresh();
+                    }
                 }
             }
         }
@@ -536,15 +548,12 @@ namespace attendanceManagement.Models
             {
                 if(value)
                 {
+
                     if (new UpLoad().login(Teacher.tid, Teacher.passwd))
-                    {
+                    {   
                         Teacher.isLogin = true;
-                        string md5 = new DownLoad().getmd5();
-                        if (md5 != null && md5 != Teacher.md5)
-                        {
-                            ASYNC_FILES = true;
-                            Teacher.md5 = md5;
-                        }                     
+                        ASYNC_FILES = true;
+             
                         if(!Teacher.remember)
                         {
                             Teacher.tid = "";
@@ -583,13 +592,14 @@ namespace attendanceManagement.Models
 
                     var download = new DownLoad();
                     download.getclasslist();
-                    MainwindowData.data.courselist = CourseInfo.getCourses();
-                    foreach (var course in MainwindowData.data.courselist)
+                    var courses = CourseInfo.getCourses();
+                    foreach (var course in courses)
                     {
                         download.getstulist(course.COURSEID);
                     }
 
                     new UpLoad().uploadTable();
+                    MainwindowData.data.courselist = courses;
                 }
             }
         }

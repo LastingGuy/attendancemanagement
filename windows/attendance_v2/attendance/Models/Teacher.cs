@@ -21,6 +21,8 @@ namespace attendanceManagement.Models
         public static string tid;
         public static string passwd;
         public static string md5;
+        public static string defaultWifiName="";
+        public static string defaultWifiPass="";
         
 
     }

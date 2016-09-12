@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:attendanceManagement.widget"
              xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-             mc:Ignorable="d" d:DesignWidth="300">
+             mc:Ignorable="d" d:DesignWidth="300" GotFocus="UserControl_GotFocus">
     <Grid Width="200">
 
         <TextBox x:Name="textBox" Height="24.333" Margin="3.942,-105.667,9.667,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>
@@ -20,7 +20,7 @@
                 <TextBlock TextWrapping="Wrap" Text="默认热点名" VerticalAlignment="Top" Margin="10,0"/>
                 <TextBox x:Name="wifiname" 
         			Controls:TextBoxHelper.ButtonCommand="{Binding TextBoxButtonCmd, Mode=OneWay}"
-        			Height="21" VerticalAlignment="Top" Margin="10,20.24,10,0">
+        			Height="21" VerticalAlignment="Top" Margin="10,20.24,10,0" LostFocus="wifiname_LostFocus">
                     <TextBox.Style>
                         <Style BasedOn="{StaticResource MetroTextBox}" TargetType="{x:Type TextBox}">
                             <Setter Property="Controls:TextBoxHelper.ClearTextButton" Value="True" />
@@ -44,7 +44,7 @@
             		Controls:TextBoxHelper.ClearTextButton="{Binding (Controls:TextBoxHelper.HasText), Mode=OneWay, RelativeSource={RelativeSource Self}}"
             		Controls:TextBoxHelper.IsWaitingForData="True"
             		Controls:TextBoxHelper.Watermark="Revealed PasswordBox" Margin="10,20.24,10,0" Height="14" VerticalAlignment="Top"
-            		Password="12345678"
+            		Password="12345678" LostFocus="wifipassword_LostFocus"
                 />
             </Grid>
             <Label x:Name="label" Content="热点设置" Height="32.02" Margin="10,0" VerticalAlignment="Top" FontSize="14.667" FontWeight="Bold"/>

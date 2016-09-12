@@ -19,7 +19,7 @@ namespace attendanceManagement.NET
                 string post = "?course_id=" + courseid;
                 client.Headers.Set("Cookie", Teacher.cookie);
                 client.Encoding = Encoding.UTF8;
-                string result = client.DownloadString(URL_GETSTULIST + post);
+                string result = client.DownloadString(URL_GETSTULIST + post).Trim();
 
                 if (result != "\"error\"" && result != "")
                 {
@@ -44,7 +44,8 @@ namespace attendanceManagement.NET
             {
                 WebClient client = new WebClient();
                 client.Headers.Set("Cookie", Teacher.cookie);
-                string result = client.DownloadString(URL_GETCOURSE);
+                client.Encoding = Encoding.UTF8;
+                string result = client.DownloadString(URL_GETCOURSE).Trim();
                 if (result == "\"error\"" || result == "")
                     return false;
                 else

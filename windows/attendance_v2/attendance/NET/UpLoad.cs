@@ -44,7 +44,7 @@ namespace attendanceManagement.NET
                 StreamReader reader = new StreamReader(stream, Encoding.UTF8);
                 _result = reader.ReadToEnd();
                 _cookie = cookie.GetCookieHeader(request.RequestUri);
-                if(_result=="\"2\"")
+                if(_result.Trim()=="\"2\"")
                 {
                     Teacher.cookie = _cookie;
                     Teacher.tid = tid;
@@ -97,7 +97,7 @@ namespace attendanceManagement.NET
                     StreamReader sr = new StreamReader(instream, Encoding.UTF8);
                     //返回结果网页（html）代码
                     string content = sr.ReadToEnd();
-                    if(content=="success")
+                    if(content.Trim()=="success")
                     {
                         DIR.delete(path);
                     }
