@@ -46,17 +46,22 @@ namespace attendanceManagement.NET
         //post  提交文件
         protected void addPostFile(string key,string path,string filename="")
         {
+            
             if (filename == "")
+            {
                 filename = path;
-            int pos = path.LastIndexOf("\\");
-            string fileName = path.Substring(pos + 1);
+                int pos = path.LastIndexOf("\\");
+                filename = path.Substring(pos + 1);
+            }
+            else
+                filename += ".xml";
             FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read);
             byte[] contents = new byte[fs.Length];
 
             fs.Read(contents, 0, contents.Length);
             fs.Close();
 
-            StringBuilder sbHeader = new StringBuilder(string.Format("Content-Disposition:form-data;name=\"{0}\";filename=\"{1}\"\r\nContent-Type:text/xml\r\n\r\n", key, fileName));
+            StringBuilder sbHeader = new StringBuilder(string.Format("Content-Disposition:form-data;name=\"{0}\";filename=\"{1}\"\r\nContent-Type:text/xml\r\n\r\n", key, filename));
             byte[] postHeaderBytes = Encoding.UTF8.GetBytes(sbHeader.ToString());
 
             byte[] itemBoundaryBytes = Encoding.UTF8.GetBytes("\r\n--" + boundary + "\r\n");

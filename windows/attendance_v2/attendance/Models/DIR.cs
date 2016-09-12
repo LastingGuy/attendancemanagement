@@ -64,7 +64,7 @@ namespace attendanceManagement.Models
             return path + "/" + filename;
         }
 
-        private static string safedir(string path)
+        public static string safedir(string path)
         {
             if (!Directory.Exists(path))
             {
@@ -91,7 +91,7 @@ namespace attendanceManagement.Models
             }
             else if(Directory.Exists(path))
             {
-                Directory.Delete(path);
+                Directory.Delete(path,true);
             }
         }
     };
