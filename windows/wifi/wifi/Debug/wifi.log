@@ -1,1 +1,4 @@
-﻿
+﻿  main.cpp
+h:\github\lastingguy\attendancemanagement\windows\wifi\wifi\main.cpp(184): warning C4018: “<”: 有符号/无符号不匹配
+  wifi.vcxproj -> H:\github\lastingguy\attendancemanagement\windows\wifi\Debug\wifi.exe
+  wifi.vcxproj -> H:\github\lastingguy\attendancemanagement\windows\wifi\Debug\wifi.pdb (Full PDB)

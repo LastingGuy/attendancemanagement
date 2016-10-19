@@ -11,6 +11,7 @@ using MahApps.Metro.Controls.Dialogs;
 using MahApps.Metro.Controls;
 using attendanceManagement.widget;
 using attendanceManagement.Models;
+using System.Threading.Tasks;
 
 
 /***********************************************************************
@@ -132,7 +133,7 @@ namespace attendanceManagement
             MessageDialogResult messageResult = await DialogManager.ShowMessageAsync(this, "Wrong", message);
         }
 
-        public async void showProgressDialog(bool flag,string title="",string message="")
+        public async Task showProgressDialog(bool flag,Action action = null, string title="",string message="")
         {
             if (flag)
             {
@@ -142,14 +143,19 @@ namespace attendanceManagement
                     AnimateShow = false,
                     AnimateHide = false
                 };
-                var dia = await this.ShowProgressAsync("Please wait...", "We are baking some cupcakes!", settings: settings);
-                MainwindowData.data.progressDialog = dia;
-                dia.SetIndeterminate();
-
+                MainwindowData.data.progressDialog = await this.ShowProgressAsync(title, message, settings: settings);
+                MainwindowData.data.progressDialog.SetIndeterminate();
+                if(action!=null)
+                    await Task.Run(action);
+                
             }
             else
             {
-                MainwindowData.data.progressDialog.SetCancelable(true);
+                var dia = MainwindowData.data.progressDialog;
+                if(dia!=null)
+                {
+                    await MainwindowData.data.progressDialog.CloseAsync();
+                }
             }
         }
 

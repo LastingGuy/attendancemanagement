@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <atlstr.h>
 #pragma comment(lib, "wlanapi.lib")
+#pragma comment(lib,"wlanui.lib")
 using namespace std;
 //errorcode
 #define FAIL  0
@@ -126,19 +127,17 @@ DWORD createnetwork(HANDLE handle,string ssid, string password, int maxpeer)
 		return FAIL_TO_SET_PASS;
 	}
 
+	
+	
 	//启用设置
-	bool dwReturnValue = WlanHostedNetworkStartUsing(handle, &reason, NULL);
+	DWORD dwReturnValue = WlanHostedNetworkStartUsing(handle, &reason, NULL);
 	if (ERROR_SUCCESS != dwReturnValue)
 	{
-		//if (wlan_hosted_network_reason_interface_unavailable == reason)
-		//{
-		//	cout << "无线承载网络禁用" << endl;
-		//	return;
-		//}
-		//cout << "未知失败" << endl;
+		
 		return FAIL_TO_START_USING;
 	}
 
+	
 
 	//启用负载网路
 	dwReturnValue = WlanHostedNetworkForceStart(handle, &reason, NULL);
@@ -170,6 +169,7 @@ void getClient(HANDLE handle)
 {
 	PWLAN_HOSTED_NETWORK_STATUS status = nullptr;
 	DWORD r = WlanHostedNetworkQueryStatus(handle, &status, NULL);
+
 	if (ERROR_SUCCESS != r)
 	{
 		return;
@@ -187,7 +187,7 @@ void getClient(HANDLE handle)
 				cout << endl;
 			cout << "<";
 			for (int n = 0; n < 6; n++)
-				cout << hex << (int)status->PeerList[0].PeerMacAddress[n];
+				cout << hex << (int)status->PeerList[i].PeerMacAddress[n];
 			cout << ">";
 		}
 	}
