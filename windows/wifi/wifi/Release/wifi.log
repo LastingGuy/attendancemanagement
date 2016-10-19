@@ -1,8 +1,9 @@
 ﻿  main.cpp
-main.cpp(130): warning C4800: “DWORD”: 将值强制为布尔值“true”或“false”(性能警告)
-main.cpp(144): warning C4800: “DWORD”: 将值强制为布尔值“true”或“false”(性能警告)
 main.cpp(184): warning C4018: “<”: 有符号/无符号不匹配
   正在生成代码
-  All 226 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  455 of 464 functions (98.1%) were compiled, the rest were copied from previous compilation.
+    30 functions were new in current compilation
+    4 functions had inline decision re-evaluated but remain unchanged
   已完成代码的生成
-  wifi.vcxproj -> H:\wjl\software\myproject\lastingguy\attendancemanagement\windows\wifi\Release\wifi.exe
+  wifi.vcxproj -> H:\github\lastingguy\attendancemanagement\windows\wifi\Release\wifi.exe
+  wifi.vcxproj -> H:\github\lastingguy\attendancemanagement\windows\wifi\Release\wifi.pdb (Full PDB)

@@ -100,7 +100,7 @@
 
         </Style>
 
-        
+
         <Style x:Key="CourseBoxStyle" TargetType="{x:Type ListBox}">
             <Setter Property="Background" Value="{DynamicResource WhiteBrush}"/>
             <Setter Property="BorderBrush" Value="{DynamicResource BlackBrush}"/>
@@ -113,12 +113,13 @@
             <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
             <Setter Property="SnapsToDevicePixels" Value="True"/>
             <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
-            <Setter Property="FontSize" Value="25"/>
+            <Setter Property="FontSize" Value="10"/>
+            
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type ListBox}">
                         <Border x:Name="Border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}">
-                            <ScrollViewer CanContentScroll="{TemplateBinding ScrollViewer.CanContentScroll}" Focusable="False" HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}">
+                            <ScrollViewer CanContentScroll="{TemplateBinding ScrollViewer.CanContentScroll}" Focusable="False" HorizontalScrollBarVisibility="Disabled" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}">
                                 <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
                             </ScrollViewer>
                         </Border>
@@ -325,7 +326,7 @@
                 <ListBox x:Name="CourseSelection" Margin="10,52.093,10,10"
                          DisplayMemberPath="Name"    
                           Background="White" BorderBrush="Black" BorderThickness="0.5" HorizontalContentAlignment="Center" Style="{DynamicResource CourseBoxStyle}" SelectionChanged="CourseSelection_SelectionChanged" >
-                  
+
 
                 </ListBox>
                 <Label x:Name="label" Content="请选择课程" Margin="13,10,10,0" VerticalAlignment="Top" FontSize="21.333" HorizontalContentAlignment="Center"/>
@@ -378,7 +379,9 @@
                                             <RowDefinition Height="1*"/>
                                         </Grid.RowDefinitions>
                                         <Label x:Name="teacher" Content="{Binding teachername, Mode=TwoWay}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-                                        <Label x:Name="coursename" Content="{Binding coursename}" HorizontalContentAlignment="Center" Grid.Row="1" VerticalContentAlignment="Center"/>
+                                        <Label Grid.Row="1"  VerticalContentAlignment="Center" HorizontalContentAlignment="Center">
+                                            <TextBlock x:Name="coursename" TextWrapping="Wrap" Text="{Binding coursename}" />
+                                        </Label>
                                         <Label x:Name="coursetime" Content="{Binding coursetime}" HorizontalContentAlignment="Center" Grid.Row="2" VerticalContentAlignment="Center"/>
                                         <Label x:Name="nrofstu" Content="{Binding nrofstu}" HorizontalContentAlignment="Center" Grid.Row="3" VerticalContentAlignment="Center"/>
                                         <Label x:Name="arrived" Content="{Binding arrived}" HorizontalContentAlignment="Center" Grid.Row="4" VerticalContentAlignment="Center"/>

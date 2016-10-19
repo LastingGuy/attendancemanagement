@@ -252,7 +252,12 @@ namespace attendanceManagement.Models
             get { return _coursename; }
             set
             {
-                setProperty(ref _coursename, value);
+                string str = value;
+                if(str.Length>7)
+                {
+                    str = str.Substring(0,7) + "...";
+                }
+                setProperty(ref _coursename, str);
             }
         }
 
@@ -548,29 +553,7 @@ namespace attendanceManagement.Models
             {
                 if(value)
                 {
-
-                    if (new UpLoad().login(Teacher.tid, Teacher.passwd))
-                    {   
-                        Teacher.isLogin = true;
-                        ASYNC_FILES = true;
-             
-                        if(!Teacher.remember)
-                        {
-                            Teacher.tid = "";
-                            Teacher.passwd = "";
-                        }
-                        CourseInfo.saveConfig();
-                        //Window.loginInfo("Authentication Information", "登陆成功");
-
-                    }
-                    else
-                    {
-                        Teacher.isLogin = false;
-                        Teacher.tid = "";
-                        Teacher.passwd = "";
-                        Window.loginInfo("Authentication Information", "登陆失败");
-
-                    }
+                    LOGIN();
                 }
             }
         }
@@ -584,22 +567,26 @@ namespace attendanceManagement.Models
             {
                 if(value)
                 {
-                    if(!Teacher.isLogin)
-                    {
-                        Window.errorBoard("Please Log In First~");
-                        return;
-                    }
+                    ////Window.showProgressDialog(true,null ,"正在同步", "请稍等！");
+                    //if(!Teacher.isLogin)
+                    //{
+                    //    //Window.showProgressDialog(false,null);
+                    //    Window.errorBoard("Please Log In First~");
+                    //    return;
+                    //}
 
-                    var download = new DownLoad();
-                    download.getclasslist();
-                    var courses = CourseInfo.getCourses();
-                    foreach (var course in courses)
-                    {
-                        download.getstulist(course.COURSEID);
-                    }
+                    //var download = new DownLoad();
+                    //download.getclasslist();
+                    //var courses = CourseInfo.getCourses();
+                    //foreach (var course in courses)
+                    //{
+                    //    download.getstulist(course.COURSEID);
+                    //}
 
-                    new UpLoad().uploadTable();
-                    MainwindowData.data.courselist = courses;
+                    //new UpLoad().uploadTable();
+                    //MainwindowData.data.courselist = courses;
+                    ////Window.showProgressDialog(false,null);
+                    SYNC();
                 }
             }
         }
@@ -613,5 +600,87 @@ namespace attendanceManagement.Models
             }
         }
 
+
+
+
+        ///////////////////////////私有函数////////////////////////////
+
+        private async void LOGIN()
+        {
+            await Window.showProgressDialog(true, async delegate ()
+             {
+                 int i = 0;
+                 if (new UpLoad().login(Teacher.tid, Teacher.passwd))
+                 {
+                     await Window.showProgressDialog(false);
+                     Teacher.isLogin = true;
+                     Window.Dispatcher.Invoke(
+                         delegate ()
+                         {
+                             ASYNC_FILES = true;
+                             if (!Teacher.remember)
+                             {
+                                 Teacher.tid = "";
+                                 Teacher.passwd = "";
+                             }
+                             CourseInfo.saveConfig();
+                         });
+        //Window.loginInfo("Authentication Information", "登陆成功");                 
+                }
+                 else
+                 {
+                     await Window.showProgressDialog(false);
+                     Window.Dispatcher.Invoke(
+                        delegate ()
+                        {
+                            Teacher.isLogin = false;
+                            Teacher.tid = "";
+                            Teacher.passwd = "";
+                            Window.loginInfo("Authentication Information", "登陆失败");
+                        });
+                 }
+             },
+            "正在登陆","请稍后！");
+            
+
+        }
+
+        private async void SYNC()
+        {
+            await Window.showProgressDialog(true, async delegate ()
+            {
+                if (!Teacher.isLogin)
+                {
+                    await Window.showProgressDialog(false);
+                    Window.Dispatcher.Invoke(
+                        delegate ()
+                        {
+                            Window.errorBoard("Please Log In First~");
+                        }
+                        );
+                    return;
+                }
+
+                var download = new DownLoad();
+                download.getclasslist();
+                var courses = CourseInfo.getCourses();
+                foreach (var course in courses)
+                {
+                    download.getstulist(course.COURSEID);
+                }
+
+                new UpLoad().uploadTable();
+                Window.Dispatcher.Invoke(
+                        delegate ()
+                        {
+                            data.courselist = courses;
+                        }
+                        );
+               
+                await Window.showProgressDialog(false);
+            },
+            "正在同步", "请稍后！");
+
+        }
     }
 }
